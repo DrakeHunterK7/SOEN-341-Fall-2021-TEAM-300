@@ -1,18 +1,21 @@
 # SOEN-341-Fall-2021-TEAM-300
 
-# Project Name: Stack Overflow Clone 
+## SOEN341- Team Project
 
-#### - Description:
-Stack Overflow clone with basic functionalities hosted locally
+### - Name: Stack Bubbling
 
-#### - Objective :  
-To create a Stack Overflow clone with basic functions.
+### - Description: 
+This project developed in the course of SOEN341 at Concordia Unviersity.This web app will allow user to post question that users want to ask and answer question by other users.
 
-#### - Core Features:
+### - Objective :  
+Develop asking and answering platform, with goal to create the simple version of Stack Overlow
+
+### - Core Features:
 - Creating and adding a post
 - Voting on the post
 - Commenting on the post
-- Additional 4th feature chosen by team (to be discussed with TA)
+- Editing personal Info and other's personal Info 
+- Login/Logout
 
 <br/>
 
@@ -36,18 +39,10 @@ To create a Stack Overflow clone with basic functions.
 
 <br/>
 
-### Tech Stack for this Project:
+### Tech Stack:
 
-- Languages: HTML, CSS, JavaScript (at least)
-- Framework: REACT, Node.js 
+- Languages: HTML, CSS, JavaScript
 
-<br/>
+- Framework: REACT, Node.js
 
-### Env Setup
-
-<br/>
-
-### Run This Project
-
-
-
+  (The backend part and database are not decided currently, we will ensure at next meeting)
