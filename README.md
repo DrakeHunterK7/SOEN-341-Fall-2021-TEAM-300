@@ -1,45 +1,53 @@
 # SOEN-341-Fall-2021-TEAM-300
 
-The Project: Stack Overflow Clone for SOEN 341 - Fall 2021
+# Project Name: Stack Overflow Clone 
 
-Description of the Project:
-	Stack Overflow clone with basic functionalities hosted locally
+#### - Description:
+Stack Overflow clone with basic functionalities hosted locally
 
-Objective of the Project: 
-	To create a Stack Overflow clone with basic functions.
+#### - Objective :  
+To create a Stack Overflow clone with basic functions.
 
-Core Features of the Project:
+#### - Core Features:
+- Creating and adding a post
+- Voting on the post
+- Commenting on the post
+- Additional 4th feature chosen by team (to be discussed with TA)
 
-	- Creating and adding a post
-	
-	- Voting on the post
-	
-	- Commenting on the post
-	
-	- Additional 4th feature chosen by team (to be discussed with TA)
-	
+<br/>
 
-Project Team:	(NAME | GITHUB)
-	
-	Anas Peerzada | DrakeHunterK7
-	
-	Vrajesh Patel | vrajp434
-	
-	Dushaani Manickam | Dushaani
-	
-	Matthias Ho | massdarkness11
-	
-	Yuchen Huang | ChenChenYellow
-	
-	Lei Zhou | AutoSleep
-	
-	Hadi Hawi | Hadihw
-	
-	Christian sfeir (absent)
-	
-Languages and Tech we plan to use for the Project:
+## Project Team Members:
 
-	- Languages: HTML, CSS, JavaScript (at least)
-	
-	- Framework: REACT, Node.js 
-	
+- Anas Peerzada - [DrakeHunterK7]()
+
+- Vrajesh Patel - [vrajp434]()
+
+- Dushaani Manickam - [Dushaani]()
+
+- Matthias Ho - [massdarkness11]()
+
+- Yuchen Huang - [ChenChenYellow]()
+
+- Lei Zhou - [AutoSleep](https://github.com/AutoSleep)
+
+- Hadi Hawi - [Hadihw]()
+
+- Christian Sfeir - [****]()
+
+<br/>
+
+### Tech Stack for this Project:
+
+- Languages: HTML, CSS, JavaScript (at least)
+- Framework: REACT, Node.js 
+
+<br/>
+
+### Env Setup
+
+<br/>
+
+### Run This Project
+
+
+
