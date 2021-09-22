@@ -1,8 +1,7 @@
-# SOEN-341-Fall-2021-TEAM-300
+# SOEN341- Team Project-Stack Bubbling
 
-## SOEN341- Team Project
-
-### - Name: Stack Bubbling
+### - Name: 
+Stack Bubbling
 
 ### - Description: 
 This project developed in the course of SOEN341 at Concordia Unviersity.This web app will allow user to post question that users want to ask and answer question by other users.
@@ -19,7 +18,7 @@ Develop asking and answering platform, with goal to create the simple version of
 
 <br/>
 
-## Project Team Members:
+## Team Members:
 
 - Anas Peerzada - [DrakeHunterK7]()
 
@@ -39,7 +38,7 @@ Develop asking and answering platform, with goal to create the simple version of
 
 <br/>
 
-### Tech Stack:
+## Tech Stack:
 
 - Languages: HTML, CSS, JavaScript
 
