@@ -10,9 +10,9 @@ This project developed in the course of SOEN341 at Concordia Unviersity.This web
 Develop asking and answering platform, with goal to create the simple version of Stack Overlow
 
 ### - Core Features:
-- Creating and adding a post
-- Voting on the post
-- Commenting on the post
+- Asking and answering questions
+- Voting on the answers
+- Deciding the best answer
 - Editing personal Info and other's personal Info 
 - Login/Logout
 
