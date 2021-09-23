@@ -20,21 +20,21 @@ Develop asking and answering platform, with goal to create the simple version of
 
 ## Team Members:
 
-- Anas Peerzada - [DrakeHunterK7]()
+- Anas Peerzada - [DrakeHunterK7](https://github.com/DrakeHunterK7)
 
-- Vrajesh Patel - [vrajp434]()
+- Vrajesh Patel - [vrajp434](https://github.com/vrajp434)
 
-- Dushaani Manickam - [Dushaani]()
+- Dushaani Manickam - [Dushaani](https://github.com/dushaani)
 
-- Matthias Ho - [massdarkness11]()
+- Matthias Ho - [massdarkness11](https://github.com/massdarkness11)
 
-- Yuchen Huang - [ChenChenYellow]()
+- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow)
 
 - Lei Zhou - [AutoSleep](https://github.com/AutoSleep)
 
-- Hadi Hawi - [Hadihw]()
+- Hadi Hawi - [Hadihw](https://github.com/Hadihw)
 
-- Christian Sfeir - [****]()
+- Christian Sfeir - [Christsfeir](https://github.com/christsfeir)
 
 <br/>
 
