@@ -22,7 +22,7 @@ Develop asking and answering platform, with goal to create the simple version of
 
 - Anas Peerzada - [DrakeHunterK7](https://github.com/DrakeHunterK7)
 
-- Vrajesh Patel - [vrajp434](https://github.com/vrajp434)
+- Vrajesh Patel - [vrajp434](https://github.com/vrajp434) - 40099091
 
 - Dushaani Manickam - [Dushaani](https://github.com/dushaani)
 
