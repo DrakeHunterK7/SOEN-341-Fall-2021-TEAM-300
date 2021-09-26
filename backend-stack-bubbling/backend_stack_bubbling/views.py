@@ -8,6 +8,7 @@ from backend_stack_bubbling import app
 import pyrebase
 import json
 
+#Firebase configuration, copied from firebase account
 firebaseConfig = {    
     "apiKey": "AIzaSyDXYlDeiaSsuw0rfvk1xzU4cmRZG4G7xAI",
     "authDomain": "soen341-c5e5c.firebaseapp.com",
@@ -19,16 +20,23 @@ firebaseConfig = {
     "measurementId": "G-D5JTWZSW6E"
     }
 
+# Initialization using config
 firebase = pyrebase.initialize_app(firebaseConfig)
+
+# Database
 db = firebase.database()
+
+# Authentication, shows the users and permissions of firebase, we are not likely to use it
 auth =  firebase.auth()
+
+# Storage, can store files, such as .txt .jpg .png, we are not likely to use it, 
+# Unless we want profile picture
 storage = firebase.storage()
 
-print(db)
-people = db.child("People").get()
-print(people.val())
-print(json.dumps(db.get().val(),indent = 4))
+# render_template is a method to re-use html code as html template, backend don't need this
+# just for the sake for readability
 
+# Auto generated webpages, ignore that
 @app.route('/')
 @app.route('/home')
 def home():
@@ -39,6 +47,7 @@ def home():
         year=datetime.now().year,
     )
 
+# Auto generated webpages, ignore that
 @app.route('/contact')
 def contact():
     """Renders the contact page."""
@@ -49,6 +58,7 @@ def contact():
         message='Your contact page.'
     )
 
+# Auto generated webpages, ignore that
 @app.route('/about')
 def about():
     """Renders the about page."""
@@ -59,12 +69,14 @@ def about():
         message='Your application description page.'
     )
 
+# Read and display the firebase database root
 @app.route('/firebase/read')
 def firebaseRead():
     return render_template(
         "display_json_template.html",
         jsonValue = json.dumps(db.get().val()))
 
+# Push (Append) an item (Bot User) to a child 
 @app.route('/firebase/push')
 def firebasePush():
     user = {'name':'Bot User', 'password':'Bot Password'}
@@ -73,6 +85,7 @@ def firebasePush():
         "display_json_template.html",
         jsonValue=json.dumps(user))
 
+# Set an item (SquaredPants) of a child
 @app.route("/firebase/set")
 def firebaseSet():
     user = {"name":"Sponge Bob", "password" : "Jellyfish"}
@@ -81,6 +94,7 @@ def firebaseSet():
         "display_json_template.html",
         jsonValue=json.dumps(user))
 
+# Update an item (SquaredPants) of a child
 @app.route("/firebase/update")
 def firebaseUpdate():
     nameUpdate = {"name":"Patrick"}
@@ -89,6 +103,7 @@ def firebaseUpdate():
         "display_json_template.html",
         jsonValue=json.dumps(nameUpdate))
 
+# Remove a child (Users)
 @app.route("/firebase/remove")
 def firebaseRemove():
     db.child("Users").remove()
