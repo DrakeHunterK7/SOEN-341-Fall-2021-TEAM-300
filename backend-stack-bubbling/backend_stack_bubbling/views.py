@@ -44,34 +44,9 @@ storage = firebase.storage()
 @app.route('/')
 @app.route('/home')
 def home():
-    """Renders the home page."""
     return render_template(
-        'index.html',
-        title='Home Page',
-        year=datetime.now().year,
-    )
-
-# Auto generated webpages, ignore that
-@app.route('/contact')
-def contact():
-    """Renders the contact page."""
-    return render_template(
-        'contact.html',
-        title='Contact',
-        year=datetime.now().year,
-        message='Your contact page.'
-    )
-
-# Auto generated webpages, ignore that
-@app.route('/about')
-def about():
-    """Renders the about page."""
-    return render_template(
-        'about.html',
-        title='About',
-        year=datetime.now().year,
-        message='Your application description page.'
-    )
+        "display_json_template.html",
+        jsonValue="Hello")
 
 # Read and display the firebase database root
 @app.route('/firebase/read')
