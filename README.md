@@ -4,17 +4,16 @@
 Stack Bubbling
 
 ### - Description: 
-This project developed in the course of SOEN341 at Concordia Unviersity.This web app will allow user to post question that users want to ask and answer question by other users.
+This project was developed in the course of SOEN 341 at Concordia University. This web app allows users to post questions that can be answered by other users.
 
-### - Objective :  
-Develop asking and answering platform, with goal to create the simple version of Stack Overlow
+### - Objective:  
+To develop a question and answer platform. The goal is to create a simple version of Stack Overflow.
 
 ### - Core Features:
-- Asking and answering questions
-- Voting on the answers
-- Deciding the best answer
-- Editing personal Info and other's personal Info 
-- Login/Logout
+- Ask and answer questions
+- Vote on the answers
+- Decide the best answer
+- User registration/login/logout (Proposal to TA)
 
 <br/>
 
@@ -40,8 +39,8 @@ Develop asking and answering platform, with goal to create the simple version of
 
 ## Tech Stack:
 
-- Languages: HTML, CSS, JavaScript
-
-- Framework: REACT, Node.js
-
-  (The backend part and database are not decided currently, we will ensure at next meeting)
+- Frontend Framework: REACT
+- Frontend Languages: HTML, CSS, Javascript
+- Backend Framework: Flask
+- Backend Language: Python
+- Database: MongoDB
