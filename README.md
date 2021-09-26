@@ -28,7 +28,7 @@ Develop asking and answering platform, with goal to create the simple version of
 
 - Matthias Ho - [massdarkness11](https://github.com/massdarkness11)
 
-- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow)
+- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow) - 40110757
 
 - Lei Zhou - [AutoSleep](https://github.com/AutoSleep)
 
