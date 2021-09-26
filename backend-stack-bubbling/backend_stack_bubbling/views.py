@@ -7,6 +7,10 @@ from flask import render_template
 from backend_stack_bubbling import app
 import pyrebase
 import json
+import pymongo
+from pymongo import MongoClient
+import re
+from bson import json_util
 
 #Firebase configuration, copied from firebase account
 firebaseConfig = {    
@@ -110,4 +114,71 @@ def firebaseRemove():
     return render_template(
         "display_json_template.html",
         jsonValue="Users removed")
+
+
+cluster = MongoClient("mongodb+srv://new_user_0:new_user_0@cluster0.co9ge.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+db = cluster["sample_db"]
+collection = db["sample_collection"]
+
+# Query all document that name match regex (contain letter o)
+@app.route("/mongodb/query")
+def mongoDBQuery():
+    query = {
+        "name":{
+        "$regex" : "o",
+        "$options" : "i"
+        }
+    }
+    return render_template(
+        "display_json_template.html",
+        jsonValue=json.loads(json_util.dumps(list(collection.find(query)))))
+
+# Insert one document
+@app.route("/mongodb/insert")
+def mongoDBInsert():
+    post = {"name":"JoJo", "score":5}
+    collection.insert_one(post)
+    return render_template(
+        "display_json_template.html",
+        jsonValue=json.loads(json_util.dumps(post)))
+
+
+# Insert many document
+@app.route("/mongodb/insertMany")
+def mongoDBInsertMany():
+    post_1 = {"name":"Dio", "score":500}
+    post_2 = {"name":"Dio version 2", "score":1000}
+    collection.insert_many([post_2,post_1])
+    return render_template(
+        "display_json_template.html",
+        jsonValue="Insert many Dio")
+
+
+# Delete all document that name match regex (contain letter o)
+@app.route("/mongodb/delete")
+def mongoDBDelete():
+    query = {
+        "name":{
+        "$regex" : "D",
+        "$options" : "i"
+        }
+    }
+    collection.delete_many(query)
+    return render_template(
+        "display_json_template.html",
+        jsonValue=json.dumps(query))
+
+# Find document with score of 5 and update it to 10
+@app.route("/mongodb/update")
+def mongoDBUpdate():
+    collection.update_one(
+        {"score":5}, 
+        {"$set" : {"score" : "20"}})
+    return render_template(
+        "display_json_template.html",
+        jsonValue="JoJo Updated and stronger")
+
+# app.route is for front end people to worry
+# we only need to return to them json
+# app.route is there only for the sake of testing
 
