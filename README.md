@@ -34,7 +34,7 @@ Develop asking and answering platform, with goal to create the simple version of
 
 - Hadi Hawi - [Hadihw](https://github.com/Hadihw)
 
-- Christian Sfeir - [Christsfeir](https://github.com/christsfeir)
+- Christian Sfeir - [Christsfeir](https://github.com/christsfeir) - 40120536
 
 <br/>
 
