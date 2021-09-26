@@ -1,45 +1,47 @@
-# SOEN-341-Fall-2021-TEAM-300
+# SOEN341- Team Project-Stack Bubbling
 
-The Project: Stack Overflow Clone for SOEN 341 - Fall 2021
+### - Name: 
+Stack Bubbling
 
-Description of the Project:
-	Stack Overflow clone with basic functionalities hosted locally
+### - Description: 
+This project developed in the course of SOEN341 at Concordia Unviersity.This web app will allow user to post question that users want to ask and answer question by other users.
 
-Objective of the Project: 
-	To create a Stack Overflow clone with basic functions.
+### - Objective :  
+Develop asking and answering platform, with goal to create the simple version of Stack Overlow
 
-Core Features of the Project:
+### - Core Features:
+- Asking and answering questions
+- Voting on the answers
+- Deciding the best answer
+- Editing personal Info and other's personal Info 
+- Login/Logout
 
-	- Creating and adding a post
-	
-	- Voting on the post
-	
-	- Commenting on the post
-	
-	- Additional 4th feature chosen by team (to be discussed with TA)
-	
+<br/>
 
-Project Team:	(NAME | GITHUB)
-	
-	Anas Peerzada | DrakeHunterK7
-	
-	Vrajesh Patel | vrajp434
-	
-	Dushaani Manickam | Dushaani
-	
-	Matthias Ho | massdarkness11
-	
-	Yuchen Huang | ChenChenYellow
-	
-	Lei Zhou | AutoSleep
-	
-	Hadi Hawi | Hadihw
-	
-	Christian sfeir (absent)
-	
-Languages and Tech we plan to use for the Project:
+## Team Members:
 
-	- Languages: HTML, CSS, JavaScript (at least)
-	
-	- Framework: REACT, Node.js 
-	
+- Anas Peerzada - [DrakeHunterK7](https://github.com/DrakeHunterK7)
+
+- Vrajesh Patel - [vrajp434](https://github.com/vrajp434) - 40099091
+
+- Dushaani Manickam - [Dushaani](https://github.com/dushaani)
+
+- Matthias Ho - [massdarkness11](https://github.com/massdarkness11)
+
+- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow)
+
+- Lei Zhou - [AutoSleep](https://github.com/AutoSleep)
+
+- Hadi Hawi - [Hadihw](https://github.com/Hadihw)
+
+- Christian Sfeir - [Christsfeir](https://github.com/christsfeir)
+
+<br/>
+
+## Tech Stack:
+
+- Languages: HTML, CSS, JavaScript
+
+- Framework: REACT, Node.js
+
+  (The backend part and database are not decided currently, we will ensure at next meeting)
