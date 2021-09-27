@@ -1,45 +1,47 @@
-# SOEN-341-Fall-2021-TEAM-300
+# SOEN341- Team Project-Stack Bubbling
 
-The Project: Stack Overflow Clone for SOEN 341 - Fall 2021
+### - Name: 
+Stack Bubbling
 
-Description of the Project:
-	Stack Overflow clone with basic functionalities hosted locally
+### - Description: 
+This project was developed in the course of SOEN 341 at Concordia University. This web app allows users to post questions that can be answered by other users.
 
-Objective of the Project: 
-	To create a Stack Overflow clone with basic functions.
+### - Objective:  
+To develop a question and answer platform. The goal is to create a simple version of Stack Overflow.
 
-Core Features of the Project:
+### - Core Features:
+- Ask and answer questions
+- Vote on the answers
+- Decide the best answer
+- User registration/login/logout (Proposal to TA)
 
-	- Creating and adding a post
-	
-	- Voting on the post
-	
-	- Commenting on the post
-	
-	- Additional 4th feature chosen by team (to be discussed with TA)
-	
+<br/>
 
-Project Team:	(NAME | GITHUB)
-	
-	Anas Peerzada | DrakeHunterK7
-	
-	Vrajesh Patel | vrajp434
-	
-	Dushaani Manickam | Dushaani
-	
-	Matthias Ho | massdarkness11
-	
-	Yuchen Huang | ChenChenYellow
-	
-	Lei Zhou | AutoSleep
-	
-	Hadi Hawi | Hadihw
-	
-	Christian sfeir (absent)
-	
-Languages and Tech we plan to use for the Project:
+## Team Members:
 
-	- Languages: HTML, CSS, JavaScript (at least)
-	
-	- Framework: REACT, Node.js 
-	
+- Anas Peerzada - [DrakeHunterK7](https://github.com/DrakeHunterK7)
+
+- Vrajesh Patel - [vrajp434](https://github.com/vrajp434) - 40099091
+
+- Dushaani Manickam - [Dushaani](https://github.com/dushaani)
+
+- Matthias Ho - [massdarkness11](https://github.com/massdarkness11)
+
+- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow) - 40110757
+
+- Lei Zhou - [AutoSleep](https://github.com/AutoSleep)
+
+- Hadi Hawi - [Hadihw](https://github.com/Hadihw)
+
+- Christian Sfeir - [Christsfeir](https://github.com/christsfeir) - 40120536
+
+<br/>
+
+## Tech Stack:
+
+
+- Frontend Framework: REACT
+- Frontend Languages: HTML, CSS, Javascript
+- Backend Framework: Flask
+- Backend Language: Python
+- Database: MongoDB
