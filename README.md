@@ -31,7 +31,7 @@ To develop a question and answer platform. The goal is to create a simple versio
 
 - Lei Zhou - [AutoSleep](https://github.com/AutoSleep)
 
-- Hadi Hawi - [Hadihw](https://github.com/Hadihw)
+- Hadi Hawi - [Hadihw](https://github.com/Hadihw) - 40096690
 
 - Christian Sfeir - [Christsfeir](https://github.com/christsfeir) - 40120536
 
