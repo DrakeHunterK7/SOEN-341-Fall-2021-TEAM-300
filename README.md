@@ -27,17 +27,18 @@ To develop a question and answer platform. The goal is to create a simple versio
 
 - Matthias Ho - [massdarkness11](https://github.com/massdarkness11)
 
-- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow)
+- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow) - 40110757
 
 - Lei Zhou - [AutoSleep](https://github.com/AutoSleep)
 
 - Hadi Hawi - [Hadihw](https://github.com/Hadihw)
 
-- Christian Sfeir - [Christsfeir](https://github.com/christsfeir)
+- Christian Sfeir - [Christsfeir](https://github.com/christsfeir) - 40120536
 
 <br/>
 
 ## Tech Stack:
+
 
 - Frontend Framework: REACT
 - Frontend Languages: HTML, CSS, Javascript
