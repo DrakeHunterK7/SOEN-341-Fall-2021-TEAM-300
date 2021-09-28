@@ -10,10 +10,9 @@ This project was developed in the course of SOEN 341 at Concordia University. Th
 To develop a question and answer platform. The goal is to create a simple version of Stack Overflow.
 
 ### - Core Features:
-- Ask and answer questions
-- Vote on the answers
-- Decide the best answer
-- User registration/login/logout (Proposal to TA)
+- Registration and login/logout 
+- Asking and answering questions
+- User profile
 
 <br/>
 
@@ -21,27 +20,31 @@ To develop a question and answer platform. The goal is to create a simple versio
 
 - Anas Peerzada - [DrakeHunterK7](https://github.com/DrakeHunterK7)
 
-- Vrajesh Patel - [vrajp434](https://github.com/vrajp434) - 40099091
+- Vrajesh Patel - [vrajp434](https://github.com/vrajp434)
 
 - Dushaani Manickam - [Dushaani](https://github.com/dushaani)
 
-- Matthias Ho - [massdarkness11](https://github.com/massdarkness11) - 40066059
+- Matthias Ho - [massdarkness11](https://github.com/massdarkness11)
 
-- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow) - 40110757
+- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow)
 
 - Lei Zhou - [AutoSleep](https://github.com/AutoSleep)
 
 - Hadi Hawi - [Hadihw](https://github.com/Hadihw)
 
-- Christian Sfeir - [Christsfeir](https://github.com/christsfeir) - 40120536
+- Christian Sfeir - [Christsfeir](https://github.com/christsfeir)
 
 <br/>
 
 ## Tech Stack:
+Language:
+- Javascript
+- HTML
 
-
-- Frontend Framework: REACT
-- Frontend Languages: HTML, CSS, Javascript
-- Backend Framework: Flask
-- Backend Language: Python
-- Database: MongoDB
+Framework and Tools:   
+- React
+- Material UI
+- Axios
+- NodeJs
+- Experss
+- Firebase
