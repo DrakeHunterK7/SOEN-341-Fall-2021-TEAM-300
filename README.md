@@ -28,7 +28,7 @@ To develop a question and answer platform. The goal is to create a simple versio
 
 - Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow)
 
-- Lei Zhou - [AutoSleep](https://github.com/AutoSleep)
+- Lei Zhou - [AutoSleep](https://github.com/AutoSleep) - 27291515 
 
 - Hadi Hawi - [Hadihw](https://github.com/Hadihw) - 40096690
 
