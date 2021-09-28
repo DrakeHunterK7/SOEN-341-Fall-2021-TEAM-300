@@ -22,7 +22,7 @@ To develop a question and answer platform. The goal is to create a simple versio
 
 - Vrajesh Patel - [vrajp434](https://github.com/vrajp434)
 
-- Dushaani Manickam - [Dushaani](https://github.com/dushaani)
+- Dushaani Manickam - [Dushaani](https://github.com/dushaani) - 40086993
 
 - Matthias Ho - [massdarkness11](https://github.com/massdarkness11)
 
