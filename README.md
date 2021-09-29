@@ -4,7 +4,7 @@
 Stack Bubbling
 
 ### - Description: 
-This project was developed in the course of SOEN 341 at Concordia University. This web app allows users to post questions that can be answered by other users.
+This project was developed for SOEN341 at Concordia University for the Fall 2021 semester. This web app allows users to post questions that can be answered by other users.
 
 ### - Objective:  
 To develop a question and answer platform. The goal is to create a simple version of Stack Overflow.
