@@ -10,9 +10,10 @@ This project was developed for SOEN341 at Concordia University for the Fall 2021
 To develop a question and answer platform. The goal is to create a simple version of Stack Overflow.
 
 ### - Core Features:
-- Registration and login/logout 
+
 - Asking and answering questions
-- User profile
+- Voting on the answers given
+- Accepting the best answer given
 
 <br/>
 
