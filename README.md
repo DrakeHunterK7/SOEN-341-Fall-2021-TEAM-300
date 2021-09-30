@@ -32,7 +32,7 @@ To develop a question and answer platform. The goal is to create a simple versio
 
 - Hadi Hawi - [Hadihw](https://github.com/Hadihw) - 40096690
 
-- Christian Sfeir - [Christsfeir](https://github.com/christsfeir)
+- Christian Sfeir - [Christsfeir](https://github.com/christsfeir) - 40120536
 
 <br/>
 
