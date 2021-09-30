@@ -25,7 +25,7 @@ To develop a question and answer platform. The goal is to create a simple versio
 
 - Dushaani Manickam - [Dushaani](https://github.com/dushaani) - 40086993
 
-- Matthias Ho - [massdarkness11](https://github.com/massdarkness11)
+- Matthias Ho - [massdarkness11](https://github.com/massdarkness11) - 40066059
 
 - Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow) - 40110757
 
