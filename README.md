@@ -10,9 +10,10 @@ This project was developed for SOEN341 at Concordia University for the Fall 2021
 To develop a question and answer platform. The goal is to create a simple version of Stack Overflow.
 
 ### - Core Features:
-- Registration and login/logout 
+
 - Asking and answering questions
-- User profile
+- Voting on the answers given
+- Accepting the best answer given
 
 <br/>
 
@@ -24,9 +25,9 @@ To develop a question and answer platform. The goal is to create a simple versio
 
 - Dushaani Manickam - [Dushaani](https://github.com/dushaani) - 40086993
 
-- Matthias Ho - [massdarkness11](https://github.com/massdarkness11)
+- Matthias Ho - [massdarkness11](https://github.com/massdarkness11) - 40066059
 
-- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow)
+- Yuchen Huang - [ChenChenYellow](https://github.com/ChenChenYellow) - 40110757
 
 - Lei Zhou - [AutoSleep](https://github.com/AutoSleep) - 27291515 
 
