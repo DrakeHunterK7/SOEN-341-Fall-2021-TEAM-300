@@ -18,7 +18,6 @@ parser.add_argument('password', help='Password cannot be blank', required=True)
 
 db = client["Stack-Bubbling"]["Users"]
 
-
 class Register(Resource):
     def post(self):
         data = parser.parse_args()
@@ -31,8 +30,18 @@ class Register(Resource):
             "createdAt": datetime.datetime.today()
         })
         return {"msg": "please login"}
+    def get(self):
+        return{"msg": "this is register page"}
 
+class login(Resource):
+    def get(self):
+        return{"msg": "user logined"}
+    def post(self):
+        return{}
 
+class logout(Resource):
+    def post(self):
+        return{""}
 # api.add_resource(Home.Home, '/')
 api.add_resource(Register, '/register')
 
