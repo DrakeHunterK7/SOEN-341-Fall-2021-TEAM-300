@@ -33,16 +33,7 @@ class Register(Resource):
     def get(self):
         return{"msg": "this is register page"}
 
-class login(Resource):
-    def get(self):
-        return{"msg": "user logined"}
-    def post(self):
-        return{}
 
-class logout(Resource):
-    def post(self):
-        return{""}
-# api.add_resource(Home.Home, '/')
 api.add_resource(Register, '/register')
 
 if __name__ == "__main__":
