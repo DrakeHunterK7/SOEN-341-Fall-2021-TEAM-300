@@ -6,6 +6,7 @@ import PrivateNavLink from "../react-router/privateNavLink";
 import Home from "../../Views/home";
 import Login from "../../Views/login";
 import Resigter from "../../Views/resigter";
+import userProfile from "../../Views/userProfile";
 // import Logout from "../views/logout";
 
 import "./index.css"
@@ -15,7 +16,7 @@ export class NavBar extends Component {
     return (
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-primary sticky-top">
-          <a className="navbar-brand nav-link active"  aria-current="page" to="/home">
+          <a className="navbar-brand nav-link active"  aria-current="page" to="/home" href="/home">
             Stack-Bubbling
           </a>
           <div className="collapse navbar-collapse">
@@ -40,6 +41,11 @@ export class NavBar extends Component {
                 </PrivateNavLink>
               </li>
               <li className="nav-item">
+                <PrivateNavLink className="nav-link" to="/userProfile">
+                  userProfile
+                </PrivateNavLink>
+              </li>
+              <li className="nav-item">
                 <PrivateNavLink className="nav-link" to="/logout">
                   Logout
                 </PrivateNavLink>
@@ -50,9 +56,10 @@ export class NavBar extends Component {
         </nav>
 
         <Switch>
-          <Route path="/" component={Home} />
+          <Route path="/home" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/resigter" component={Resigter} />
+          <Route path="/userProfile" component={userProfile} />
           {/* <Route path="/logout" component={Logout}/>           */}
         </Switch>
       </div>
