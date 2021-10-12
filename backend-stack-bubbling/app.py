@@ -3,10 +3,19 @@ from flask_restful import Api, Resource, reqparse
 from pymongo import MongoClient
 import datetime
 import uuid
+import os
+
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
 app = Flask(__name__)
+
+# RestFul
 api = Api(app)
-# app.config['SECRET_KEY'] = "key"
+
+# JWT
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET")
+jwt = JWTManager(app)
+
 
 # connect with DB
 cluster = "mongodb+srv://SOEN341T300:Soen_341_T_300@cluster0.qvzq2.mongodb.net/test?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE"
@@ -33,11 +42,18 @@ class Register(Resource):
     def get(self):
         return{"msg": "this is register page"}
 
+
+loginData = reqparse.RequestParser()
+loginData.add_argument('email_address', help='emailAddress cannot be blank', required=True)
+loginData.add_argument('password', help='Password cannot be blank', required=True)
+
 class Login(Resource):
     def get(self):
         return{"msg": "user logined"}
     def post(self):
-        return{}
+        data = loginData.parse_args()
+        db.find_one()
+        return data
 
 
 api.add_resource(Register, '/register')
