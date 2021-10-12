@@ -54,9 +54,32 @@ class Register(Resource):
             return make_response(jsonify({"message": "register successful, please login"}), 201)
 
 
+class Login(Resource):
+    def post(self):
+        data = loginInfo.parse_args()
+        # validation of email and pass
+        res = UserDB.find_one({
+            "email": data.email
+        })
+        # if user_info_email is existing in the database
+        if res is not None:
+            # create token
+            access_token = create_access_token(identity=data.email)
+            return make_response(jsonify(access_token=access_token), 201)
+        else:
+            return make_response(jsonify({
+                "message": "the email or password is invalid"
+            }), 401)
+
+        # things to do after
+        # sorting the token at the frontend
+        # for logout function, the frontend will do some operation remove token in the frontend
+        # write the @jwt_required() before the post and get
+
 
 
 api.add_resource(Register, '/register')
+api.add_resource(Login, '/login')
 
 
 if __name__ == "__main__":
