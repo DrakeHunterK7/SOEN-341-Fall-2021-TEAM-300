@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 
-import PrivateNavLink from "../react-router/privateNavLink";
+import PrivateNavLink from "../../utils/react-router/privateNavLink";
 
-import Home from "../../Views/home";
-import Login from "../../Views/login";
-import Resigter from "../../Views/resigter";
-import userProfile from "../../Views/userProfile";
+import Home from "../Home/home";
+import Login from "../LoginForm/login";
+import Resigter from "../ResigterForm/resigter";
+import userProfile from "../UserProfile/userProfile";
 // import Logout from "../views/logout";
 
 import "./index.css"
