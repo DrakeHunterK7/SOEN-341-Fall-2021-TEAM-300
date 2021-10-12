@@ -33,6 +33,7 @@ class Register(Resource):
     def get(self):
         return{"msg": "this is register page"}
 
+
 class Login(Resource):
     def get(self):
         return{"msg": "user logined"}
@@ -40,6 +41,13 @@ class Login(Resource):
         return{}
 
 
+
+class Logout(Resource):
+    def post(self):
+        return{""}
+
+
+api.add_resource(Logout, '/logout')
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
 
