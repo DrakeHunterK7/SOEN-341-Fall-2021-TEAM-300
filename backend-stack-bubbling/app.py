@@ -22,8 +22,6 @@ jwt = JWTManager(app)
 # RestFul
 api = Api(app)
 
-
-
 # connect with DB
 cluster = "mongodb+srv://SOEN341T300:Soen_341_T_300@cluster0.qvzq2.mongodb.net/test?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE"
 client = MongoClient(cluster)
@@ -41,15 +39,18 @@ UserDB = client["Stack-Bubbling"]["Users"]
 
 
 class Register(Resource):
-    def post(self):
+    @staticmethod
+    def post():
         data = RegisterInfo.parse_args()
         res = UserDB.find_one({
+            "username": data.username,
             "email": data.email
         })
         if data.confirmPassword != data.password:
-            return make_response(jsonify({"message": "please check your password is same as the confirm password"}), 201)
+            return make_response(jsonify({"message": "please check your password is same as the confirm password"}),
+                                 203)
         if res is not None:
-            return make_response(jsonify({"message": "you have to use valid email and password to register"}), 401)
+            return make_response(jsonify({"message": "you have to use valid email and password to register"}), 203)
         else:
             UserDB.insert_one({
                 "user_id": uuid.uuid1(),
@@ -58,12 +59,12 @@ class Register(Resource):
                 "password": data.password,
                 "createdAt": datetime.datetime.today()
             })
-            return make_response(jsonify({"message": "register successful, please login"}), 201)
-
+            return make_response(jsonify({"message": "register successful, please login"}), 200)
 
 
 class Login(Resource):
-    def post(self):
+    @staticmethod
+    def post():
         data = loginInfo.parse_args()
         # validation of email and pass
         res = UserDB.find_one({
@@ -73,13 +74,14 @@ class Login(Resource):
         print(res)
         # if user_info_email is existing in the database
         if res is not None:
+            print(res)
             # create token
             access_token = create_access_token(identity=data.email)
-            return make_response(jsonify(access_token=access_token), 201)
+            return make_response(jsonify(access_token=access_token), 200)
         else:
             return make_response(jsonify({
                 "message": "the email or password is invalid"
-            }), 401)
+            }), 203)
 
         # things to do after
         # sorting the token at the frontend
@@ -87,17 +89,14 @@ class Login(Resource):
         # write the @jwt_required() before the post and get
 
 
-
-
 class Logout(Resource):
     def post(self):
-        return{""}
+        return {""}
 
 
 api.add_resource(Logout, '/logout')
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
-
 
 if __name__ == "__main__":
     app.debug = True
