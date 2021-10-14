@@ -2,6 +2,7 @@ from flask import Flask, request, make_response, jsonify
 from flask_restful import Api, Resource, reqparse
 from pymongo import MongoClient
 from datetime import timedelta
+from flask_cors import CORS
 import datetime
 import uuid
 import os
@@ -9,6 +10,9 @@ import os
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
 app = Flask(__name__)
+
+# CORS
+CORS(app)
 
 # JWT
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET")
@@ -27,6 +31,7 @@ RegisterInfo = reqparse.RequestParser()
 RegisterInfo.add_argument('username', help='Username cannot be blank', required=True)
 RegisterInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 RegisterInfo.add_argument('password', help='Password cannot be blank', required=True)
+RegisterInfo.add_argument('confirmPassword', help='Password cannot be blank', required=True)
 
 loginInfo = reqparse.RequestParser()
 loginInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
@@ -41,8 +46,10 @@ class Register(Resource):
         res = UserDB.find_one({
             "email": data.email
         })
+        if data.confirmPassword != data.password:
+            return make_response(jsonify({"message": "please check your password is same as the confirm password"}), 201)
         if res is not None:
-            return make_response(jsonify({"message": "you have to use valid email and password to resigter"}), 401)
+            return make_response(jsonify({"message": "you have to use valid email and password to register"}), 401)
         else:
             UserDB.insert_one({
                 "user_id": uuid.uuid1(),
@@ -60,8 +67,10 @@ class Login(Resource):
         data = loginInfo.parse_args()
         # validation of email and pass
         res = UserDB.find_one({
-            "email": data.email
+            "email": data.email,
+            "password": data.password
         })
+        print(res)
         # if user_info_email is existing in the database
         if res is not None:
             # create token
