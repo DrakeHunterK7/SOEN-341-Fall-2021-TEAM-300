@@ -67,8 +67,10 @@ class Login(Resource):
         data = loginInfo.parse_args()
         # validation of email and pass
         res = UserDB.find_one({
-            "email": data.email
+            "email": data.email,
+            "password": data.password
         })
+        print(res)
         # if user_info_email is existing in the database
         if res is not None:
             # create token
