@@ -11,7 +11,8 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 app = Flask(__name__)
 
 # JWT
-app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET")
+#app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET")
+app.config["JWT_SECRET_KEY"] = "SuperSecuredSecretKey"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 # app.config["JWT_REFRESH_TOKEN_EXPIRES"] = datetime.datetime.utcnow() + datetime.timedelta(days=24)
 jwt = JWTManager(app)
@@ -28,23 +29,28 @@ RegisterInfo.add_argument('username', help='Username cannot be blank', required=
 RegisterInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 RegisterInfo.add_argument('password', help='Password cannot be blank', required=True)
 
-loginInfo = reqparse.RequestParser()
-loginInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
-loginInfo.add_argument('password', help='Password cannot be blank', required=True)
+LoginInfo = reqparse.RequestParser()
+LoginInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
+LoginInfo.add_argument('password', help='Password cannot be blank', required=True)
 
-UserDB = client["Stack-Bubbling"]["Users"]
+PostQuestionInfo = reqparse.RequestParser()
+PostQuestionInfo.add_argument('title', help='question title cannot be empty', required=True, type=str)
+PostQuestionInfo.add_argument('body', help='question body cannot be empty', required=True, type=str)
 
+DB = client["Stack-Bubbling"]
+UserCollectiion = DB["Users"]
+QuestionCollection = DB["Questions"]
 
 class Register(Resource):
     def post(self):
         data = RegisterInfo.parse_args()
-        res = UserDB.find_one({
+        res = UserCollectiion.find_one({
             "email": data.email
         })
         if res is not None:
             return make_response(jsonify({"message": "you have to use valid email and password to resigter"}), 401)
         else:
-            UserDB.insert_one({
+            UserCollectiion.insert_one({
                 "user_id": uuid.uuid1(),
                 "username": data.username,
                 "email": data.email,
@@ -56,15 +62,16 @@ class Register(Resource):
 
 class Login(Resource):
     def post(self):
-        data = loginInfo.parse_args()
+        data = LoginInfo.parse_args()
         # validation of email and pass
-        res = UserDB.find_one({
-            "email": data.email
+        res = UserCollectiion.find_one({
+            "email": data.email,
+            "password": data.password
         })
         # if user_info_email is existing in the database
         if res is not None:
             # create token
-            access_token = create_access_token(identity=data.email)
+            access_token = create_access_token(identity={"email": data.email})
             return make_response(jsonify(access_token=access_token), 201)
         else:
             return make_response(jsonify({
@@ -76,10 +83,38 @@ class Login(Resource):
         # for logout function, the frontend will do some operation remove token in the frontend
         # write the @jwt_required() before the post and get
 
-
+class PostQuestion(Resource):
+    # This decorator is needed when we need to check the identity of the user
+    # When using this decorator, the request must have a header["Authorization"] with value "Bearer [jwt_token]"
+    @jwt_required()
+    def post(self):
+        # Parse the Json received in request to [info]
+        info = PostQuestionInfo.parse_args()
+        # get_jwt_identity() will get the [email] from token sent through header["Authorization"] of the request
+        identity = get_jwt_identity()
+        currentUser = None
+        # Get the current user using his [email]
+        currentUser = UserCollectiion.find_one({"email": identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
+        newQuestion = {
+        "_id" : uuid.uuid1(),
+        "user_id": currentUser["user_id"],
+        "title": info["title"],
+        "body": info["body"],
+        "createdAt": datetime.datetime.today(),
+        "vote_count": 0,
+        "answers": []
+        }
+        QuestionCollection.insert_one(newQuestion)
+        return make_response(jsonify({"message": "Question was posted successfully"}), 201)
+    # Things to do
+    # Handle the response info in the front end
+    # Design & Implement a refresh token
 
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
+api.add_resource(PostQuestion, '/postquestion')
 
 
 if __name__ == "__main__":
