@@ -28,7 +28,6 @@ RegisterInfo = reqparse.RequestParser()
 RegisterInfo.add_argument('username', help='Username cannot be blank', required=True)
 RegisterInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 RegisterInfo.add_argument('password', help='Password cannot be blank', required=True)
-
 LoginInfo = reqparse.RequestParser()
 LoginInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 LoginInfo.add_argument('password', help='Password cannot be blank', required=True)
@@ -55,7 +54,6 @@ class Register(Resource):
             })
             return make_response(jsonify({"message": "register successful, please login"}), 201)
 
-
 class Login(Resource):
     def post(self):
         data = LoginInfo.parse_args()
@@ -78,6 +76,7 @@ class Login(Resource):
         # sorting the token at the frontend
         # for logout function, the frontend will do some operation remove token in the frontend
         # write the @jwt_required() before the post and get
+
 
 
 
