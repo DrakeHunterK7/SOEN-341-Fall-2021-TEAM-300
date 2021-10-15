@@ -5,13 +5,14 @@ import axios from "axios";
 import "./index.css";
 
 export default class Login extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       email: "",
       password: "",
       loginMsg: "",
-      tigger:false
+      tigger:false,
+      isSuccess:true
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -49,13 +50,18 @@ export default class Login extends Component {
           this.setState({
             loginMsg:response.data.message
           })
+          this.props.history.push("/home")
           console.log("---------", localStorage.getItem("access_token"));
         }
         else if(res === 203){
           this.setState({
-            loginMsg:response.data.message
+            loginMsg:response.data.message,
+            isSuccess:false
           })
         }
+        this.setState({
+          tigger: true,
+        });
       })
       // clean the form
       this.setState({
@@ -73,8 +79,9 @@ export default class Login extends Component {
         <Popup
           tigger={this.state.tigger}
           setTiggerAlertBox={this.setTiggerAlertBox}
+          isSuccess={this.state.isSuccess}
         >
-          {this.state.registaionMsg}
+          {this.state.loginMsg}
         </Popup>
 
         <form onSubmit={this.handleSubmit}>
