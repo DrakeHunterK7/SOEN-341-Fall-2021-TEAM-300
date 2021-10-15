@@ -40,12 +40,11 @@ To develop a question and answer platform. The goal is to create a simple versio
 ## Tech Stack:
 Language:
 - Javascript
-- HTML
+- Python
 
 Framework and Tools:   
 - React
-- Material UI
+- Bootrasp
 - Axios
-- NodeJs
-- Experss
-- Firebase
+- Flask
+- MongoDB
