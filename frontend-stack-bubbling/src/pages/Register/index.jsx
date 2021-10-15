@@ -28,7 +28,6 @@ export default class Resigter extends Component {
       tigger: value,
     });
   }
-
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
