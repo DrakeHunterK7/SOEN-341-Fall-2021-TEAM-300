@@ -5,14 +5,22 @@ import News from "./News";
 import Message from "./Message";
 
 export default class Home extends Component {
-  constructor(props){
+  constructor(){
     super()
+    this.state={
+      isLoggined:false
+    }
+    this.refreshPage= this.refreshPage.bind(this);
   }
-  
+  refreshPage(){
+    window.location.reload()
+  }
+
   render() {
     return (
       <div>
         <h3>我是Home的内容</h3>
+        <button onClick={this.refreshPage}>Clike me to refresh</button>
         <div>
           <ul className="nav nav-tabs">
             <li>
