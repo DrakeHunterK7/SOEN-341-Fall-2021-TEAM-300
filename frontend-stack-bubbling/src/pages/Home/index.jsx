@@ -5,6 +5,10 @@ import News from "./News";
 import Message from "./Message";
 
 export default class Home extends Component {
+  constructor(props){
+    super()
+  }
+  
   render() {
     return (
       <div>

@@ -1,18 +1,29 @@
 import React, { Component } from "react";
+import Popup from '../../components/Popup'
+import MyNavLink from '../../components/MyNavLink'
 import axios from "axios";
 import "./index.css";
 
 export default class Login extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       email: "",
       password: "",
-      loginError: "",
+      loginMsg: "",
+      tigger:false,
+      isSuccess:true
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.setTiggerAlertBox = this.setTiggerAlertBox.bind(this);
+  }
+
+  setTiggerAlertBox(value){
+    this.setState({
+      tigger: value,
+    });
   }
 
   handleChange(e) {
@@ -22,23 +33,42 @@ export default class Login extends Component {
   }
 
   handleSubmit(e) {
-    const { email, password } = this.state;
     e.preventDefault();
+    const { email, password } = this.state;
+    
     axios
       .post("http://localhost:5000/login", {
         email: email,
         password: password,
       })
       .then((response) => {
-        // console.log("response", response.data.access_token);
-        if(response.status === 201){
-          localStorage.setItem('token', response.data.access_token)
+        console.log(response)
+        const res = response.status;
+        if (res === 200) {
+          localStorage.setItem("access_token", response.data.access_token);
+          
+          this.setState({
+            loginMsg:response.data.message
+          })
+          this.props.history.push("/home")
+          console.log("---------", localStorage.getItem("access_token"));
         }
-        console.log("---------",localStorage.getItem('token'))
-      }).then((err) => {
-        // console.log(err)
+        else if(res === 203){
+          this.setState({
+            loginMsg:response.data.message,
+            isSuccess:false
+          })
+        }
+        this.setState({
+          tigger: true,
+        });
       })
-    e.preventDefault();
+      // clean the form
+      this.setState({
+        email:'',
+        password:'',
+      });
+      console.log("-----",this.state)
   }
 
   render() {
@@ -46,9 +76,13 @@ export default class Login extends Component {
       <div className="container margin">
         <div className="title">Login</div>
 
-        <div className="alert alert-primary" role="alert">
-          {this.state.loginError}
-        </div>
+        <Popup
+          tigger={this.state.tigger}
+          setTiggerAlertBox={this.setTiggerAlertBox}
+          isSuccess={this.state.isSuccess}
+        >
+          {this.state.loginMsg}
+        </Popup>
 
         <form onSubmit={this.handleSubmit}>
           <div className="form-floating mb-3">
@@ -86,7 +120,9 @@ export default class Login extends Component {
               Login
             </button>
             <div className="word">
-              <a href="#">Don't have Account? Create one</a>
+              <MyNavLink replace to="/register" className="link">
+                Don't have Account? Create one
+              </MyNavLink>
             </div>
           </div>
         </form>

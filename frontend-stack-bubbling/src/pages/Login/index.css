@@ -1,0 +1,16 @@
+.margin{
+    margin-top: 20px;
+}
+
+.title{
+    font-size: 30px; 
+    text-align: center;
+    margin: 20px;
+}
+
+.button-position{
+    width: 100%;
+    font-size: 25px;
+    line-height: 30px;
+    margin: 10px 0px 10px 0px;
+}
