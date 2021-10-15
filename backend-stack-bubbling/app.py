@@ -79,7 +79,12 @@ class Login(Resource):
 
 
 
+class Logout(Resource):
+    def post(self):
+        return{""}
 
+
+api.add_resource(Logout, '/logout')
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
 
