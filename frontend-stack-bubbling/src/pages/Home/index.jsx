@@ -8,9 +8,7 @@ export default class Home extends Component {
   constructor(props){
     super()
   }
-  componentWillMount(){
-    // window.location.reload()
-  }
+  
   render() {
     return (
       <div>

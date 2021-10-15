@@ -1,5 +1,4 @@
 import React from "react";
-import MyNavLink from "../MyNavLink";
 import "./index.css";
 
 export default function Popup(props) {
