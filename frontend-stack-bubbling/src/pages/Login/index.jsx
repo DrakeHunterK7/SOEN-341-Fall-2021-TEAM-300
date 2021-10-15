@@ -3,6 +3,7 @@ import Popup from '../../components/Popup'
 import MyNavLink from '../../components/MyNavLink'
 import axios from "axios";
 import "./index.css";
+import Header from '../../components/Header/'
 
 export default class Login extends Component {
   constructor(props) {
@@ -74,6 +75,7 @@ export default class Login extends Component {
   render() {
     return (
       <div className="container margin">
+        <Header/>
         <div className="title">Login</div>
 
         <Popup

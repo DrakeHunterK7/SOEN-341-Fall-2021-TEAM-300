@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import MyNavLink from "../MyNavLink";
-
+import './index.css'
 export default class Header extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       isLoginUser: false,
@@ -24,6 +24,7 @@ export default class Header extends Component {
     if (localStorage.getItem("access_token") == null) {
       console.log("yes the access token is removed");
     }
+    window.location.reload()
   }
 
   render() {
@@ -46,7 +47,7 @@ export default class Header extends Component {
                   </li>
                 </ul>
                 <button
-                  class="btn btn-outline-success me-2"
+                  class="btn btn-outline-success me-2 logout-btn"
                   type="button"
                   onClick={this.handleLogout}
                 >

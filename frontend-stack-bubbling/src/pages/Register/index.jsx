@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import MyNavLink from "../../components/MyNavLink";
 import "./index.css";
+import Header from '../../components/Header/'
+
 
 import Popup from "../../components/Popup";
 import axios from "axios";
@@ -83,6 +85,7 @@ export default class Resigter extends Component {
   render() {
     return (
       <div className="container margin">
+        <Header/>
         <div className="title">Resigter</div>
         <Popup
           tigger={this.state.tigger}
