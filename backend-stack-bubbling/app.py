@@ -67,7 +67,7 @@ class Register(Resource):
 class Login(Resource):
     @staticmethod
     def post():
-        data = loginInfo.parse_args()
+        data = LoginInfo.parse_args()
         # validation of email and pass
         res = UserCollection.find_one({
             "email": data.email,
