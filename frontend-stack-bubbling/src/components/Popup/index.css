@@ -1,0 +1,14 @@
+.alert-box{
+    width: 100%;
+    height: 100px;
+    position: relative
+}
+
+.description{
+    float: left;
+    height: 100%;
+}
+
+.close-btn{
+    float: right;
+}
