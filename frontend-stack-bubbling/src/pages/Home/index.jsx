@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import News from "./News";
 import Message from "./Message";
 import Header from '../../components/Header/'
-import UserAnswer from'./AnswerList'
+import PostQuestion from'./PostQuestion'
 
 export default class Home extends Component {
   constructor(){
@@ -38,8 +38,8 @@ export default class Home extends Component {
               </MyNavLink>
             </li>
              <li>
-              <MyNavLink replace to= '/home/answerlist'>
-                User Answers
+              <MyNavLink replace to= '/home/postquestion'>
+                Post Question
               </MyNavLink>
             </li>
           </ul>
@@ -47,6 +47,7 @@ export default class Home extends Component {
           <Switch>
             <Route path="/home/news" component={News} />
             <Route path="/home/message" component={Message} />
+            <Route path="/home/postquestion" component={PostQuestion} />
             <Redirect to="/home/news" />
           </Switch>
         </div>
