@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import News from "./News";
 import Message from "./Message";
 import Header from '../../components/Header/'
+import UserAnswer from'./AnswerList'
 
 export default class Home extends Component {
   constructor(){
@@ -34,6 +35,11 @@ export default class Home extends Component {
             <li>
               <MyNavLink replace to="/home/message">
                 Message
+              </MyNavLink>
+            </li>
+             <li>
+              <MyNavLink replace to= '/home/answerlist'>
+                User Answers
               </MyNavLink>
             </li>
           </ul>
