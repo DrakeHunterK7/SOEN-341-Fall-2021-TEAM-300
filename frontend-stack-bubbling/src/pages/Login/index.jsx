@@ -76,7 +76,7 @@ export default class Login extends Component {
     return (
       <div className="container-margin">
         <Header/>
-        <div className="pagetitle">Login</div>
+        <div className="pagetitle">LOGIN</div>
 
         <Popup
           tigger={this.state.tigger}

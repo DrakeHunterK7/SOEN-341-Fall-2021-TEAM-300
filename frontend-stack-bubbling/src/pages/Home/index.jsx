@@ -33,7 +33,7 @@ export default class Home extends Component {
               </MyNavLink>
             </li>
             <li>
-              <MyNavLink replace to="/home/message">
+              <MyNavLink replace to="/home/message" >
                 Message
               </MyNavLink>
             </li>

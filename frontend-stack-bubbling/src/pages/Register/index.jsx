@@ -86,7 +86,7 @@ export default class Resigter extends Component {
     return (
       <div className="container-margin">
         <Header/>
-        <div className="pagetitle">Register</div>
+        <div className="pagetitle">REGISTER</div>
         <Popup
           tigger={this.state.tigger}
           setTiggerAlertBox={this.setTiggerAlertBox}
