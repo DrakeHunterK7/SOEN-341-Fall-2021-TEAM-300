@@ -1,3 +1,41 @@
+#Header{
+    background-color: #007da9;
+    vertical-align: center;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.link {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    text-decoration: none;
+    padding:10px;
+    margin-right: 10px;
+}
+
+a.link{
+    color:black;
+}
+
+a.link:hover {
+    padding-top:15px;
+    padding-bottom: 15px;
+    color:rgb(0, 165, 206)
+}
+
+.navbar {
+    background-color: rgba(139, 0, 139, 0);
+}
+
+
+
+#HeaderLogo {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+    
+}
+
 .logout-btn{
     float: right;
 }

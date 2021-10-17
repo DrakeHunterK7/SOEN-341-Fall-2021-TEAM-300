@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MyNavLink from "../MyNavLink";
 import './index.css'
+import MainLogo from '../Header/SBLogo.png';
 export default class Header extends Component {
   constructor(props) {
     super();
@@ -29,11 +30,11 @@ export default class Header extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
+      <nav className="navbar navbar-expand-lg navbar-light" id="super-container">
+        <div className="container-fluid"  id="Header" >
           <div className="collapse navbar-collapse" id="navbarNav">
             {this.state.isLoginUser ? (
-              <div>
+              <div >
                 <ul className="navbar-nav">
                   <li className="nav-item">
                     <MyNavLink replace to="/home">
@@ -56,18 +57,21 @@ export default class Header extends Component {
               </div>
             ) : (
               <ul className="navbar-nav">
-                <li className="nav-item">
-                  <MyNavLink replace to="/home">
+                <li id="HeaderLogo">
+                  <img src={MainLogo} width="200"/>
+                </li>
+                <li className="nav-item" class="tab">
+                  <MyNavLink replace to="/home" class="link">
                     Home
                   </MyNavLink>
                 </li>
-                <li className="nav-item">
-                  <MyNavLink replace to="/login">
+                <li className="nav-item" class="tab">
+                  <MyNavLink  replace to="/login" class="link">
                     Login
                   </MyNavLink>
                 </li>
-                <li className="nav-item">
-                  <MyNavLink replace to="/register">
+                <li className="nav-item" class="tab">
+                  <MyNavLink replace to="/register" class="link">
                     Register
                   </MyNavLink>
                 </li>

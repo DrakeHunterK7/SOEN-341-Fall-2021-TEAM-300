@@ -74,9 +74,9 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className="container margin">
+      <div className="container-margin">
         <Header/>
-        <div className="title">Login</div>
+        <div className="pagetitle">Login</div>
 
         <Popup
           tigger={this.state.tigger}
@@ -122,8 +122,8 @@ export default class Login extends Component {
               Login
             </button>
             <div className="word">
-              <MyNavLink replace to="/register" className="link">
-                Don't have Account? Create one
+              <MyNavLink replace to="/register" className="bottomlink">
+                Don't have an Account? Create one!
               </MyNavLink>
             </div>
           </div>

@@ -84,9 +84,9 @@ export default class Resigter extends Component {
 
   render() {
     return (
-      <div className="container margin">
+      <div className="container-margin">
         <Header/>
-        <div className="title">Resigter</div>
+        <div className="pagetitle">Register</div>
         <Popup
           tigger={this.state.tigger}
           setTiggerAlertBox={this.setTiggerAlertBox}
@@ -147,8 +147,8 @@ export default class Resigter extends Component {
               Register
             </button>
             <div className="word">
-              <MyNavLink replace to="/login" className="link">
-                Have an Account? Login
+              <MyNavLink replace to="/login" className="bottomlink">
+                Have an Account? Login here.
               </MyNavLink>
             </div>
           </div>
