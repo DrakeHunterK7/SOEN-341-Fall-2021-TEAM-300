@@ -30,9 +30,9 @@ export default class Header extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light" id="super-container">
-        <div className="container-fluid"  id="Header" >
-          <div className="collapse navbar-collapse" id="navbarNav">
+      <nav className="navbar navbar-expand-lg navbar-light">
+        <div className="container-fluid Header">
+          <div className="collapse navbar-collapse">
             {this.state.isLoginUser ? (
               <div >
                 <ul className="navbar-nav">
@@ -57,21 +57,21 @@ export default class Header extends Component {
               </div>
             ) : (
               <ul className="navbar-nav">
-                <li id="HeaderLogo">
-                  <img src={MainLogo} width="200"/>
+                <li >
+                  <img className="HeaderLogo" src={MainLogo} width="200"/>
                 </li>
-                <li className="nav-item" class="tab">
-                  <MyNavLink replace to="/home" class="link">
+                <li className="tab">
+                  <MyNavLink replace to="/home" className="link">
                     Home
                   </MyNavLink>
                 </li>
-                <li className="nav-item" class="tab">
-                  <MyNavLink  replace to="/login" class="link">
+                <li className="tab">
+                  <MyNavLink  replace to="/login" className="link">
                     Login
                   </MyNavLink>
                 </li>
-                <li className="nav-item" class="tab">
-                  <MyNavLink replace to="/register" class="link">
+                <li className="tab">
+                  <MyNavLink replace to="/register" className="link">
                     Register
                   </MyNavLink>
                 </li>
