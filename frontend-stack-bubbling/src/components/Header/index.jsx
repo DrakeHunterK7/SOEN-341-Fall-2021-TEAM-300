@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MyNavLink from "../MyNavLink";
 import './index.css'
+import MainLogo from '../Header/SBLogo.png';
 export default class Header extends Component {
   constructor(props) {
     super();
@@ -29,11 +30,11 @@ export default class Header extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
-          <div className="collapse navbar-collapse" id="navbarNav">
+      <nav className="navbar navbar-expand-lg navbar-light">
+        <div className="container-fluid Header">
+          <div className="collapse navbar-collapse">
             {this.state.isLoginUser ? (
-              <div>
+              <div >
                 <ul className="navbar-nav">
                   <li className="nav-item">
                     <MyNavLink replace to="/home">
@@ -56,18 +57,21 @@ export default class Header extends Component {
               </div>
             ) : (
               <ul className="navbar-nav">
-                <li className="nav-item">
-                  <MyNavLink replace to="/home">
+                <li >
+                  <img className="HeaderLogo" src={MainLogo} width="200"/>
+                </li>
+                <li className="tab">
+                  <MyNavLink replace to="/home" className="link">
                     Home
                   </MyNavLink>
                 </li>
-                <li className="nav-item">
-                  <MyNavLink replace to="/login">
+                <li className="tab">
+                  <MyNavLink  replace to="/login" className="link">
                     Login
                   </MyNavLink>
                 </li>
-                <li className="nav-item">
-                  <MyNavLink replace to="/register">
+                <li className="tab">
+                  <MyNavLink replace to="/register" className="link">
                     Register
                   </MyNavLink>
                 </li>

@@ -3,7 +3,8 @@ import MyNavLink from "../../components/MyNavLink";
 import { Route, Switch, Redirect } from "react-router-dom";
 import News from "./News";
 import Message from "./Message";
-import Header from '../../components/Header/'
+import Header from '../../components/Header/';
+import './index.css';
 
 export default class Home extends Component {
   constructor(){
@@ -22,7 +23,7 @@ export default class Home extends Component {
       <div>
         <Header/>
         <h3>我是Home的内容</h3>
-        <button onClick={this.refreshPage}>Clike me to refresh</button>
+        <button onClick={this.refreshPage}>Click to refresh</button>
         
         <div>
           <ul className="nav nav-tabs">
@@ -32,7 +33,7 @@ export default class Home extends Component {
               </MyNavLink>
             </li>
             <li>
-              <MyNavLink replace to="/home/message">
+              <MyNavLink replace to="/home/message" >
                 Message
               </MyNavLink>
             </li>

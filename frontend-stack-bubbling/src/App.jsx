@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserProfile from "./pages/UserProfile";
 
-// componets
+// components
 import Header from "./components/Header"; 
 
 import './app.css'
