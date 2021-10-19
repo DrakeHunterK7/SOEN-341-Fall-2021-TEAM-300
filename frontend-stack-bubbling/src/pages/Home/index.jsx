@@ -23,7 +23,7 @@ export default class Home extends Component {
       <div>
         <Header/>
         <h3>我是Home的内容</h3>
-        <button onClick={this.refreshPage}>Clike me to refresh</button>
+        <button onClick={this.refreshPage}>Click to refresh</button>
         
         <div>
           <ul className="nav nav-tabs">
@@ -33,7 +33,7 @@ export default class Home extends Component {
               </MyNavLink>
             </li>
             <li>
-              <MyNavLink replace to="/home/message">
+              <MyNavLink replace to="/home/message" >
                 Message
               </MyNavLink>
             </li>
