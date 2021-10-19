@@ -80,6 +80,11 @@ export default class Header extends Component {
                     Question Template Page
                   </MyNavLink>
                 </li>
+                <li className="tab">
+                  <MyNavLink replace to="/postquestion" className="link">
+                    Post Question
+                  </MyNavLink>
+                </li>
               </ul>
             )}
           </div>

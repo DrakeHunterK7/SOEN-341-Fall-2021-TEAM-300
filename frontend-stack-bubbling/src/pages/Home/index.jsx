@@ -4,7 +4,8 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import News from "./News";
 import Message from "./Message";
 import Header from '../../components/Header/'
-import PostQuestion from'./PostQuestion'
+import PostQuestion from'../PostQuestion'
+
 
 export default class Home extends Component {
   constructor(){

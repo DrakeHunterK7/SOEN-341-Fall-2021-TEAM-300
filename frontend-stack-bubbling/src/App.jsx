@@ -7,6 +7,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserProfile from "./pages/UserProfile";
 import QuestionTemplatePage from "./pages/QuestionTemplatePage";
+import PostQuestion from "./pages/PostQuestion";
+
 
 // components
 import Header from "./components/Header"; 
@@ -32,6 +34,8 @@ export default class App extends Component {
                   <Route path="/register" component={Register} />
                   <Route path="/userProfile" component={UserProfile} />
                   <Route path="/questiontemplatepage" component={QuestionTemplatePage} />
+                  <Route path="/postquestion" component={PostQuestion} />
+
                   <Redirect to="/home" />
                 </Switch>
               </div>
