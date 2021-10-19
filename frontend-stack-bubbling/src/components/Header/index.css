@@ -15,11 +15,13 @@
     text-decoration: none;
     padding:10px;
     margin-right: 10px;
+    display: inline-block;
 }
 
 a.link{
     color:black;
     border: solid 2px black;
+    
 }
 
 a.link:hover {
