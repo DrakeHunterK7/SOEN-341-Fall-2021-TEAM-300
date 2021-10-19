@@ -38,11 +38,6 @@ export default class Home extends Component {
                 Message
               </MyNavLink>
             </li>
-             <li>
-              <MyNavLink replace to= '/home/postquestion'>
-                Post Question
-              </MyNavLink>
-            </li>
           </ul>
           {/* 注册路由 */}
           <Switch>
