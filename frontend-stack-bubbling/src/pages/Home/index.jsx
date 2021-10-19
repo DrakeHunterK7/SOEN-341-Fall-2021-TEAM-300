@@ -3,9 +3,8 @@ import MyNavLink from "../../components/MyNavLink";
 import { Route, Switch, Redirect } from "react-router-dom";
 import News from "./News";
 import Message from "./Message";
-import Header from '../../components/Header/'
-import PostQuestion from'../PostQuestion'
-
+import Header from '../../components/Header/';
+import './index.css';
 
 export default class Home extends Component {
   constructor(){
@@ -38,17 +37,11 @@ export default class Home extends Component {
                 Message
               </MyNavLink>
             </li>
-             <li>
-              <MyNavLink replace to= '/home/postquestion'>
-                Post Question
-              </MyNavLink>
-            </li>
           </ul>
           {/* 注册路由 */}
           <Switch>
             <Route path="/home/news" component={News} />
             <Route path="/home/message" component={Message} />
-            <Route path="/home/postquestion" component={PostQuestion} />
             <Redirect to="/home/news" />
           </Switch>
         </div>

@@ -6,7 +6,6 @@
     vertical-align: center;
     border-radius: 10px;
     padding: 20px;
-    border: solid 2px black;
 }
 
 .link {
@@ -15,13 +14,10 @@
     text-decoration: none;
     padding:10px;
     margin-right: 10px;
-    display: inline-block;
 }
 
 a.link{
     color:black;
-    border: solid 2px black;
-    
 }
 
 a.link:hover {

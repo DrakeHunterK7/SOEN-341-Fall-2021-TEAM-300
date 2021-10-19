@@ -46,34 +46,3 @@ a.bottomlink:hover {
     padding-top: 15px;
     padding-bottom: 15px;
 }
-
-.submit-position{
-    width: 100%;
-    font-size: 25px;
-    line-height: 30px;
-    margin: 10px 0px 10px 0px;
-}
-
-.questiontitle {
-    width: 200px;
-    font-size: 25px; 
-    color: rgb(0, 0, 0);
-    border-radius: 15px;
-    background-color: #00b3ff;
-    text-align: center;
-   
-    
-}
-.questionbox{
-    
-    width: 100%;
-    border-radius: 15px;
-    padding:10px;
-    
-}
-.textbox{
-    width: 100%;
-    border-radius: 15px;
-    rows : 200;
-    padding:10px;
-}
