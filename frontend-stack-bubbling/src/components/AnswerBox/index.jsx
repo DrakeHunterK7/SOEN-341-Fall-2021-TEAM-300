@@ -1,81 +1,28 @@
 import React, { Component } from "react";
-import MyNavLink from "../MyNavLink";
-import 'index.css';
-export default class Header extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      isLoginUser: false,
-    };
-    this.handleLogout = this.handleLogout.bind(this);
-  }
-  componentDidMount() {
-    console.log(localStorage.getItem("access_token"));
-    if (localStorage.getItem("access_token")) {
-      console.log("true user logined");
-      this.setState({
-        isLoginUser: true,
-      });
-    }
-  }
+import "./index.css";
 
-  handleLogout() {
-    localStorage.removeItem("access_token");
-    if (localStorage.getItem("access_token") == null) {
-      console.log("yes the access token is removed");
-    }
-    window.location.reload()
-  }
+var questiontext = "Don't worry, there are very easy-to-follow crash courses online. Make sure to learn JS first if you haven't already";
 
+var username = "SomeUser#002";
+
+
+export default class AnswerBox extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light">
-        <div className="container-fluid Header">
-          <div className="collapse navbar-collapse">
-            {this.state.isLoginUser ? (
-              <div >
-                <ul className="navbar-nav">
-                  <li className="nav-item">
-                    <MyNavLink replace to="/home">
-                      Home
-                    </MyNavLink>
-                  </li>
-                  <li className="nav-item">
-                    <MyNavLink replace to="/userProfile">
-                      UserProfile
-                    </MyNavLink>
-                  </li>
-                </ul>
-                <button
-                  class="btn btn-outline-success me-2 logout-btn"
-                  type="button"
-                  onClick={this.handleLogout}
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <ul className="navbar-nav">
-                <li >
-                  <img className="HeaderLogo" src={MainLogo} width="200"/>
-                </li>
-                <li className="tab">
-                  <MyNavLink replace to="/home" className="link">
-                    Home
-                  </MyNavLink>
-                </li>
-                <li className="tab">
-                  <MyNavLink  replace to="/login" className="link">
-                    Login
-                  </MyNavLink>
-                </li>
-                <li className="tab">
-                  <MyNavLink replace to="/register" className="link">
-                    Register
-                  </MyNavLink>
-                </li>
-              </ul>
-            )}
+        <div className="container-fluid answer-container">
+          <div className="">
+                <div className="helper-username-holder">
+                  <h6>{"By " + username}</h6>
+                </div>
+              
+                <div className="answer-title">
+                  <h3>ANSWER</h3>
+                </div>
+               
+                <div className="answer-text">
+                  <h5>{questiontext}</h5>
+                </div>
           </div>
         </div>
       </nav>

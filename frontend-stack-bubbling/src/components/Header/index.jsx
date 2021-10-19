@@ -32,7 +32,7 @@ export default class Header extends Component {
     return (
       <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container-fluid Header">
-          <div className="collapse navbar-collapse">
+          <div className="">
             {this.state.isLoginUser ? (
               <div >
                 <ul className="navbar-nav">

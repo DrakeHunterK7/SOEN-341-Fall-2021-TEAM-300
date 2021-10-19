@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Header from "../../components/Header/";
+import QuestionBox from "../../components/QuestionBox/";
+import AnswerBox from "../../components/AnswerBox";
 
 
 export default class QuestionTemplatePage extends Component {
@@ -7,8 +9,13 @@ export default class QuestionTemplatePage extends Component {
 		return (
 			<div>
 				<Header />
-				<h3>Question Template Page</h3>
-
+				<QuestionBox />
+				
+				<AnswerBox />
+				<AnswerBox />
+				<AnswerBox />
+				<AnswerBox />
+				
 			</div>
 			
 		)
