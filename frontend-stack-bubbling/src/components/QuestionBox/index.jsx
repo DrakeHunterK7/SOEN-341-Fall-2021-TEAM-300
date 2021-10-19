@@ -75,11 +75,6 @@ export default class Header extends Component {
                     Register
                   </MyNavLink>
                 </li>
-                <li className="tab">
-                  <MyNavLink replace to="/questiontemplatepage" className="link">
-                    Question Template Page
-                  </MyNavLink>
-                </li>
               </ul>
             )}
           </div>

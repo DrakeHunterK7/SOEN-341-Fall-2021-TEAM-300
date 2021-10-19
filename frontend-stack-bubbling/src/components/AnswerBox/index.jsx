@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import MyNavLink from "../MyNavLink";
-import './index.css'
-import MainLogo from '../Header/SBLogo.png';
+import 'index.css';
 export default class Header extends Component {
   constructor(props) {
     super();
@@ -73,11 +72,6 @@ export default class Header extends Component {
                 <li className="tab">
                   <MyNavLink replace to="/register" className="link">
                     Register
-                  </MyNavLink>
-                </li>
-                <li className="tab">
-                  <MyNavLink replace to="/questiontemplatepage" className="link">
-                    Question Template Page
                   </MyNavLink>
                 </li>
               </ul>
