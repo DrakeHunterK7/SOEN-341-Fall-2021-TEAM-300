@@ -9,4 +9,4 @@ before_script: cd frontend-stack-bubbling
     
 script:
     - npm install
-    - npm start
+    - npm run build
