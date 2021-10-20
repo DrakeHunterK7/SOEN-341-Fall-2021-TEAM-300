@@ -75,6 +75,7 @@ export default class Header extends Component {
                     Register
                   </MyNavLink>
                 </li>
+
               </ul>
             )}
           </div>
