@@ -1,3 +1,36 @@
 body {
 
 }
+
+.homelink {
+    background-color: #00b3ff;
+    border-radius: 10px;
+    text-decoration: none;
+    padding:10px;
+    margin-right: 5px;
+    
+}
+
+a.homelink{
+    color:black;
+    border: solid 2px black;
+    
+}
+
+a.homelink:hover {
+    padding-top:15px;
+    padding-bottom: 15px;
+    
+}
+
+.subpagecontainer {
+    margin-top:20px;
+}
+
+.subpage {
+    margin-top: 2000px;
+}
+
+.linklist {
+    margin-bottom: 20px;
+}

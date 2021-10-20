@@ -1,0 +1,13 @@
+os: windows
+
+language: node_js
+
+node_js:
+    - "14"
+    
+before_script: cd frontend-stack-bubbling
+    
+script:
+    - npm install
+    - npm test
+    - npm run build
