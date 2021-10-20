@@ -7,7 +7,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserProfile from "./pages/UserProfile";
 import QuestionTemplatePage from "./pages/QuestionTemplatePage";
-import PostQuestion from "./pages/PostQuestion";
+import PostQuestion from "./pages/Home/PostQuestion";
+import QuestionList from "./pages/Home/QuestionList";
 
 
 // components

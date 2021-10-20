@@ -32,7 +32,7 @@ export default class Header extends Component {
     return (
       <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container-fluid Header">
-          <div className="">
+          <div className="outer-container">
             {this.state.isLoginUser ? (
               <div >
                 <ul className="navbar-nav">
@@ -73,16 +73,6 @@ export default class Header extends Component {
                 <li className="tab">
                   <MyNavLink replace to="/register" className="link">
                     Register
-                  </MyNavLink>
-                </li>
-                <li className="tab">
-                  <MyNavLink replace to="/questiontemplatepage" className="link">
-                    Question Template Page
-                  </MyNavLink>
-                </li>
-                <li className="tab">
-                  <MyNavLink replace to="/postquestion" className="link">
-                    Post Question
                   </MyNavLink>
                 </li>
               </ul>
