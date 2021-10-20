@@ -1,0 +1,12 @@
+language: node_js, python
+
+node_js:
+    - "14"
+    
+python:
+    - "3"
+    
+script:
+    - npm test
+    - npm run build
+    - flask run
