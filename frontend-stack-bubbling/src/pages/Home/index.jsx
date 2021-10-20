@@ -6,6 +6,8 @@ import Message from "./Message";
 import Header from '../../components/Header/'
 import PostQuestion from'./PostQuestion'
 import QuestionList from './QuestionList'
+import QuestionTemplatePage from "../QuestionTemplatePage";
+import "./index.css";
 
 
 export default class Home extends Component {
@@ -27,31 +29,31 @@ export default class Home extends Component {
         <h3>我是Home的内容</h3>
         <button onClick={this.refreshPage}>Click to refresh</button>
         
-        <div>
-          <ul className="nav nav-tabs">
+        <div className="subpagecontainer">
+          <ul className="nav nav-tabs linklist">
             <li>
-              <MyNavLink replace to="/home/news"className="link">
+              <MyNavLink replace to="/home/news"className="homelink">
                 News
               </MyNavLink>
             </li>
             <li>
-              <MyNavLink replace to="/home/message" className="link">
+              <MyNavLink replace to="/home/message" className="homelink">
                 Message
               </MyNavLink>
             </li>
              <li>
-              <MyNavLink replace to= '/home/postquestion' className="link" >
+              <MyNavLink replace to= '/home/postquestion' className="homelink" >
                 Post Question
               </MyNavLink>
             </li>
             <li className="tab">
-                  <MyNavLink replace to="/home/questionlist" className="link">
+                  <MyNavLink replace to="/home/questionlist" className="homelink">
                     All Questions
                   </MyNavLink>
             </li>
           </ul>
           {/* 注册路由 */}
-          <Switch>
+          <Switch className="subpage">
             <Route path="/home/news" component={News} />
             <Route path="/home/message" component={Message} />
             <Route path="/home/postquestion" component={PostQuestion} />
