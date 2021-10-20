@@ -30,17 +30,18 @@ RegisterInfo = reqparse.RequestParser()
 RegisterInfo.add_argument('username', help='Username cannot be blank', required=True)
 RegisterInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 RegisterInfo.add_argument('password', help='Password cannot be blank', required=True)
-RegisterInfo.add_argument('confirmPassword', help='Password cannot be blank', required=True)
-
-RegisterInfo.add_argument('confirmPassword', help='Password cannot be blank', required=True)
 
 LoginInfo = reqparse.RequestParser()
 LoginInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 LoginInfo.add_argument('password', help='Password cannot be blank', required=True)
 
+PostAnswerInfo = reqparse.RequestParser()
+PostAnswerInfo.add_argument('question_id', help='Question_ID cannot be empty', required=True, type=str)
+PostAnswerInfo.add_argument('body', help='Answer body cannot be empty', required=True, type=str)
 
 DB = client["Stack-Bubbling"]
 UserCollection = DB["Users"]
+QuestionCollection = DB["Questions"]
 
 
 class Register(Resource):
@@ -89,16 +90,44 @@ class Login(Resource):
         # sorting the token at the frontend
         # for logout function, the frontend will do some operation remove token in the frontend
         # write the @jwt_required() before the post and get
+class PostAnswer(Resource):
+    @staticmethod
+    @jwt_required()
+    def post():
+        # Parse the request info
+        info = PostAnswerInfo.parse_args()
+        # Check the identity of User
+        identity = get_jwt_identity()
+        currentUser = None
+        currentUser = UserCollection.find_one({"email" : identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify({"message": "The User identity is invalid"}), 401)
+        # Convert question_id received to uuid
+        # Check if question exist
+        question_id = uuid.UUID(info["question_id"])
+        currentQuestion = None
+        currentQuestion = QuestionCollection.find_one({"_id": question_id})
+        if currentQuestion is None:
+            return make_response(jsonify({"message": "The Question identity is invalid"}), 401)
+        newAnswer = {
+        "_id":uuid.uuid1(),
+        "user_id": currentUser["user_id"],
+        "body": info["body"],
+        "createdAt": datetime.datetime.today(),
+        "is_best_answer": False,
+        "vote_count": 0
+        }
+        # Append the new Answer to answers of question
+        QuestionCollection.update(
+            {"_id": question_id},
+            {"$push": {"answers": newAnswer}})
+        return make_response(jsonify({"message": "The Answer posted successfully"}), 201)
 
-class Logout(Resource):
-    def post(self):
-        return {""}
-
-
-api.add_resource(Logout, '/logout')
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
+api.add_resource(PostAnswer, "/postanswer")
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='localhost', port=5000)
+    app.run(host='localhost', port=5000) 
+
