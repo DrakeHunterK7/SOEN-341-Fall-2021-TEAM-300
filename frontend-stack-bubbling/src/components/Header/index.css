@@ -40,3 +40,13 @@ a.link:hover {
 .logout-btn{
     float: right;
 }
+
+@media (max-width:1000px){
+    .Header {
+        text-align: center;
+    }
+
+    .Header img{
+        margin:auto;
+    }
+}
