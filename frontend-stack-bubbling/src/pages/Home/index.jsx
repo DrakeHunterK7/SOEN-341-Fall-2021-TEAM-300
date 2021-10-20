@@ -26,21 +26,9 @@ export default class Home extends Component {
     return (
       <div>
         <Header/>
-        <h3>我是Home的内容</h3>
-        <button onClick={this.refreshPage}>Click to refresh</button>
         
         <div className="subpagecontainer">
           <ul className="nav nav-tabs linklist">
-            <li>
-              <MyNavLink replace to="/home/news"className="homelink">
-                News
-              </MyNavLink>
-            </li>
-            <li>
-              <MyNavLink replace to="/home/message" className="homelink">
-                Message
-              </MyNavLink>
-            </li>
              <li>
               <MyNavLink replace to= '/home/postquestion' className="homelink" >
                 Post Question
@@ -58,7 +46,7 @@ export default class Home extends Component {
             <Route path="/home/message" component={Message} />
             <Route path="/home/postquestion" component={PostQuestion} />
             <Route path="/home/questionlist" component={QuestionList} />
-            <Redirect to="/home/news" />
+            <Redirect to="/home/questionlist" />
           </Switch>
         </div>
       </div>
