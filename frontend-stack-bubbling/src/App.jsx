@@ -11,6 +11,7 @@ import PostQuestion from "./pages/Home/PostQuestion";
 import QuestionList from "./pages/Home/QuestionList";
 
 
+
 // components
 import Header from "./components/Header"; 
 
@@ -36,6 +37,7 @@ export default class App extends Component {
                   <Route path="/userProfile" component={UserProfile} />
                   <Route path="/questiontemplatepage" component={QuestionTemplatePage} />
                   <Route path="/postquestion" component={PostQuestion} />
+                  <Route path="/questionlist" component={QuestionList} />
 
                   <Redirect to="/home" />
                 </Switch>
