@@ -30,11 +30,11 @@ RegisterInfo = reqparse.RequestParser()
 RegisterInfo.add_argument('username', help='Username cannot be blank', required=True)
 RegisterInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 RegisterInfo.add_argument('password', help='Password cannot be blank', required=True)
+RegisterInfo.add_argument('confirmPassword', help='Confirm Password cannot be blank', required=True)
 
 LoginInfo = reqparse.RequestParser()
 LoginInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 LoginInfo.add_argument('password', help='Password cannot be blank', required=True)
-LoginInfo.add_argument('confirmPassword', help='Password cannot be blank', required=True)
 
 PostQuestionInfo = reqparse.RequestParser()
 PostQuestionInfo.add_argument('title', help='question title cannot be empty', required=True, type=str)
