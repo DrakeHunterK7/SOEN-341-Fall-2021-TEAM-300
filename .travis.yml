@@ -1,11 +1,11 @@
 os: windows
 
 language: node_js
-    
 
 node_js:
     - "14"
     
+before_script: cd frontend-stack-bubbling
+    
 script:
-    - export LD_LIBRARY_PATH="$TRAVIS_BUILD_DIR/frontend-stack-bubbling"
     - npm start
