@@ -30,18 +30,18 @@ RegisterInfo = reqparse.RequestParser()
 RegisterInfo.add_argument('username', help='Username cannot be blank', required=True)
 RegisterInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 RegisterInfo.add_argument('password', help='Password cannot be blank', required=True)
-RegisterInfo.add_argument('confirmPassword', help='Password cannot be blank', required=True)
-
-RegisterInfo.add_argument('confirmPassword', help='Password cannot be blank', required=True)
 
 LoginInfo = reqparse.RequestParser()
 LoginInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 LoginInfo.add_argument('password', help='Password cannot be blank', required=True)
 
+PostQuestionInfo = reqparse.RequestParser()
+PostQuestionInfo.add_argument('title', help='question title cannot be empty', required=True, type=str)
+PostQuestionInfo.add_argument('body', help='question body cannot be empty', required=True, type=str)
 
 DB = client["Stack-Bubbling"]
 UserCollection = DB["Users"]
-
+QuestionCollection = DB["Questions"]
 
 class Register(Resource):
     @staticmethod
@@ -90,12 +90,37 @@ class Login(Resource):
         # for logout function, the frontend will do some operation remove token in the frontend
         # write the @jwt_required() before the post and get
 
-class Logout(Resource):
-    def post(self):
-        return {""}
+class PostQuestion(Resource):
+    # This decorator is needed when we need to check the identity of the user
+    # When using this decorator, the request must have a header["Authorization"] with value "Bearer [jwt_token]"
+    @staticmethod
+    @jwt_required()
+    def post():
+        # Parse the Json received in request to [info]
+        info = PostQuestionInfo.parse_args()
+        # get_jwt_identity() will get the [email] from token sent through header["Authorization"] of the request
+        identity = get_jwt_identity()
+        currentUser = None
+        # Get the current user using his [email]
+        currentUser = UserCollection.find_one({"email": identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
+        newQuestion = {
+        "_id" : uuid.uuid1(),
+        "user_id": currentUser["user_id"],
+        "title": info["title"],
+        "body": info["body"],
+        "createdAt": datetime.datetime.today(),
+        "vote_count": 0,
+        "answers": []
+        }
+        QuestionCollection.insert_one(newQuestion)
+        return make_response(jsonify({"message": "Question was posted successfully"}), 201)
+    # Things to do
+    # Handle the response info in the front end
+    # Design & Implement a refresh token
 
-
-api.add_resource(Logout, '/logout')
+api.add_resource(PostQuestion, '/postquestion')
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
 
