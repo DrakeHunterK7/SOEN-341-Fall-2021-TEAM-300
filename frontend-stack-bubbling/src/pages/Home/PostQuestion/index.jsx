@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Popup from '../../components/Popup'
-import Header from "../../components/Header/";
+import Popup from '../../../components/Popup'
+
 
 
 
@@ -42,7 +42,7 @@ export default class Login extends Component {
   render() {
     return (
       <div className="container-margin">
-        <Header/>
+       
         <div className="pagetitle">Post Question</div>
 
         <Popup
