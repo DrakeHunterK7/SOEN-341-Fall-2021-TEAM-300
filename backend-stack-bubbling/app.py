@@ -167,10 +167,23 @@ class PostQuestion(Resource):
     # Design & Implement a refresh token
 
 
+class ListAnswers(Resource):
+    @staticmethod
+    def get():
+        # Get the current Question's ID
+        questionID = uuid.UUID(request.args.get("question_id"))
+        # List all the answers associated with that Question using the ID
+        return make_response(
+            jsonify(
+                list(
+                    QuestionCollection.find_one(
+                        {"_id": questionID})["answers"])), 201)
+
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(PostAnswer, "/postanswer")
 api.add_resource(PostQuestion, '/postquestion')
+api.add_resource(ListAnswers, '/listanswers')
 
 if __name__ == "__main__":
     app.debug = True
