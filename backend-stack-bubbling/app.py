@@ -123,10 +123,33 @@ class PostAnswer(Resource):
             {"_id": question_id},
             {"$push": {"answers": newAnswer}})
         return make_response(jsonify({"message": "The Answer posted successfully"}), 201)
+class QuestionList(Resource):	
+    def test_QuestionsList():
+	# get 100 questions
+        filter={}
+        project={
+            'title': 1, 
+            'body': 1, 
+            'user_id': 1
+        }
+        sort=list({
+            'createdAt': -1
+        }.items())
+        limit=100
+
+        res = QuestionCollection.find(
+          filter=filter,
+          projection=project,
+          sort=sort,
+          limit=limit
+)
+        return make_response(
+            jsonify(list(res)), 201)
 
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
 api.add_resource(PostAnswer, "/postanswer")
+api.add_resource(QuestionList, '/questionlist')
 
 if __name__ == "__main__":
     app.debug = True
