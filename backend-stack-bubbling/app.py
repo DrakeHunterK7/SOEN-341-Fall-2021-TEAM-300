@@ -35,7 +35,6 @@ RegisterInfo.add_argument('confirmPassword', help='Confirm Password cannot be bl
 LoginInfo = reqparse.RequestParser()
 LoginInfo.add_argument('email', help='emailAddress cannot be blank', required=True)
 LoginInfo.add_argument('password', help='Password cannot be blank', required=True)
-LoginInfo.add_argument('confirmPassword', help='Password cannot be blank', required=True)
 
 # Post Question Info
 PostQuestionInfo = reqparse.RequestParser()
