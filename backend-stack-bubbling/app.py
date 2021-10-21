@@ -122,7 +122,7 @@ class PostAnswer(Resource):
             return make_response(jsonify({"message": "The Question identity is invalid"}), 401)
         newAnswer = {
             "_id": uuid.uuid1(),
-            "user_id": currentUser["user_id"],
+            "user_id": currentUser["_id"],
             "body": info["body"],
             "createdAt": datetime.datetime.today(),
             "is_best_answer": False,
