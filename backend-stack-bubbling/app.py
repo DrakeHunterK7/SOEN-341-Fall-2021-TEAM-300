@@ -127,15 +127,14 @@ class QuestionList(Resource):
     def test_QuestionsList():
 	# get 100 questions
         res = QuestionCollection.aggregate([
-    {$lookup: {
+    {'$lookup': {
             'from': 'Users', 
             'localField': 'user_id', 
             'foreignField': 'user_id', 
             'as': 'name'}},
-    {$unwind:'name'},
-    {$sort: {'createdAt':-1}},
-    ,
-    {$group: {username:'username', title:'title', body:'body'}}.limit(100)
+    {'$unwind':'name'},
+    {'$sort': {'createdAt':-1}},
+    {'$group': {username:'username', title:'title', body:'body'}}.limit(100)
     
 ])
         return make_response(
