@@ -152,7 +152,7 @@ class PostQuestion(Resource):
             return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
         newQuestion = {
             "_id": uuid.uuid1(),
-            "user_id": currentUser["user_id"],
+            "user_id": currentUser["_id"],
             "title": info["title"],
             "body": info["body"],
             "createdAt": datetime.datetime.today(),
