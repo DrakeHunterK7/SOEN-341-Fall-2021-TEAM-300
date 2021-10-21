@@ -124,18 +124,19 @@ class PostAnswer(Resource):
             {"$push": {"answers": newAnswer}})
         return make_response(jsonify({"message": "The Answer posted successfully"}), 201)
 class QuestionList(Resource):	
-    def test_QuestionsList():
+    @staticmethod
+    def get():
 	# get 100 questions
         res = QuestionCollection.aggregate([
     {'$lookup': {
             'from': 'Users', 
             'localField': 'user_id', 
-            'foreignField': 'user_id', 
+            'foreignField': '_id', 
             'as': 'name'}},
-    {'$unwind':'name'},
+    #{'$unwind':'$name'},
     {'$sort': {'createdAt':-1}},
-    {'$group': {username:'username', title:'title', body:'body'}}.limit(100)
-    
+	{'$limit' : 100},
+    {"$project": {'Username': '$name', 'title':'$title', 'body':'$body'}}
 ])
         return make_response(
             jsonify(list(res)), 201)
