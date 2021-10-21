@@ -126,23 +126,18 @@ class PostAnswer(Resource):
 class QuestionList(Resource):	
     def test_QuestionsList():
 	# get 100 questions
-        filter={}
-        project={
-            'title': 1, 
-            'body': 1, 
-            'user_id': 1
-        }
-        sort=list({
-            'createdAt': -1
-        }.items())
-        limit=100
-
-        res = QuestionCollection.find(
-          filter=filter,
-          projection=project,
-          sort=sort,
-          limit=limit
-)
+        res = QuestionCollection.aggregate([
+    {$lookup: {
+            'from': 'Users', 
+            'localField': 'user_id', 
+            'foreignField': 'user_id', 
+            'as': 'name'}},
+    {$unwind:'name'},
+    {$sort: {'createdAt':-1}},
+    ,
+    {$group: {username:'username', title:'title', body:'body'}}.limit(100)
+    
+])
         return make_response(
             jsonify(list(res)), 201)
 
