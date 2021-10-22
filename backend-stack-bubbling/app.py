@@ -187,8 +187,9 @@ class VoteAnswer(Resource):
     def post():
         info = VoteAnswerInfo.parse_args()
         identity = get_jwt_identity()
-        currentUser = UserCollection.find_one({
-            "email": identity["email"]
+        currentUser = UserCollection.find_one(
+            {
+                "email": identity["email"]
             })
         voteChange = 0
         questionID = uuid.UUID(info["question_id"])
@@ -200,11 +201,19 @@ class VoteAnswer(Resource):
             else:
                 voteChange -= 1
             UserCollection.update(
-                {"_id" : currentUser["_id"]},
-                {"$push": {"votes": 
-                {"post_id" : answerID,
-                "is_upvote": info["is_upvote"]}
-                }})
+                {
+                    "_id" : currentUser["_id"]
+                },
+                {
+                    "$push": 
+                    {
+                        "votes": 
+                        {
+                            "post_id" : answerID,
+                            "is_upvote": info["is_upvote"]
+                        }
+                    }
+                })
         else:
             for vote in currentUser["votes"]:
                 # Vote on this answer exist
@@ -216,8 +225,18 @@ class VoteAnswer(Resource):
                         else:
                             voteChange += 1
                         UserCollection.update(
-                        {"_id": currentUser["_id"]},
-                        {"$pull" : {"votes": {"post_id": answerID}}})                    
+                        {
+                            "_id": currentUser["_id"]
+                        },
+                        {
+                            "$pull" : 
+                            {
+                                "votes": 
+                                {
+                                    "post_id": answerID
+                                }
+                            }
+                        })                    
                         break
                     # Change vote
                     else:
@@ -226,9 +245,16 @@ class VoteAnswer(Resource):
                         else:
                             voteChange -= 2
                         UserCollection.update(
-                        {"_id": currentUser["_id"],
-                        "votes.post_id": answerID},
-                        {"$set": {"votes.$.is_upvote": info["is_upvote"]}})
+                        {
+                            "_id": currentUser["_id"],
+                            "votes.post_id": answerID
+                        },
+                        {
+                            "$set": 
+                            {
+                                "votes.$.is_upvote": info["is_upvote"]
+                            }
+                        })
                         break
             # No vote on this answer
             if voteChange == 0:
@@ -237,16 +263,31 @@ class VoteAnswer(Resource):
                 else:
                     voteChange -= 1
                 UserCollection.update(
-                    {"_id": currentUser["_id"]},
-                    {"$push": {"votes" : 
-                    {"post_id" : answerID,
-                    "is_upvote": info["is_upvote"]}
-                    }})
+                    {
+                        "_id": currentUser["_id"]
+                    },
+                    {
+                        "$push": 
+                        {
+                            "votes" : 
+                            {
+                                "post_id" : answerID,
+                                "is_upvote": info["is_upvote"]
+                            }
+                        }
+                    })
         # Now change vote count of answer
         QuestionCollection.update(
-            {"_id": questionID,
-            "answers._id": answerID},
-            {"$inc": {"answers.$.vote_count": voteChange}})
+            {
+                "_id": questionID,
+                "answers._id": answerID
+            },
+            {
+                "$inc": 
+                {
+                    "answers.$.vote_count": voteChange
+                }
+            })
         return make_response(jsonify({"message": "So far so good"}), 201)
 
 api.add_resource(Login, '/login')
