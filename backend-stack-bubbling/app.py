@@ -1,5 +1,5 @@
 from flask import Flask, request, make_response, jsonify
-from flask_restful import Api, Resource, reqparse
+from flask_restful import Api, Resource, reqparse, inputs
 from pymongo import MongoClient
 from datetime import timedelta
 from flask_cors import CORS
@@ -46,6 +46,11 @@ PostAnswerInfo = reqparse.RequestParser()
 PostAnswerInfo.add_argument('question_id', help='Question_ID cannot be empty', required=True, type=str)
 PostAnswerInfo.add_argument('body', help='Answer body cannot be empty', required=True, type=str)
 
+VoteAnswerInfo = reqparse.RequestParser()
+VoteAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
+VoteAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
+VoteAnswerInfo.add_argument('is_upvote', help='is_upvote cannot be empty', required=True, type=inputs.boolean)
+
 DB = client["Stack-Bubbling"]
 UserCollection = DB["Users"]
 QuestionCollection = DB["Questions"]
@@ -83,10 +88,8 @@ class Login(Resource):
             "email": data.email,
             "password": data.password
         })
-        print(res)
         # if user_info_email is existing in the database
         if res is not None:
-            print(res)
             # create token
             access_token = create_access_token(identity={"email": data.email})
             return make_response(jsonify(access_token=access_token), 201)
@@ -178,11 +181,80 @@ class ListAnswers(Resource):
                     QuestionCollection.find_one(
                         {"_id": questionID})["answers"])), 201)
 
+class VoteAnswer(Resource):
+    @staticmethod
+    @jwt_required()
+    def post():
+        info = VoteAnswerInfo.parse_args()
+        identity = get_jwt_identity()
+        currentUser = UserCollection.find_one({
+            "email": identity["email"]
+            })
+        voteChange = 0
+        questionID = uuid.UUID(info["question_id"])
+        answerID = uuid.UUID(info["answer_id"])
+        # No Votes at all
+        if "votes" not in currentUser:
+            if info["is_upvote"]:
+                voteChange += 1
+            else:
+                voteChange -= 1
+            UserCollection.update(
+                {"_id" : currentUser["_id"]},
+                {"$push": {"votes": 
+                {"post_id" : answerID,
+                "is_upvote": info["is_upvote"]}
+                }})
+        else:
+            for vote in currentUser["votes"]:
+                # Vote on this answer exist
+                if vote["post_id"] == answerID:
+                    # Cancel vote
+                    if vote["is_upvote"] == info["is_upvote"]:
+                        if info["is_upvote"]:
+                            voteChange -= 1
+                        else:
+                            voteChange += 1
+                        UserCollection.update(
+                        {"_id": currentUser["_id"]},
+                        {"$pull" : {"votes": {"post_id": answerID}}})                    
+                        break
+                    # Change vote
+                    else:
+                        if info["is_upvote"]:
+                            voteChange += 2
+                        else:
+                            voteChange -= 2
+                        UserCollection.update(
+                        {"_id": currentUser["_id"],
+                        "votes.post_id": answerID},
+                        {"$set": {"votes.$.is_upvote": info["is_upvote"]}})
+                        break
+            # No vote on this answer
+            if voteChange == 0:
+                if info["is_upvote"]:
+                    voteChange += 1
+                else:
+                    voteChange -= 1
+                UserCollection.update(
+                    {"_id": currentUser["_id"]},
+                    {"$push": {"votes" : 
+                    {"post_id" : answerID,
+                    "is_upvote": info["is_upvote"]}
+                    }})
+        # Now change vote count of answer
+        QuestionCollection.update(
+            {"_id": questionID,
+            "answers._id": answerID},
+            {"$inc": {"answers.$.vote_count": voteChange}})
+        return make_response(jsonify({"message": "So far so good"}), 201)
+
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(PostAnswer, "/postanswer")
 api.add_resource(PostQuestion, '/postquestion')
 api.add_resource(ListAnswers, '/listanswers')
+api.add_resource(VoteAnswer, '/voteanswer')
 
 if __name__ == "__main__":
     app.debug = True
