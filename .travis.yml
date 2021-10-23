@@ -7,12 +7,17 @@ jobs:
             -   cd frontend-stack-bubbling
             script:
             -   npm install
-            -   npm run build
+            -   CI='' npm run build
         -   language: python
             python: "3.9"
             before_script: 
             -   cd backend-stack-bubbling
             -   pip install flask
+            -   pip install flask_restful
+            -   pip install pymongo
+            -   pip install flask_cors
+            -   pip install flask_jwt_extended
+            -   pip install uuid
             -   set FLASK_APP=app.py
             script:
             -   flask run
