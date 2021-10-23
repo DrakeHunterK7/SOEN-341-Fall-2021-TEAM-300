@@ -18,6 +18,7 @@ jobs:
             -   pip install flask_cors
             -   pip install flask_jwt_extended
             -   pip install uuid
+            -   pip install pymongo[srv]
             -   set FLASK_APP=app.py
             script:
             -   flask run
