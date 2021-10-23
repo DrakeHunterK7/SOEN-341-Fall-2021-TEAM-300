@@ -1,13 +1,21 @@
-os: windows
-
-language: node_js
-
-node_js:
-    - "14"
-    
-before_script: cd frontend-stack-bubbling
-    
-script:
-    - npm install
-    - npm test
-    - npm run build
+jobs:
+    include:
+        -   os: windows
+            language: node_js
+            node_js: "14"
+            before_script: 
+            -   cd frontend-stack-bubbling
+            script:
+            -   npm install
+            -   npm test
+            -   npm run build
+        -   os: windows
+            language: python
+            python: 3.9.7
+            before_script: 
+            -   cd backend-stack-bubbling
+            -   pip install flask
+            -   set FLASK_APP=app.py
+            script:
+            -   flask run
+            
