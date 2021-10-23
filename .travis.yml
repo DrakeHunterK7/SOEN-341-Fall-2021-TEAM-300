@@ -7,9 +7,8 @@ jobs:
             -   cd frontend-stack-bubbling
             script:
             -   npm install
-            -   npm start
-        -   os: windows
-            language: python
+            -   npm run build
+        -   language: python
             python: 3.9.7
             before_script: 
             -   cd backend-stack-bubbling
