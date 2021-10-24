@@ -1,4 +1,3 @@
-
 jobs:
     include:
         -   os: windows
@@ -10,13 +9,12 @@ jobs:
             -   npm install
             -   CI='' npm run build
         -   language: python
-            warning_are_errors: false
             python: "3.9"
             before_script: 
             -   cd backend-stack-bubbling
             -   pip install -r requirements.txt
             -   pip install pymongo[srv]
             script:
-            -   pytest test_app.py
-            -   pytest app.py
+            -   pytest test_app.py --disable-warnings
+            -   pytest app.py --disable-warnings
             
