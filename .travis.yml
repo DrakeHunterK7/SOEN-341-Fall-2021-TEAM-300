@@ -1,3 +1,4 @@
+warning_are_errors: false
 jobs:
     include:
         -   os: windows
@@ -12,14 +13,7 @@ jobs:
             python: "3.9"
             before_script: 
             -   cd backend-stack-bubbling
-            -   pip install flask
-            -   pip install flask_restful
-            -   pip install pymongo
-            -   pip install flask_cors
-            -   pip install flask_jwt_extended
-            -   pip install uuid
-            -   pip install pymongo[srv]
-            -   set FLASK_APP=app.py
+            -   pip intall -r requirements.txt
             script:
             -   pytest test_app.py
             -   pytest app.py
