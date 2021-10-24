@@ -13,7 +13,7 @@ jobs:
             python: "3.9"
             before_script: 
             -   cd backend-stack-bubbling
-            -   pip intall -r requirements.txt
+            -   pip install -r requirements.txt
             script:
             -   pytest test_app.py
             -   pytest app.py
