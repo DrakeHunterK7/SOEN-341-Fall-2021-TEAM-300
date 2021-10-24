@@ -187,6 +187,8 @@ class VoteAnswer(Resource):
     def post():
         info = VoteAnswerInfo.parse_args()
         identity = get_jwt_identity()
+        responseMessage = ""
+        actionTaken = ""
         currentUser = UserCollection.find_one(
             {
                 "email": identity["email"]
@@ -200,6 +202,7 @@ class VoteAnswer(Resource):
                 voteChange += 1
             else:
                 voteChange -= 1
+            actionTaken = "NewVote"
             UserCollection.update(
                 {
                     "_id" : currentUser["_id"]
@@ -224,6 +227,7 @@ class VoteAnswer(Resource):
                             voteChange -= 1
                         else:
                             voteChange += 1
+                        actionTaken = "CancelVote"
                         UserCollection.update(
                         {
                             "_id": currentUser["_id"]
@@ -243,7 +247,8 @@ class VoteAnswer(Resource):
                         if info["is_upvote"]:
                             voteChange += 2
                         else:
-                            voteChange -= 2
+                            voteChange -= 2                            
+                        actionTaken = "ChangeVote"
                         UserCollection.update(
                         {
                             "_id": currentUser["_id"],
@@ -262,6 +267,7 @@ class VoteAnswer(Resource):
                     voteChange += 1
                 else:
                     voteChange -= 1
+                actionTaken = "NewVote"
                 UserCollection.update(
                     {
                         "_id": currentUser["_id"]
@@ -288,7 +294,18 @@ class VoteAnswer(Resource):
                     "answers.$.vote_count": voteChange
                 }
             })
-        return make_response(jsonify({"message": "So far so good"}), 201)
+        if actionTaken == "NewVote":
+            responseMessage = "Upvoted" if info["is_upvote"] else "Downvoted"
+        elif actionTaken == "ChangeVote":
+            responseMessage = "Changed vote to upvote" if info["is_upvote"] else "Changed vote to downvote"
+        else:
+            responseMessage = "Cancelled upvote" if info["is_upvote"] else "Cancelled downvote"
+        return make_response(jsonify(
+            {
+                "message": responseMessage,
+                "actionTaken": actionTaken,
+                "is_upvote": info["is_upvote"]
+            }), 200)
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
