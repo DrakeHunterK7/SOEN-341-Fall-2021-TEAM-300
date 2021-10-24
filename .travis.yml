@@ -15,6 +15,6 @@ jobs:
             -   pip install -r requirements.txt
             -   pip install pymongo[srv]
             script:
-            -   pytest test_app.py --disable-warnings
-            -   pytest app.py --disable-pytest-warnings
+            -   pytest test_app.py -W ignore::DeprecationWarning
+            -   pytest app.py -W ignore::DeprecationWarning
             
