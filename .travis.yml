@@ -16,5 +16,5 @@ jobs:
             -   pip install pymongo[srv]
             script:
             -   pytest test_app.py --disable-warnings
-            -   pytest app.py --disable-warnings
+            -   pytest app.py --disable-pytest-warnings
             
