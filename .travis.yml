@@ -1,4 +1,4 @@
-warning_are_errors: false
+
 jobs:
     include:
         -   os: windows
@@ -10,6 +10,7 @@ jobs:
             -   npm install
             -   CI='' npm run build
         -   language: python
+            warning_are_errors: false
             python: "3.9"
             before_script: 
             -   cd backend-stack-bubbling
