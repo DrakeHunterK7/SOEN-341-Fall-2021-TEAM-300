@@ -21,5 +21,6 @@ jobs:
             -   pip install pymongo[srv]
             -   set FLASK_APP=app.py
             script:
-            -   CI='' pytest test_app.py
+            -   pytest test_app.py
+            -   pytest app.py
             
