@@ -9,7 +9,7 @@ jobs:
             -   npm install
             -   CI='' npm run build
         -   language: python
-            python: "3.10"
+            python: "3.9"
             before_script: 
             -   cd backend-stack-bubbling
             -   pip install -r requirements.txt
