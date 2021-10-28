@@ -133,6 +133,34 @@ class PostAnswer(Resource):
             {"_id": question_id},
             {"$push": {"answers": newAnswer}})
         return make_response(jsonify({"message": "The Answer posted successfully"}), 201)
+class QuestionList(Resource):	
+    @staticmethod
+    def get():
+	# get 100 questions
+        res = QuestionCollection.aggregate([
+    {'$lookup': {
+            'from': 'Users', 
+            'localField': 'user_id', 
+            'foreignField': '_id', 
+            'as': 'name'}},
+    #{'$unwind':'$name'},
+    {'$sort': {'createdAt':-1}},
+	{'$limit' : 100},
+	#{"$project": {'Username': { "$ifNull": ["$name.username", "deleted user"]}, 'title':'$title', 'body':'$body'}}
+	{"$project": {
+		'Username': {
+			"$cond": {
+				"if": {
+					"$anyElementTrue": ["$name.username"]},
+					"then": "$name.username",
+					"else": ["deleted user"]}},
+		'title':'$title',
+		'body':'$body',
+		'createdAt': '$createdAt',
+		'vote_count': '$vote_count',
+		'_id': '$_id'}}])
+        return make_response(
+            jsonify(list(res)), 201)
 
 
 class PostQuestion(Resource):
@@ -181,6 +209,7 @@ class ListAnswers(Resource):
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(PostAnswer, "/postanswer")
+api.add_resource(QuestionList, '/questionlist')
 api.add_resource(PostQuestion, '/postquestion')
 api.add_resource(ListAnswers, '/listanswers')
 
