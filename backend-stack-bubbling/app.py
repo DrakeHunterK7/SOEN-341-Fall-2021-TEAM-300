@@ -155,7 +155,10 @@ class QuestionList(Resource):
 					"then": "$name.username",
 					"else": ["deleted user"]}},
 		'title':'$title',
-		'body':'$body'}}])
+		'body':'$body',
+		'createdAt': '$createdAt',
+		'vote_count': '$vote_count',
+		'_id': '$_id'}}])
         return make_response(
             jsonify(list(res)), 201)
 
