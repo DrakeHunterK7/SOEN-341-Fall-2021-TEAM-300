@@ -146,8 +146,16 @@ class QuestionList(Resource):
     #{'$unwind':'$name'},
     {'$sort': {'createdAt':-1}},
 	{'$limit' : 100},
-    {"$project": {'Username': '$name', 'title':'$title', 'body':'$body'}}
-])
+	#{"$project": {'Username': { "$ifNull": ["$name.username", "deleted user"]}, 'title':'$title', 'body':'$body'}}
+	{"$project": {
+		'Username': {
+			"$cond": {
+				"if": {
+					"$anyElementTrue": ["$name.username"]},
+					"then": "$name.username",
+					"else": ["deleted user"]}},
+		'title':'$title',
+		'body':'$body'}}])
         return make_response(
             jsonify(list(res)), 201)
 
