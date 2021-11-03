@@ -38,8 +38,8 @@ LoginInfo.add_argument('password', help='Password cannot be blank', required=Tru
 
 # Post Question Info
 PostQuestionInfo = reqparse.RequestParser()
-PostQuestionInfo.add_argument('title', help='question title cannot be empty', required=True, type=str)
-PostQuestionInfo.add_argument('body', help='question body cannot be empty', required=True, type=str)
+PostQuestionInfo.add_argument('questiontitle', help='question title cannot be empty', required=True, type=str)
+PostQuestionInfo.add_argument('questiontext', help='question body cannot be empty', required=True, type=str)
 
 # Post Answer Info
 PostAnswerInfo = reqparse.RequestParser()
@@ -133,6 +133,7 @@ class PostAnswer(Resource):
             {"_id": question_id},
             {"$push": {"answers": newAnswer}})
         return make_response(jsonify({"message": "The Answer posted successfully"}), 201)
+
 class QuestionList(Resource):	
     @staticmethod
     def get():
@@ -181,8 +182,8 @@ class PostQuestion(Resource):
         newQuestion = {
             "_id": uuid.uuid1(),
             "user_id": currentUser["_id"],
-            "title": info["title"],
-            "body": info["body"],
+            "title": info["questiontitle"],
+            "body": info["questiontext"],
             "createdAt": datetime.datetime.today(),
             "vote_count": 0,
             "answers": []
