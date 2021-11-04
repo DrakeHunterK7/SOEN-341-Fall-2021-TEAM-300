@@ -30,7 +30,11 @@ export default class PostQuestion extends Component {
     });
   }
 
+ 
   handleSubmit(e) {
+    
+    const token = localStorage.getItem("access_token");
+    
     e.preventDefault();
     const { questiontitle, questiontext } = this.state;
     axios
@@ -39,7 +43,7 @@ export default class PostQuestion extends Component {
         body: questiontext,
       }, {
         headers: {
-          'Authorization' : 'Bearer SuperSecuredSecretKey'
+          'Authorization' : 'Bearer ' + token
         }})
       .then((response) => {
         const res = response.status;
@@ -56,7 +60,8 @@ export default class PostQuestion extends Component {
           this.setState({
             postMsg: response.data.message,
           })
-          this.props.history.push("/postquestion")
+          
+          this.props.history.push("/home/postquestion")
         }
         console.log("------", this.state.postMsg);
         this.setState({
@@ -65,7 +70,7 @@ export default class PostQuestion extends Component {
       })
       // clean the form
     this.setState({
-      questiontitle : "D",
+      questiontitle : "",
       questiontext : "",
     });
   }
@@ -80,7 +85,6 @@ export default class PostQuestion extends Component {
           isSuccess={this.state.isSuccess}
         >
           {this.state.postMsg}
-          The Question has been posted.
         </Popup>
         <form onSubmit={this.handleSubmit}>
           <div>

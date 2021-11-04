@@ -46,10 +46,18 @@ export default class Login extends Component {
         console.log(response)
         const res = response.status;
         if (res === 200) {
-          localStorage.setItem("access_token", response.data.access_token);
-          
+          localStorage.setItem("access_token", JSON.stringify(response.data.access_token));
           this.setState({
             loginMsg:response.data.message
+          })
+          this.props.history.push("/home")
+          console.log("---------", localStorage.getItem("access_token"));
+        }
+        else if(res === 201){
+          localStorage.setItem("access_token", response.data.access_token);
+          this.setState({
+            loginMsg:response.data.message,
+            isSuccess:true
           })
           this.props.history.push("/home")
           console.log("---------", localStorage.getItem("access_token"));
@@ -70,6 +78,7 @@ export default class Login extends Component {
         password:'',
       });
       console.log("-----",this.state)
+      //this.props.history.push("/home")
   }
 
   render() {

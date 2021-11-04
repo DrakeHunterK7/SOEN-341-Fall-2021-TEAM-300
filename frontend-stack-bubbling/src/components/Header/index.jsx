@@ -34,26 +34,27 @@ export default class Header extends Component {
         <div className="container-fluid Header">
           <div className="outer-container">
             {this.state.isLoginUser ? (
-              <div >
+              <div className="HeaderInnerContainer">
                 <ul className="navbar-nav">
-                  <li className="nav-item">
-                    <MyNavLink replace to="/home">
-                      Home
-                    </MyNavLink>
+                  <li >
+                    <img className="HeaderLogo" src={MainLogo} width="200"/>
                   </li>
-                  <li className="nav-item">
-                    <MyNavLink replace to="/userProfile">
-                      UserProfile
-                    </MyNavLink>
+                  <li className="tab">
+                  <MyNavLink replace to="/home" className="link">
+                    Home
+                  </MyNavLink>
+                  </li>
+                  <li className="tab">
+                  <MyNavLink  replace to="" className="link">
+                    User Profile
+                  </MyNavLink>
+                  </li>
+                  <li className="tab">
+                  <MyNavLink  replace to="" onClick={this.handleLogout} className="link">
+                    Log Out
+                  </MyNavLink>
                   </li>
                 </ul>
-                <button
-                  class="btn btn-outline-success me-2 logout-btn"
-                  type="button"
-                  onClick={this.handleLogout}
-                >
-                  Logout
-                </button>
               </div>
             ) : (
               <ul className="navbar-nav">
@@ -78,6 +79,7 @@ export default class Header extends Component {
 
               </ul>
             )}
+           
           </div>
         </div>
       </nav>
