@@ -14,7 +14,7 @@ CORS(app)
 
 # JWT
 app.config["JWT_SECRET_KEY"] = "SuperSecuredSecretKey"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1000)
 # app.config["JWT_REFRESH_TOKEN_EXPIRES"] = datetime.datetime.utcnow() + datetime.timedelta(days=24)
 jwt = JWTManager(app)
 # RestFul
@@ -38,8 +38,8 @@ LoginInfo.add_argument('password', help='Password cannot be blank', required=Tru
 
 # Post Question Info
 PostQuestionInfo = reqparse.RequestParser()
-PostQuestionInfo.add_argument('questiontitle', help='question title cannot be empty', required=True, type=str)
-PostQuestionInfo.add_argument('questiontext', help='question body cannot be empty', required=True, type=str)
+PostQuestionInfo.add_argument('title', help='question title cannot be empty', required=True, type=str)
+PostQuestionInfo.add_argument('body', help='question body cannot be empty', required=True, type=str)
 
 # Post Answer Info
 PostAnswerInfo = reqparse.RequestParser()
@@ -163,7 +163,6 @@ class QuestionList(Resource):
         return make_response(
             jsonify(list(res)), 201)
 
-
 class PostQuestion(Resource):
     # This decorator is needed when we need to check the identity of the user
     # When using this decorator, the request must have a header["Authorization"] with value "Bearer [jwt_token]"
@@ -182,8 +181,8 @@ class PostQuestion(Resource):
         newQuestion = {
             "_id": uuid.uuid1(),
             "user_id": currentUser["_id"],
-            "title": info["questiontitle"],
-            "body": info["questiontext"],
+            "title": info["title"],
+            "body": info["body"],
             "createdAt": datetime.datetime.today(),
             "vote_count": 0,
             "answers": []

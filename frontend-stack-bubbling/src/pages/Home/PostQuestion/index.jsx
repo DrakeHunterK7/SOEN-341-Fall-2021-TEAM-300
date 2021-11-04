@@ -35,9 +35,12 @@ export default class PostQuestion extends Component {
     const { questiontitle, questiontext } = this.state;
     axios
       .post("http://localhost:5000/postquestion", {
-        questiontitle: questiontitle,
-        questiontext: questiontext,
-      })
+        title: questiontitle,
+        body: questiontext,
+      }, {
+        headers: {
+          'Authorization' : 'Bearer SuperSecuredSecretKey'
+        }})
       .then((response) => {
         const res = response.status;
         if(res === 401)
@@ -62,7 +65,7 @@ export default class PostQuestion extends Component {
       })
       // clean the form
     this.setState({
-      questiontitle : "Reached the clear",
+      questiontitle : "D",
       questiontext : "",
     });
   }
