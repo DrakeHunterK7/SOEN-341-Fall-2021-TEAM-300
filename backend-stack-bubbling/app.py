@@ -83,10 +83,10 @@ class Login(Resource):
             "email": data.email,
             "password": data.password
         })
-        print(res)
+        # print(res)
         # if user_info_email is existing in the database
         if res is not None:
-            print(res)
+            # print(res)
             # create token
             access_token = create_access_token(identity={"email": data.email})
             return make_response(jsonify(access_token=access_token), 201)

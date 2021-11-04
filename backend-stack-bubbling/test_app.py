@@ -7,8 +7,9 @@ from app import app
 from mockupdb import MockupDB, go, Command
 from pymongo import MongoClient
 from json import dumps
+import json
 import pytest
-
+from flask import jsonify
 
 
 class Api_TestCase(unittest.TestCase):
@@ -35,7 +36,7 @@ class Api_TestCase(unittest.TestCase):
 		}
 	def userJoeAccessToken(self):
 		response = self.app.post('/login', json=self.userJoeLoginData())
-		return response.data
+		return json.loads(response.data)["access_token"]
 
 	
 	@pytest.mark.run(order=1)
@@ -52,7 +53,6 @@ class Api_TestCase(unittest.TestCase):
 	def test_GivenAnyUser_WhenRequestForAnswerListForAQuestion_ThenStatusCodeShouldBe201(self):
 		response = self.app.get('/listanswers?question_id=6c0f5f38-3609-11ec-9cae-f4066954d05c')
 		assert(response.status_code == 201)
-		print(self.userJoeAccessToken())
 
 	@pytest.mark.run(order=4)
 	def test_GivenARegisteredUser_WhenHeLoginWithValidInfo_ThenStatusCodeShouldBe201(self):
