@@ -102,6 +102,7 @@ export default class PostQuestion extends Component {
             />
             
           </div>
+          <br />
           <div>
           <label className = "questiontitle" for="questiontext">Question Text</label>
           <br/>
