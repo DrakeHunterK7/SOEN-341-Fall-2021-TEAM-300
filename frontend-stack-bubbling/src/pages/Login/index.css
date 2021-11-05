@@ -16,10 +16,11 @@ body {
     margin-top: 20px;
     margin-bottom: 20px;
     text-align: center;
+    border: solid 2px black;
     color: rgb(0, 0, 0);
     border-radius: 15px;
     background-color: #007da9;
-    
+    padding-bottom: 5px;
 }
 
 .button-position{
@@ -59,9 +60,10 @@ a.bottomlink:hover {
     font-size: 25px; 
     color: rgb(0, 0, 0);
     border-radius: 15px;
+    border: solid 2px black;
     background-color: #00b3ff;
     text-align: center;
-   
+    
     
 }
 .questionbox{

@@ -14,7 +14,7 @@ CORS(app)
 
 # JWT
 app.config["JWT_SECRET_KEY"] = "SuperSecuredSecretKey"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1000)
 # app.config["JWT_REFRESH_TOKEN_EXPIRES"] = datetime.datetime.utcnow() + datetime.timedelta(days=24)
 jwt = JWTManager(app)
 # RestFul
@@ -133,6 +133,7 @@ class PostAnswer(Resource):
             {"_id": question_id},
             {"$push": {"answers": newAnswer}})
         return make_response(jsonify({"message": "The Answer posted successfully"}), 201)
+
 class QuestionList(Resource):	
     @staticmethod
     def get():
@@ -161,7 +162,6 @@ class QuestionList(Resource):
 		'_id': '$_id'}}])
         return make_response(
             jsonify(list(res)), 201)
-
 
 class PostQuestion(Resource):
     # This decorator is needed when we need to check the identity of the user

@@ -37,8 +37,19 @@ a.link:hover {
     
 }
 
-.logout-btn{
+.userdisplay {
     float: right;
+    color: white;
+}
+
+.logout {
+    display: inline-block;
+    align-content: center;
+}
+
+.HeaderInnerContainer {
+    width: 100%;
+    
 }
 
 @media (max-width:1000px){
