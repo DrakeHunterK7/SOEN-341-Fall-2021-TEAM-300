@@ -7,6 +7,7 @@ export default class Header extends Component {
     super();
     this.state = {
       isLoginUser: false,
+      username: localStorage.getItem("username")
     };
     this.handleLogout = this.handleLogout.bind(this);
   }
@@ -29,12 +30,21 @@ export default class Header extends Component {
   }
 
   render() {
+    let displaytext = 'Welcome, ' + this.state.username;
+    let usernamedisplay;
+    if (this.state.isLoginUser)
+      {
+        usernamedisplay = <span className="userdisplay">
+                    <h3>{displaytext}</h3>
+                  </span>
+      }
+
     return (
       <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container-fluid Header">
           <div className="outer-container">
             {this.state.isLoginUser ? (
-              <div className="HeaderInnerContainer">
+              <span className="HeaderInnerContainer">
                 <ul className="navbar-nav">
                   <li >
                     <img className="HeaderLogo" src={MainLogo} width="200"/>
@@ -55,32 +65,35 @@ export default class Header extends Component {
                   </MyNavLink>
                   </li>
                 </ul>
-              </div>
+              </span>
             ) : (
-              <ul className="navbar-nav">
-                <li >
-                  <img className="HeaderLogo" src={MainLogo} width="200"/>
-                </li>
-                <li className="tab">
-                  <MyNavLink replace to="/home" className="link">
-                    Home
-                  </MyNavLink>
-                </li>
-                <li className="tab">
-                  <MyNavLink  replace to="/login" className="link">
-                    Login
-                  </MyNavLink>
-                </li>
-                <li className="tab">
-                  <MyNavLink replace to="/register" className="link">
-                    Register
-                  </MyNavLink>
-                </li>
-
-              </ul>
+              <span>
+                <ul className="navbar-nav">
+                  <li >
+                   <img className="HeaderLogo" src={MainLogo} width="200"/>
+                  </li>
+                  <li className="tab">
+                    <MyNavLink replace to="/home" className="link">
+                      Home
+                    </MyNavLink>
+                  </li>
+                  <li className="tab">
+                    <MyNavLink  replace to="/login" className="link">
+                     Login
+                    </MyNavLink>
+                  </li>
+                  <li className="tab">
+                    <MyNavLink replace to="/register" className="link">
+                     Register
+                    </MyNavLink>
+                  </li>
+                </ul>
+              </span>
+              
             )}
-           
+            
           </div>
+          {usernamedisplay}
         </div>
       </nav>
     );

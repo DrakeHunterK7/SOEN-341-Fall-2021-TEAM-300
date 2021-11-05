@@ -37,6 +37,11 @@ a.link:hover {
     
 }
 
+.userdisplay {
+    float: right;
+    color: white;
+}
+
 .logout {
     display: inline-block;
     align-content: center;
