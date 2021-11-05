@@ -21,7 +21,7 @@ jwt = JWTManager(app)
 api = Api(app)
 
 # connect with DB
-connectionString = "mongodb+srv://SOEN341T300:Soen_341_T_300@cluster0.qvzq2.mongodb.net/test?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE"
+connectionString = "mongodb+srv://SOEN341T300:Soen_341_T_300@cluster0.qvzq2.mongodb.net/test?retryWrites=true&w=majority&ssl=true&tlsAllowInvalidCertificates=true"
 client = MongoClient(connectionString)
 
 # Register Info
@@ -83,10 +83,10 @@ class Login(Resource):
             "email": data.email,
             "password": data.password
         })
-        print(res)
+        # print(res)
         # if user_info_email is existing in the database
         if res is not None:
-            print(res)
+            # print(res)
             # create token
             access_token = create_access_token(identity={"email": data.email})
             return make_response(jsonify(access_token=access_token), 201)
