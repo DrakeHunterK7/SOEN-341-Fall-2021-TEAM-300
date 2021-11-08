@@ -17,9 +17,10 @@
         background-size: 1em 1em;
         background-color: #000000;
         opacity: 1;
-
+    border: solid 2px rgb(255, 115, 0);
     cursor: pointer;
 }
+
 
 .preview-username-holder {
     display:inline-block;
