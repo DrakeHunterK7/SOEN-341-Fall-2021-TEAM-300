@@ -55,7 +55,7 @@ export default class Login extends Component {
         }
         else if(res === 201){
           localStorage.setItem("access_token", response.data.access_token)
-          localStorage.setItem("username", 'User!')
+          localStorage.setItem("username", response.data.username)
           this.setState({
             loginMsg:response.data.message,
             isSuccess:true

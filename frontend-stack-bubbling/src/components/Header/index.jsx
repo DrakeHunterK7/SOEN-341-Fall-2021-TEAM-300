@@ -30,7 +30,7 @@ export default class Header extends Component {
   }
 
   render() {
-    let displaytext = 'Welcome, ' + this.state.username;
+    let displaytext = 'Welcome, ' + this.state.username + '!';
     let usernamedisplay;
     if (this.state.isLoginUser)
       {

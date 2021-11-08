@@ -17,6 +17,8 @@
         background-size: 1em 1em;
         background-color: #000000;
         opacity: 1;
+
+    cursor: pointer;
 }
 
 .preview-username-holder {
@@ -50,4 +52,18 @@
     border-radius: 10px;
     padding: 5px;
     border: solid 2px black;
+}
+
+.date-time {
+    
+    color: rgb(170, 170, 170);
+    float: right;
+    width: auto;
+    background: #00396e;
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 4px;
+    border: solid 2px black;
+    margin-top: 20px;
 }
