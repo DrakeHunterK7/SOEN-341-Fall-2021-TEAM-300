@@ -61,7 +61,7 @@ export default class PostQuestion extends Component {
             postMsg: response.data.message,
           })
           
-          this.props.history.push("/home/postquestion")
+          this.props.history.push("/home/questionlist")
         }
         console.log("------", this.state.postMsg);
         this.setState({

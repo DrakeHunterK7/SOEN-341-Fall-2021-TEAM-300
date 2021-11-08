@@ -89,7 +89,11 @@ class Login(Resource):
             # print(res)
             # create token
             access_token = create_access_token(identity={"email": data.email})
-            return make_response(jsonify(access_token=access_token), 201)
+            result = {
+                "access_token": access_token,
+                "username": res["username"]
+            }
+            return make_response(jsonify(result), 201)
         else:
             return make_response(jsonify({
                 "message": "the email or password is invalid"
@@ -122,6 +126,7 @@ class PostAnswer(Resource):
             return make_response(jsonify({"message": "The Question identity is invalid"}), 401)
         newAnswer = {
             "_id": uuid.uuid1(),
+            "username":currentUser["username"],
             "user_id": currentUser["_id"],
             "body": info["body"],
             "createdAt": datetime.datetime.today(),
@@ -180,6 +185,7 @@ class PostQuestion(Resource):
             return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
         newQuestion = {
             "_id": uuid.uuid1(),
+            "username": currentUser["username"],
             "user_id": currentUser["_id"],
             "title": info["title"],
             "body": info["body"],
