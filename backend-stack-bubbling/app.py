@@ -14,14 +14,14 @@ CORS(app)
 
 # JWT
 app.config["JWT_SECRET_KEY"] = "SuperSecuredSecretKey"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1000)
 # app.config["JWT_REFRESH_TOKEN_EXPIRES"] = datetime.datetime.utcnow() + datetime.timedelta(days=24)
 jwt = JWTManager(app)
 # RestFul
 api = Api(app)
 
 # connect with DB
-connectionString = "mongodb+srv://SOEN341T300:Soen_341_T_300@cluster0.qvzq2.mongodb.net/test?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE"
+connectionString = "mongodb+srv://SOEN341T300:Soen_341_T_300@cluster0.qvzq2.mongodb.net/test?retryWrites=true&w=majority&ssl=true&tlsAllowInvalidCertificates=true"
 client = MongoClient(connectionString)
 
 # Register Info
@@ -83,13 +83,17 @@ class Login(Resource):
             "email": data.email,
             "password": data.password
         })
-        print(res)
+        # print(res)
         # if user_info_email is existing in the database
         if res is not None:
-            print(res)
+            # print(res)
             # create token
             access_token = create_access_token(identity={"email": data.email})
-            return make_response(jsonify(access_token=access_token), 201)
+            result = {
+                "access_token": access_token,
+                "username": res["username"]
+            }
+            return make_response(jsonify(result), 201)
         else:
             return make_response(jsonify({
                 "message": "the email or password is invalid"
@@ -122,6 +126,7 @@ class PostAnswer(Resource):
             return make_response(jsonify({"message": "The Question identity is invalid"}), 401)
         newAnswer = {
             "_id": uuid.uuid1(),
+            "username":currentUser["username"],
             "user_id": currentUser["_id"],
             "body": info["body"],
             "createdAt": datetime.datetime.today(),
@@ -133,6 +138,7 @@ class PostAnswer(Resource):
             {"_id": question_id},
             {"$push": {"answers": newAnswer}})
         return make_response(jsonify({"message": "The Answer posted successfully"}), 201)
+
 class QuestionList(Resource):	
     @staticmethod
     def get():
@@ -162,7 +168,6 @@ class QuestionList(Resource):
         return make_response(
             jsonify(list(res)), 201)
 
-
 class PostQuestion(Resource):
     # This decorator is needed when we need to check the identity of the user
     # When using this decorator, the request must have a header["Authorization"] with value "Bearer [jwt_token]"
@@ -180,6 +185,7 @@ class PostQuestion(Resource):
             return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
         newQuestion = {
             "_id": uuid.uuid1(),
+            "username": currentUser["username"],
             "user_id": currentUser["_id"],
             "title": info["title"],
             "body": info["body"],
