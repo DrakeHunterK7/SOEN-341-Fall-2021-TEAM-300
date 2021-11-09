@@ -26,8 +26,8 @@ export default class Header extends Component {
     if (localStorage.getItem("access_token") == null) {
       console.log("yes the access token is removed");
     }
-    //window.location.reload()
-    this.props.history.push("/home");
+    window.location.reload(true)
+    
   }
 
   render() {

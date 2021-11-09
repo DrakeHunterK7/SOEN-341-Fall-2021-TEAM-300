@@ -13,17 +13,25 @@ var newAnswer;
 
 export default class QuestionTemplatePage extends Component {
 	constructor(props) {
-		super();
+		super(props);
 		this.state = {
 		  questiontitle: "",
 		  questiontext: "",
 		  qUsername:"",
 		  qID: "",
 		  newAnswer: "",
+		  AnswersLoaded: false,
+		  AList: [],
 		};
 
 		this.handleSubmit = this.handleSubmit.bind(this);
     	this.handleChange = this.handleChange.bind(this);
+	  }
+
+	  componentDidMount()
+	  {
+		console.log('template page just mounted')
+		this.fetchAnswers();
 	  }
 
 	  handleChange(e) {
@@ -60,19 +68,21 @@ export default class QuestionTemplatePage extends Component {
 			  this.setState({
 				
 			  })
-			  
+			  window.location.reload(true);
 			}
-			else if(res === 203){
-			  this.setState({
-				
-			  })
+			else if(res === 204){
+			  
 			}
 			this.setState({
 			  
 			});
 		  })
 		  .catch(function(error){
-			console.log(error.response.data);
+			
+				if(error.response.status === 500)
+				{
+				alert('You can only post answers if you are logged in!')
+				}
 		  })
 		  // clean the form
 		  this.setState({
@@ -81,11 +91,59 @@ export default class QuestionTemplatePage extends Component {
 		  console.log("-----",this.state)
 		  
 	  }
+
+	  fetchAnswers(){
+
+		const { state } = this.props.location;
+		qID = state.qID;
+		console.log('qID is V');
+		console.log(qID);
+
+		axios
+		.get("http://localhost:5000/listanswers", {
+			params: {
+				question_id: qID
+			}
+		})
+		.then((response) => {
+		  const stat = response.status
+		  console.log(response.data)
+		  if(stat === 201)
+		  {
+			this.setState({
+			  AList: response.data,
+			  
+			})
+			if(this.state.AList.length > 0)
+			{
+				this.setState({
+					AnswersLoaded: true,
+					
+				  })
+
+			}
+		  }
+		  
+		  console.log(this.state.QuestionsLoaded)
+		  
+		  }
+		)
+		.catch(error => console.log(error))
+	  }
 	
 	
 	  
 	render() {
 		const { state } = this.props.location
+
+		const noAnswerStyle = {
+			backgroundColor: 'white',
+			borderRadius: "5px",
+			textDecoration: "none",
+			padding:"5px",
+			display: "inline-block",
+			border: "solid 2px black",
+		}
 		
 		return (
 			<div>
@@ -96,6 +154,16 @@ export default class QuestionTemplatePage extends Component {
 				questiontext= {state.text}
 				creationTD={state.creationDateAndTime}
 				/>
+
+				{this.state.AnswersLoaded
+      			? (
+          			this.state.AList.map((answer) => <AnswerBox
+              			username={answer.username}
+              			questiontext={answer.body}
+						creationDateAndTime={answer.createdAt}
+            	/>)
+      )
+      : <p style={noAnswerStyle}>No answers posted yet. Be the first to answer!</p>}
 
 				
 					
