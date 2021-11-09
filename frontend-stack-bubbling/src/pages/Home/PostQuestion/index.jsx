@@ -68,6 +68,13 @@ export default class PostQuestion extends Component {
           tigger: true,
         });
       })
+      .catch(function(error){
+			
+				if(error.response.status === 500)
+				{
+				alert('You can only post questions if you are logged in!')
+				}
+		  })
       // clean the form
     this.setState({
       questiontitle : "",
