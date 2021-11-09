@@ -4,6 +4,8 @@ import "./index.css";
 var title;
 var text;
 var username;
+var qID;
+var creationDateAndTime;
 
 
 export default class QuestionPreviewTemplate extends Component {
@@ -13,6 +15,8 @@ export default class QuestionPreviewTemplate extends Component {
     username = props.username;
     title = props.title;
     text = props.text;
+    qID = props.qID;
+    creationDateAndTime = props.creationDateAndTime;
   }
 
   render() {
@@ -30,6 +34,10 @@ export default class QuestionPreviewTemplate extends Component {
                
                 <div className="preview-question-text">
                   <h5>{text}</h5>
+                </div>
+
+                <div className="date-time">
+                  <h5>{"Posted on: " + creationDateAndTime}</h5>
                 </div>
           </div>
         </div>

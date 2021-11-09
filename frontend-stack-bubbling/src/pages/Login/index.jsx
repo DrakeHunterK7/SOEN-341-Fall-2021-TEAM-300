@@ -47,12 +47,22 @@ export default class Login extends Component {
         const res = response.status;
         if (res === 200) {
           localStorage.setItem("access_token", response.data.access_token);
-          
           this.setState({
             loginMsg:response.data.message
           })
           this.props.history.push("/home")
           console.log("---------", localStorage.getItem("access_token"));
+        }
+        else if(res === 201){
+          localStorage.setItem("access_token", response.data.access_token)
+          localStorage.setItem("username", response.data.username)
+          this.setState({
+            loginMsg:response.data.message,
+            isSuccess:true
+          })
+          this.props.history.push("/home")
+          console.log("---------", localStorage.getItem("access_token"));
+          console.log("---------", localStorage.getItem("username"));
         }
         else if(res === 203){
           this.setState({
@@ -70,6 +80,7 @@ export default class Login extends Component {
         password:'',
       });
       console.log("-----",this.state)
+      //this.props.history.push("/home")
   }
 
   render() {
