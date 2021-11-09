@@ -64,6 +64,11 @@ class Api_TestCase(unittest.TestCase):
 		response = self.app.get("/listmyquestions", headers={"Authorization": self.userJoeAccessToken()})
 		assert(response.status_code == 201)
 
+	@pytest.mark.run(order=6)
+	def test_GivenAnUserNotLoggined_WhenHeRequestToSeeHisQuestion_ThenStatusCodeShouldBe401(self):
+		response = self.app.get("/listmyquestions")
+		assert(response.status_code == 401)
+
 
 	# @pytest.mark.run(order=5)
 	# def test_getQuestions(self):
