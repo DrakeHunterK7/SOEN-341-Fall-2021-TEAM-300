@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import Header from "../../components/Header/";
 import QuestionBox from "../../components/QuestionBox/";
 import AnswerBox from "../../components/AnswerBox";
+import axios from "axios"
 import "./index.css";
 
 var questiontitle;
 var questiontext;
 var qUsername;
 var qID;
+var newAnswer;
 
 export default class QuestionTemplatePage extends Component {
 	constructor(props) {
@@ -17,18 +19,74 @@ export default class QuestionTemplatePage extends Component {
 		  questiontext: "",
 		  qUsername:"",
 		  qID: "",
+		  newAnswer: "",
 		};
 
+		this.handleSubmit = this.handleSubmit.bind(this);
+    	this.handleChange = this.handleChange.bind(this);
+	  }
+
+	  handleChange(e) {
+		this.setState({
+		  [e.target.name]: e.target.value,
+		});
 	  }
 	
+	  handleSubmit(e) {
+		e.preventDefault();
+		const { newAnswer} = this.state;
+		const { state } = this.props.location;
+		qID = state.qID;
+
+		const token = localStorage.getItem("access_token");
+
+		console.log(token);
+		
+		axios
+		  .post("http://localhost:5000/postanswer", {
+			question_id: qID,
+			body: newAnswer,
+		  }, {
+			headers: {
+			  'Authorization' : 'Bearer ' + token
+			}})
+		  .then((response) => {
+			console.log(response)
+			const res = response.status;
+			if (res === 200) {
+			  
+			}
+			else if(res === 201){
+			  this.setState({
+				
+			  })
+			  
+			}
+			else if(res === 203){
+			  this.setState({
+				
+			  })
+			}
+			this.setState({
+			  
+			});
+		  })
+		  .catch(function(error){
+			console.log(error.response.data);
+		  })
+		  // clean the form
+		  this.setState({
+			newAnswer:'',
+		  });
+		  console.log("-----",this.state)
+		  
+	  }
 	
 	
 	  
 	render() {
 		const { state } = this.props.location
-		console.log('here comes the state!')
-		console.log(state)
-		console.log(state.username)
+		
 		return (
 			<div>
 				<Header />
@@ -49,9 +107,9 @@ export default class QuestionTemplatePage extends Component {
                 		</div>
             			<textarea
               			className = "post-answer-textbox" 
-              			type="questiontitle"
-              			name="questiontitle"
-              			value={this.state.questiontitle}
+              			type="newAnswer"
+              			name="newAnswer"
+              			value={this.state.newAnswer}
               			onChange={this.handleChange}
         
               			
