@@ -50,7 +50,7 @@ export default class Header extends Component {
                     <img className="HeaderLogo" src={MainLogo} width="200"/>
                   </li>
                   <li className="tab">
-                  <MyNavLink replace to="/home" className="link">
+                  <MyNavLink replace to="/home" className="link" re>
                     Home
                   </MyNavLink>
                   </li>

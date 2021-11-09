@@ -4,6 +4,10 @@ import QuestionBox from "../../components/QuestionBox/";
 import AnswerBox from "../../components/AnswerBox";
 import "./index.css";
 
+var questiontitle;
+var questiontext;
+var qUsername;
+var qID;
 
 export default class QuestionTemplatePage extends Component {
 	constructor(props) {
@@ -11,43 +15,29 @@ export default class QuestionTemplatePage extends Component {
 		this.state = {
 		  questiontitle: "",
 		  questiontext: "",
-		  tigger:false,
-		  isSuccess:true
+		  qUsername:"",
+		  qID: "",
 		};
-	
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleChange = this.handleChange.bind(this);
-		this.setTiggerAlertBox = this.setTiggerAlertBox.bind(this);
+
 	  }
 	
-	  setTiggerAlertBox(value){
-		this.setState({
-		  tigger: value,
-		});
-	  }
 	
-	  handleChange(e) {
-		this.setState({
-		  [e.target.name]: e.target.value,
-		});
-	  }
 	
-	  handleSubmit(e) {
-		e.preventDefault();
-		const { questiontitle, questiontext } = this.state;
-		
-		
-	  }
+	  
 	render() {
+		const { state } = this.props.location
+		console.log('here comes the state!')
+		console.log(state)
+		console.log(state.username)
 		return (
 			<div>
 				<Header />
-				<QuestionBox />
-				
-				<AnswerBox />
-				<AnswerBox />
-				<AnswerBox />
-				<AnswerBox />
+				<QuestionBox 
+				username={state.username} 
+				questiontitle = {state.title}
+				questiontext= {state.text}
+				creationTD={state.creationDateAndTime}
+				/>
 
 				
 					
