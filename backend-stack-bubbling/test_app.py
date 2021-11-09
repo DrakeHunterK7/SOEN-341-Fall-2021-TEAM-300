@@ -36,7 +36,7 @@ class Api_TestCase(unittest.TestCase):
 		}
 	def userJoeAccessToken(self):
 		response = self.app.post('/login', json=self.userJoeLoginData())
-		return json.loads(response.data)["access_token"]
+		return "Bearer " + json.loads(response.data)["access_token"]
 
 	
 	@pytest.mark.run(order=1)
@@ -57,6 +57,11 @@ class Api_TestCase(unittest.TestCase):
 	@pytest.mark.run(order=4)
 	def test_GivenARegisteredUser_WhenHeLoginWithValidInfo_ThenStatusCodeShouldBe201(self):
 		response = self.app.post('/login', json=self.userJoeLoginData())
+		assert(response.status_code == 201)
+
+	@pytest.mark.run(order=5)
+	def test_GivenUserJoeAlreadyPostedAQuestion_WhenHeRequestToSeeHisQuestion_ThenStatusCodeShouldBe201(self):
+		response = self.app.get("/listmyquestions", headers={"Authorization": self.userJoeAccessToken()})
 		assert(response.status_code == 201)
 
 
