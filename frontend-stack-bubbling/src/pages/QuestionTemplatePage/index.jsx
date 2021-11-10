@@ -36,7 +36,7 @@ export default class QuestionTemplatePage extends Component {
 
 	  handleChange(e) {
 		this.setState({
-		  [e.target.name]: e.target.value,
+		  [e.target.name]: '1111',
 		});
 	  }
 	
@@ -124,8 +124,7 @@ export default class QuestionTemplatePage extends Component {
 			}
 		  }
 		  
-		  console.log(this.state.QuestionsLoaded)
-		  
+		  	  
 		  }
 		)
 		.catch(error => console.log(error))
@@ -153,14 +152,16 @@ export default class QuestionTemplatePage extends Component {
 				questiontitle = {state.title}
 				questiontext= {state.text}
 				creationTD={state.creationDateAndTime}
+				voteCount={state.voteCount}
 				/>
 
 				{this.state.AnswersLoaded
       			? (
-          			this.state.AList.map((answer) => <AnswerBox
+          			this.state.AList.map((answer) => <AnswerBox onChange={this.handleChange}
               			username={answer.username}
-              			questiontext={answer.body}
+              			answertext={answer.body}
 						creationDateAndTime={answer.createdAt}
+						voteCount={answer.vote_count}
             	/>)
       )
       : <p style={noAnswerStyle}>No answers posted yet. Be the first to answer!</p>}

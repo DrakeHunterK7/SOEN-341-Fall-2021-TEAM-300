@@ -7,6 +7,7 @@ var text;
 var username;
 var qID;
 var creationDateAndTime;
+var voteCount;
 
 
 export default class QuestionPreviewTemplate extends Component {
@@ -18,6 +19,16 @@ export default class QuestionPreviewTemplate extends Component {
     text = props.text;
     qID = props.qID;
     creationDateAndTime = props.creationDateAndTime;
+    voteCount = props.voteCount;
+
+    this.state = {
+      q_username:username,
+      q_title:title,
+      q_text:text,
+      q_qID:qID,
+      q_creationDateAndTime:creationDateAndTime,
+      q_voteCount: voteCount,
+    }
     
   }
 
@@ -33,19 +44,19 @@ export default class QuestionPreviewTemplate extends Component {
         >
           <div className="">
                 <div className="preview-username-holder">
-                  <h6>{"By " + username}</h6>
+                  <h6>{"By " + this.state.q_username}</h6>
                 </div>
               
                 <div className="preview-question-title">
-                  <h3>{title}</h3>
+                  <h3>{this.state.q_title}</h3>
                 </div>
                
                 <div className="preview-question-text">
-                  <h5>{text}</h5>
+                  <h5>{this.state.q_text}</h5>
                 </div>
 
                 <div className="date-time">
-                  <h5>{"Posted on: " + creationDateAndTime}</h5>
+                  <h5>{"Posted on: " + this.state.q_creationDateAndTime}</h5>
                 </div>
           </div>
         </Link>

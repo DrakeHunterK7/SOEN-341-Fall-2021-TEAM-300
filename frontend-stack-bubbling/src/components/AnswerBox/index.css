@@ -45,3 +45,31 @@
     padding: 5px;
     border: solid 2px black;
 }
+
+.voteCountContainer {
+    position: relative;
+    right: 10px;
+    padding-right: 0px;
+}
+
+.voteCountBox {
+    text-align: center;
+    
+}
+
+.voteCountBox h3 {
+    font-weight: bolder;
+    color: black;
+}
+
+.upvoteButtonIMG:hover{
+    cursor: pointer;
+}
+
+.upvoteButtonIMG:after{
+    width: 100px;
+}
+
+.downvoteButtonIMG:hover {
+    cursor: pointer;
+}
