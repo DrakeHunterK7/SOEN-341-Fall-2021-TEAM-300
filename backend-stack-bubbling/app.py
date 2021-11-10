@@ -217,6 +217,132 @@ class ListAnswers(Resource):
                     QuestionCollection.find_one(
                         {"_id": questionID})["answers"])), 201)
 
+class VoteAnswer(Resource):
+    @staticmethod
+    @jwt_required()
+    def post():
+        info = VoteAnswerInfo.parse_args()
+        identity = get_jwt_identity()
+        responseMessage = ""
+        actionTaken = ""
+        currentUser = UserCollection.find_one(
+            {
+                "email": identity["email"]
+            })
+        voteChange = 0
+        questionID = uuid.UUID(info["question_id"])
+        answerID = uuid.UUID(info["answer_id"])
+        # No Votes at all
+        if "votes" not in currentUser:
+            if info["is_upvote"]:
+                voteChange += 1
+            else:
+                voteChange -= 1
+            actionTaken = "NewVote"
+            UserCollection.update(
+                {
+                    "_id" : currentUser["_id"]
+                },
+                {
+                    "$push": 
+                    {
+                        "votes": 
+                        {
+                            "post_id" : answerID,
+                            "is_upvote": info["is_upvote"]
+                        }
+                    }
+                })
+        else:
+            for vote in currentUser["votes"]:
+                # Vote on this answer exist
+                if vote["post_id"] == answerID:
+                    # Cancel vote
+                    if vote["is_upvote"] == info["is_upvote"]:
+                        if info["is_upvote"]:
+                            voteChange -= 1
+                        else:
+                            voteChange += 1
+                        actionTaken = "CancelVote"
+                        UserCollection.update(
+                        {
+                            "_id": currentUser["_id"]
+                        },
+                        {
+                            "$pull" : 
+                            {
+                                "votes": 
+                                {
+                                    "post_id": answerID
+                                }
+                            }
+                        })                    
+                        break
+                    # Change vote
+                    else:
+                        if info["is_upvote"]:
+                            voteChange += 2
+                        else:
+                            voteChange -= 2                            
+                        actionTaken = "ChangeVote"
+                        UserCollection.update(
+                        {
+                            "_id": currentUser["_id"],
+                            "votes.post_id": answerID
+                        },
+                        {
+                            "$set": 
+                            {
+                                "votes.$.is_upvote": info["is_upvote"]
+                            }
+                        })
+                        break
+            # No vote on this answer
+            if voteChange == 0:
+                if info["is_upvote"]:
+                    voteChange += 1
+                else:
+                    voteChange -= 1
+                actionTaken = "NewVote"
+                UserCollection.update(
+                    {
+                        "_id": currentUser["_id"]
+                    },
+                    {
+                        "$push": 
+                        {
+                            "votes" : 
+                            {
+                                "post_id" : answerID,
+                                "is_upvote": info["is_upvote"]
+                            }
+                        }
+                    })
+        # Now change vote count of answer
+        QuestionCollection.update(
+            {
+                "_id": questionID,
+                "answers._id": answerID
+            },
+            {
+                "$inc": 
+                {
+                    "answers.$.vote_count": voteChange
+                }
+            })
+        if actionTaken == "NewVote":
+            responseMessage = "Upvoted" if info["is_upvote"] else "Downvoted"
+        elif actionTaken == "ChangeVote":
+            responseMessage = "Changed vote to upvote" if info["is_upvote"] else "Changed vote to downvote"
+        else:
+            responseMessage = "Cancelled upvote" if info["is_upvote"] else "Cancelled downvote"
+        return make_response(jsonify(
+            {
+                "message": responseMessage,
+                "actionTaken": actionTaken,
+                "is_upvote": info["is_upvote"]
+            }), 200)
+        
 class VoteQuestion(Resource):
     @staticmethod
     @jwt_required()
