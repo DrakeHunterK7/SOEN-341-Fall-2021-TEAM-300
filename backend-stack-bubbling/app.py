@@ -273,6 +273,30 @@ class ListMyAnswers(Resource):
         return make_response(
             jsonify(list(answers)), 201)
 
+class ListMyQuestions(Resource):   
+    @staticmethod
+    @jwt_required()
+    def get():
+    # get 100 questions
+        identity = get_jwt_identity()
+        currentUser = None
+        # Get the current user using his [email]
+        currentUser = UserCollection.find_one({"email": identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
+        questions = QuestionCollection.find(
+            {
+                "user_id": currentUser["_id"]
+            }, 
+            {
+                "_id": 1, 
+                "title": 1, 
+                "createdAt": 1, 
+                "vote_count": 1
+            })
+        return make_response(
+            jsonify(list(questions)), 201)
+
 class VoteAnswer(Resource):
     @staticmethod
     @jwt_required()
@@ -531,6 +555,7 @@ api.add_resource(QuestionList, '/questionlist')
 api.add_resource(PostQuestion, '/postquestion')
 api.add_resource(ListAnswers, '/listanswers')
 api.add_resource(ListMyAnswers, '/listmyanswers')
+api.add_resource(ListMyQuestions, "/listmyquestions")
 api.add_resource(VoteQuestion, '/votequestion')
 api.add_resource(VoteAnswer, '/voteanswer')
 
