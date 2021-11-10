@@ -126,6 +126,10 @@ class PostAnswer(Resource):
             return make_response(jsonify({"message": "The Question identity is invalid"}), 401)
         newAnswer = {
             "_id": uuid.uuid1(),
+            #
+            #
+            # Here it should not be a "username here"
+            #
             "username":currentUser["username"],
             "user_id": currentUser["_id"],
             "body": info["body"],
@@ -185,6 +189,10 @@ class PostQuestion(Resource):
             return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
         newQuestion = {
             "_id": uuid.uuid1(),
+            #
+            #
+            # Here it should not be a "username here"
+            #
             "username": currentUser["username"],
             "user_id": currentUser["_id"],
             "title": info["title"],
@@ -212,12 +220,59 @@ class ListAnswers(Resource):
                     QuestionCollection.find_one(
                         {"_id": questionID})["answers"])), 201)
 
+class ListMyAnswers(Resource):   
+    @staticmethod
+    @jwt_required()
+    def get():
+        identity = get_jwt_identity()
+        currentUser = None
+        currentUser = UserCollection.find_one({"email": identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
+        answers = QuestionCollection.aggregate([
+            {
+                "$project": 
+                {
+                    "myanswer": 
+                    {
+                        "$filter": 
+                        {
+                            "input": "$answers",
+                            "as": "answer",
+                            "cond": 
+                            {
+                                "$eq": 
+                                [
+                                    "$$answer.user_id",
+                                    currentUser["_id"]
+                                ]
+                            }
+                        }
+                    },
+                    "_id": 1
+                }
+            },
+            {
+                "$unwind": "$myanswer"
+            },
+            {
+                "$project":
+                {
+                    "myanswer.user_id":0,
+                    "myanswer.username":0
+                }
+            }
+        ])
+        return make_response(
+            jsonify(list(answers)), 201)
+
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(PostAnswer, "/postanswer")
 api.add_resource(QuestionList, '/questionlist')
 api.add_resource(PostQuestion, '/postquestion')
 api.add_resource(ListAnswers, '/listanswers')
+api.add_resource(ListMyAnswers, '/listmyanswers')
 
 if __name__ == "__main__":
     app.debug = True
