@@ -51,6 +51,11 @@ VoteQuestionInfo = reqparse.RequestParser()
 VoteQuestionInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
 VoteQuestionInfo.add_argument('is_upvote', help='is_upvote cannot be empty', required=True, type=inputs.boolean)
 
+VoteAnswerInfo = reqparse.RequestParser()
+VoteAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
+VoteAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
+VoteAnswerInfo.add_argument('is_upvote', help='is_upvote cannot be empty', required=True, type=inputs.boolean)
+
 DB = client["Stack-Bubbling"]
 UserCollection = DB["Users"]
 QuestionCollection = DB["Questions"]
@@ -88,10 +93,7 @@ class Login(Resource):
             "email": data.email,
             "password": data.password
         })
-        # print(res)
-        # if user_info_email is existing in the database
         if res is not None:
-            # print(res)
             # create token
             access_token = create_access_token(identity={"email": data.email})
             result = {
@@ -475,6 +477,7 @@ api.add_resource(QuestionList, '/questionlist')
 api.add_resource(PostQuestion, '/postquestion')
 api.add_resource(ListAnswers, '/listanswers')
 api.add_resource(VoteQuestion, '/votequestion')
+api.add_resource(VoteAnswer, '/voteanswer')
 
 if __name__ == "__main__":
     app.debug = True

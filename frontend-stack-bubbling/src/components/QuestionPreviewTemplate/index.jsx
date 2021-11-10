@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Link} from "react-router-dom"
 import "./index.css";
 
 var title;
@@ -17,12 +18,19 @@ export default class QuestionPreviewTemplate extends Component {
     text = props.text;
     qID = props.qID;
     creationDateAndTime = props.creationDateAndTime;
+    
   }
 
-  render() {
+  render() {    
+    
     return (
-      <nav className="navbar navbar-expand-lg navbar-light">
-        <div className="container-fluid preview-question-container">
+        <nav className="navbar navbar-expand-lg navbar-light" preview-question-container>        
+        <Link className="container-fluid preview-question-container"
+        to = {{
+          pathname:"/questiontemplatepage",
+          state: this.props
+        }}
+        >
           <div className="">
                 <div className="preview-username-holder">
                   <h6>{"By " + username}</h6>
@@ -40,8 +48,10 @@ export default class QuestionPreviewTemplate extends Component {
                   <h5>{"Posted on: " + creationDateAndTime}</h5>
                 </div>
           </div>
-        </div>
+        </Link>
       </nav>
+      
+      
     );
   }
 }
