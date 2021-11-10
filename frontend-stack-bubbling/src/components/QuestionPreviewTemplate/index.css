@@ -12,12 +12,17 @@
     border: solid 2px black;
 }
 
+.preview-question-container:link {
+    text-decoration: none;
+    color: black;
+}
+
 .preview-question-container:hover {
     background: linear-gradient(135deg, #0079AD 0%, #0079AD 5%,transparent 5%, transparent 10%, #0079AD 10%, #0079AD 15%,transparent 15%,transparent 20%, #0079AD 20%, #0079AD 25%,transparent 25%,transparent 30%, #0079AD 30%, #0079AD 35%,transparent 35%,transparent 40%, #0079AD 40%, #0079AD 45%,transparent 45%,transparent 50%, #0079AD 50%, #0079AD 55%,transparent 55%,transparent 60%, #0079AD 60%, #0079AD 65%,transparent 65%,transparent 70%, #0079AD 70%, #0079AD 75%,transparent 70%,transparent 80%, #0079AD 80%, #0079AD 85%,transparent 85%,transparent 90%, #0079AD 90%, #0079AD 95%,transparent 95%);
         background-size: 1em 1em;
         background-color: #000000;
         opacity: 1;
-
+    border: solid 2px rgb(174, 0, 255);
     cursor: pointer;
 }
 

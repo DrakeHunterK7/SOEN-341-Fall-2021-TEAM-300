@@ -1,12 +1,21 @@
 import React, { Component } from "react";
 import "./index.css";
 
-var questiontext = "Don't worry, there are very easy-to-follow crash courses online. Make sure to learn JS first if you haven't already";
-
-var username = "SomeUser#002";
+var questiontext;
+var username;
+var creationDateAndTime;
 
 
 export default class AnswerBox extends Component {
+  constructor(props)
+  {
+    super();
+    username = props.username;
+    questiontext = props.questiontext;
+    creationDateAndTime = props.creationDateAndTime;
+  }
+
+
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-light">
@@ -22,6 +31,10 @@ export default class AnswerBox extends Component {
                
                 <div className="answer-text">
                   <h5>{questiontext}</h5>
+                </div>
+
+                <div className="date-time">
+                  <h5>{"Posted on: " + creationDateAndTime}</h5>
                 </div>
           </div>
         </div>
