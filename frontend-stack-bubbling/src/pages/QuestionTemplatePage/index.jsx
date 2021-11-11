@@ -36,7 +36,7 @@ export default class QuestionTemplatePage extends Component {
 
 	  handleChange(e) {
 		this.setState({
-		  [e.target.name]: '1111',
+		  [e.target.name]: e.target.value,
 		});
 	  }
 	
