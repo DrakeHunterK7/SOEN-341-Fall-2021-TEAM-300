@@ -222,24 +222,31 @@ class ListAnswers(Resource):
         questionID = uuid.UUID(request.args.get("question_id"))
         # List all the answers associated with that Question using the ID
         res = QuestionCollection.aggregate([
-    {'$lookup': {
+		
+     { "$match" : {"_id": questionID} },
+	 {'$unwind':'$answers'},
+	 {'$lookup': {
             'from': 'Users', 
-            'localField': 'user_id', 
+            'localField': "answers.user_id", 
             'foreignField': '_id', 
             'as': 'name'}},
-	{"$project": {
-		'Username': {
+	{'$project': {
+	'Username': {
 			"$cond": {
 				"if": {
 					"$anyElementTrue": ["$name.username"]},
 					"then": "$name.username",
 					"else": ["deleted user"]}},
-		'is_best_answer':'$is_best_answer',
-		'body':'$body',
-		'createdAt': '$createdAt',
-		'vote_count': '$vote_count',
-        'user_id': '$user_id',
-        '_id': '$_id'}}])
+		'body':'$answers.body',
+		'createdAt': '$answers.createdAt',
+		'vote_count': '$answers.vote_count',
+		'_id': '$answers._id',
+		'user_id': '$answers.user_id',
+		'is_best_answer': '$answers.is_best_answer'}}
+	 
+	 ])
+
+		
         return make_response(
             jsonify(
                 list(
