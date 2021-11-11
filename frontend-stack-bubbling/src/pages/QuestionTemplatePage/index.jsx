@@ -117,10 +117,8 @@ export default class QuestionTemplatePage extends Component {
 			if(this.state.AList.length > 0)
 			{
 				this.setState({
-					AnswersLoaded: true,
-					
+					AnswersLoaded: true,					
 				  })
-
 			}
 		  }
 		  

@@ -21,10 +21,10 @@ export default class AnswerBox extends Component {
   {
     
     super(props);
-    username=props.username,
-    answertext=props.answertext,
-    creationDateAndTime=props.creationDateAndTime,
-    voteCount=props.voteCount,
+    username=props.username;
+    answertext=props.answertext;
+    creationDateAndTime=props.creationDateAndTime;
+    voteCount=props.voteCount;
       
     this.state = {
       uusername:props.username,
