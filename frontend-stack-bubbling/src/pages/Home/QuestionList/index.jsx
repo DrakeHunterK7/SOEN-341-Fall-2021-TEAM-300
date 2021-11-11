@@ -64,6 +64,7 @@ export default class QuestionList extends Component {
               text={question.body}
               qID={question._id}
               creationDateAndTime={question.createdAt}
+              voteCount={question.vote_count}
             />)
       )
       : 'No Questions Posted yet'}
