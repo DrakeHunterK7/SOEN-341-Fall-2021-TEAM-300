@@ -132,6 +132,7 @@ export default class QuestionTemplatePage extends Component {
 	  
 	render() {
 		const { state } = this.props.location
+		const isQOwner = (localStorage.getItem("username") == state.username)
 
 		const noAnswerStyle = {
 			backgroundColor: 'white',
@@ -160,6 +161,11 @@ export default class QuestionTemplatePage extends Component {
               			answertext={answer.body}
 						creationDateAndTime={answer.createdAt}
 						voteCount={answer.vote_count}
+						isBestAnswer={answer.is_best_answer}
+						answerID = {answer._id}
+						questionID = {state.qID}
+						userID = {state.user_id}
+						isQuestionOwner={isQOwner}
             	/>)
       )
       : <p style={noAnswerStyle}>No answers posted yet. Be the first to answer!</p>}

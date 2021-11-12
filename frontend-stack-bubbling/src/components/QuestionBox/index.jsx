@@ -62,13 +62,15 @@ onClick = { (e) => {
   if(!this.state.isUpvoted)
     {
       this.setState({
+        voteCount: 1,
         isDownvoted:false,                    
         isUpvoted:true,                  
       })                  
     }
   else
   {
-    this.setState({                    
+    this.setState({   
+      voteCount: 0,                 
       isUpvoted:false,                
     })                
   } 
@@ -93,13 +95,15 @@ onClick = { (e) => {
   if(!this.state.isDownvoted)
     {
       this.setState({ 
+        voteCount: -1,
         isUpvoted:false,                      
         isDownvoted:true,                  
       })                  
     }
   else
   {
-    this.setState({                    
+    this.setState({     
+      voteCount: 0,               
       isDownvoted:false,                
     })
   } 

@@ -7,12 +7,17 @@ import DownvoteImg from "../../NormalDownvote.png"
 import DownvoteHoverImg from "../../DownvoteHover.png"
 import DownvotedImg from "../../Downvoted.png"
 import BestAnswerImg from "../../BestAnswerNormal.png"
+import axios from "axios";
 
 let username = null;
 let answertext = null;
 let creationDateAndTime = null;
 let voteCount = null;
-let isBestAnswer = false;
+let isBestAnswer = null;
+let answerID = null;
+let questionID = null;
+let userID = null;
+let isQuestionOwner = null;
 
 
 
@@ -28,6 +33,10 @@ export default class AnswerBox extends Component {
     creationDateAndTime=props.creationDateAndTime;
     voteCount=props.voteCount;
     isBestAnswer=props.isBestAnswer;
+    answerID = props.answerID;
+    questionID = props.questionID;
+    userID = props.userID;
+    isQuestionOwner=props.isQuestionOwner;
       
     this.state = {
       uusername:props.username,
@@ -35,6 +44,10 @@ export default class AnswerBox extends Component {
       ucreationDateAndTime:props.creationDateAndTime,
       uvoteCount:props.voteCount,
       uIsBestAnswer:props.isBestAnswer,
+      uAnswerID:props.answerID,
+      uQuestionID:props.questionID,
+      uUserID:props.userID,
+      uIsQuestionOwner:props.isQuestionOwner,
       isUpvoted:false,
       isUpvoteHovering:false,
       isDownvoted:false,
@@ -46,6 +59,8 @@ export default class AnswerBox extends Component {
 
   }
 
+
+
   handleChange(e) {
     e.preventDefault();
     this.setState({
@@ -53,12 +68,47 @@ export default class AnswerBox extends Component {
     });
   }
 
-  setBestAnswer(){
+  setBestAnswer(e){
     console.log('Best Answer Declared!');
-    this.setState({
-      uIsBestAnswer:true,
-    })
+    const token = localStorage.getItem("access_token");
+    const uid = this.state.uQuestionID;
+    const aid = this.state.uAnswerID;
+    console.log(uid);
+    console.log(aid);
+    
+    e.preventDefault();
+    const { uAnswerID, uQuestionID} = this.state;
+    axios
+      .post("http://localhost:5000/bestanswer", {
+        question_id: uid,
+        answer_id: aid,
+      }, {
+        headers: {
+          'Authorization' : 'Bearer ' + token
+        }})
+      .then((response) => {
+        console.log(response);
+        const res = response.status;
+        if(res === 400)
+        {
+          console.log(res);
+        }
+        else if(res === 201)
+        {
+          window.location.reload(true);
+        }
+      })
+      .catch(function(error){
+        console.log(error.response);
+				if(error.response.status === 500)
+				{
+				alert('You can only interact with answers if you are logged in!')
+				}
+		  })
   }
+
+
+
 
   render() {
 
@@ -82,13 +132,15 @@ export default class AnswerBox extends Component {
               if(!this.state.isUpvoted)
                 {
                   this.setState({
+                    uvoteCount: 1,
                     isDownvoted:false,                    
                     isUpvoted:true,                  
                   })                  
                 }
               else
               {
-                this.setState({                    
+                this.setState({      
+                  uvoteCount: 0,              
                   isUpvoted:false,                
                 })                
               } 
@@ -113,13 +165,15 @@ export default class AnswerBox extends Component {
               if(!this.state.isDownvoted)
                 {
                   this.setState({ 
+                    uvoteCount: -1,
                     isUpvoted:false,                      
                     isDownvoted:true,                  
                   })                  
                 }
               else
               {
-                this.setState({                    
+                this.setState({   
+                  uvoteCount: 0,                 
                   isDownvoted:false,                
                 })
               } 
@@ -220,11 +274,14 @@ export default class AnswerBox extends Component {
                   <h6 onChange={this.handleChange}>{"By " + this.state.uusername}</h6>
                 </div>
 
-                <div className="BestAnswerButton">
+                {this.state.uIsQuestionOwner ? 
+                (
+                  <div className="BestAnswerButton">
                   <button onClick={this.setBestAnswer}>
                     <h6>Declare Best Answer </h6>
                   </button>
                 </div>
+                ) : (<div></div>) }
               
                 <div className="answer-title">
                   <h3>ANSWER</h3>

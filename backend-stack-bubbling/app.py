@@ -51,10 +51,17 @@ VoteQuestionInfo = reqparse.RequestParser()
 VoteQuestionInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
 VoteQuestionInfo.add_argument('is_upvote', help='is_upvote cannot be empty', required=True, type=inputs.boolean)
 
+#Vote Answer Info
 VoteAnswerInfo = reqparse.RequestParser()
 VoteAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
 VoteAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
 VoteAnswerInfo.add_argument('is_upvote', help='is_upvote cannot be empty', required=True, type=inputs.boolean)
+
+# Best Answer Info
+BestAnswerInfo = reqparse.RequestParser()
+BestAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
+BestAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
+#BestAnswerInfo.add_argument('user_id', help='is_upvote cannot be empty', required=True, type=str)
 
 DB = client["Stack-Bubbling"]
 UserCollection = DB["Users"]
@@ -547,6 +554,46 @@ class VoteQuestion(Resource):
                 "is_upvote": info["is_upvote"]
             }), 200)
 
+class DeclareBestAnswer(Resource):
+    @staticmethod
+    @jwt_required()
+    def post():
+        info = BestAnswerInfo.parse_args()
+        identity = get_jwt_identity()
+        responseMessage = ""
+        currentUser = UserCollection.find_one(
+            {
+                "email": identity["email"]
+            })
+        questionID = uuid.UUID(info["question_id"])
+        answerID = uuid.UUID(info["answer_id"])
+        if currentUser is not None:
+            answer = QuestionCollection.find_one(
+                {
+                    "_id": questionID,
+                    
+                }
+            )
+            print('here be answer')
+            print(answer)
+            QuestionCollection.update(
+                {
+                    "_id" : questionID,
+                    "answers._id": answerID
+                },
+                {
+                    "$set":  
+                    {
+                        "answers.$.is_best_answer": True
+                    }
+                })
+            responseMessage = "Best Answer Declared!"
+            return make_response(jsonify(responseMessage), 201)
+        else:
+            responseMessage = "You have to be logged in to interact with answers!"
+            return make_response(jsonify(responseMessage), 203)
+
+
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
@@ -558,6 +605,7 @@ api.add_resource(ListMyAnswers, '/listmyanswers')
 api.add_resource(ListMyQuestions, "/listmyquestions")
 api.add_resource(VoteQuestion, '/votequestion')
 api.add_resource(VoteAnswer, '/voteanswer')
+api.add_resource(DeclareBestAnswer, '/bestanswer')
 
 if __name__ == "__main__":
     app.debug = True
