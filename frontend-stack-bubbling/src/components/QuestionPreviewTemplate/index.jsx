@@ -32,6 +32,8 @@ export default class QuestionPreviewTemplate extends Component {
     
   }
 
+ 
+
   render() {    
     
     return (
@@ -57,6 +59,10 @@ export default class QuestionPreviewTemplate extends Component {
 
                 <div className="date-time">
                   <h5>{"Posted on: " + this.state.q_creationDateAndTime}</h5>
+                </div>
+
+                <div className="date-time">
+                  <h5>{"Votes: " + this.state.q_voteCount}</h5>
                 </div>
           </div>
         </Link>

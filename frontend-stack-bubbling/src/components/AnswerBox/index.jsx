@@ -56,6 +56,7 @@ export default class AnswerBox extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.setBestAnswer = this.setBestAnswer.bind(this);
+    this.voteAnswer = this.voteAnswer.bind(this);
 
   }
 
@@ -73,8 +74,6 @@ export default class AnswerBox extends Component {
     const token = localStorage.getItem("access_token");
     const uid = this.state.uQuestionID;
     const aid = this.state.uAnswerID;
-    console.log(uid);
-    console.log(aid);
     
     e.preventDefault();
     const { uAnswerID, uQuestionID} = this.state;
@@ -102,9 +101,49 @@ export default class AnswerBox extends Component {
         console.log(error.response);
 				if(error.response.status === 500)
 				{
+				alert('You can only interact if you are logged in!')
+				}
+		  })
+  }
+
+  voteAnswer(isUpvote)
+  {
+    console.log('Voted!');
+    const token = localStorage.getItem("access_token");
+    const uid = this.state.uQuestionID;
+    const aid = this.state.uAnswerID;
+
+    axios
+      .post("http://localhost:5000/voteanswer", {
+        question_id: uid,
+        answer_id: aid,
+        is_upvote: isUpvote
+      }, {
+        headers: {
+          'Authorization' : 'Bearer ' + token
+        }})
+      .then((response) => {
+        console.log(response);
+        const res = response.status;
+        if(res === 400)
+        {
+          console.log(res);
+        }
+        else if(res === 201)
+        {
+          console.log(res);
+        }
+      })
+      .catch(function(error){
+        console.log(error.response);
+				if(error.response.status === 500)
+				{
 				alert('You can only interact with answers if you are logged in!')
 				}
 		  })
+
+
+
   }
 
 
@@ -125,26 +164,30 @@ export default class AnswerBox extends Component {
                           onMouseOver = {(e) => { e.preventDefault();
                           this.setState({isUpvoteHovering:true})
                         }} 
-            onMouseLeave = {(e) => {
-              this.setState({isUpvoteHovering:false})
-            }} 
-            onClick = { (e) => {
-              if(!this.state.isUpvoted)
-                {
-                  this.setState({
-                    uvoteCount: 1,
-                    isDownvoted:false,                    
-                    isUpvoted:true,                  
-                  })                  
-                }
-              else
-              {
-                this.setState({      
-                  uvoteCount: 0,              
-                  isUpvoted:false,                
-                })                
-              } 
-            }}
+                          onMouseLeave = {(e) => {
+                          this.setState({isUpvoteHovering:false})
+                        }} 
+                          onClick = { (e) => {
+                          const vc = this.state.uvoteCount;
+                          if(!this.state.isUpvoted)
+                          {
+                            this.voteAnswer("True");
+                            this.setState({
+                              
+                            uvoteCount: vc+1,
+                            isDownvoted:false,                    
+                            isUpvoted:true,                  
+                            })                  
+                          }
+                          else
+                          {
+                            this.voteAnswer("True");
+                            this.setState({      
+                            uvoteCount: this.props.voteCount,              
+                            isUpvoted:false,                
+                            })                
+                          } 
+                        }}
             src={this.state.isUpvoted ? UpvotedImg : (this.state.isUpvoteHovering ? UpvoteHoverImg : UpvoteImg)}/>
             </div>
 
@@ -162,18 +205,21 @@ export default class AnswerBox extends Component {
               this.setState({isDownvoteHovering:false})               
             }} 
             onClick = { (e) => {
+              const vc = this.state.uvoteCount;
               if(!this.state.isDownvoted)
                 {
-                  this.setState({ 
-                    uvoteCount: -1,
+                  this.voteAnswer("False");
+                  this.setState({
+                    uvoteCount: vc-1, 
                     isUpvoted:false,                      
                     isDownvoted:true,                  
                   })                  
                 }
               else
               {
+                this.voteAnswer("False");
                 this.setState({   
-                  uvoteCount: 0,                 
+                                   
                   isDownvoted:false,                
                 })
               } 
@@ -219,15 +265,19 @@ export default class AnswerBox extends Component {
               this.setState({isUpvoteHovering:false})
             }} 
             onClick = { (e) => {
+              const vc = this.state.uvoteCount;
               if(!this.state.isUpvoted)
                 {
+                  this.voteAnswer("True");
                   this.setState({
+                    uvoteCount: vc+1,
                     isDownvoted:false,                    
                     isUpvoted:true,                  
                   })                  
                 }
               else
               {
+                this.voteAnswer("True");
                 this.setState({                    
                   isUpvoted:false,                
                 })                
@@ -250,9 +300,12 @@ export default class AnswerBox extends Component {
               this.setState({isDownvoteHovering:false})               
             }} 
             onClick = { (e) => {
+              const vc = this.state.uvoteCount;
+              this.voteAnswer("False");
               if(!this.state.isDownvoted)
                 {
-                  this.setState({ 
+                  this.setState({
+                    uvoteCount: vc-1,
                     isUpvoted:false,                      
                     isDownvoted:true,                  
                   })                  

@@ -6,6 +6,7 @@ import UpvotedImg from "../../Upvoted.png"
 import DownvoteImg from "../../NormalDownvote.png"
 import DownvoteHoverImg from "../../DownvoteHover.png"
 import DownvotedImg from "../../Downvoted.png"
+import axios from "axios";
 
 
 let questiontitle;
@@ -13,6 +14,7 @@ let questiontext;
 let username;
 let creationTD; 
 let voteCount;
+let questionID;;
 
 
 export default class QuestionBox extends Component {
@@ -23,6 +25,7 @@ export default class QuestionBox extends Component {
 		  questiontitle: props.questiontitle,
 		  questiontext: props.questiontext,
 		  username: props.username,
+      questionID: props.questionID,
 		  creationTD: props.creationTD,
       voteCount: props.voteCount,
       isUpvoted:false,
@@ -42,6 +45,43 @@ export default class QuestionBox extends Component {
       });
     }
 
+    voteQuestion(isUpvote)
+  {
+    console.log('Voted!');
+    const token = localStorage.getItem("access_token");
+    const uid = this.state.questionID;
+    console.log(uid);
+
+    axios
+      .post("http://localhost:5000/votequestion", {
+        question_id: uid,
+        is_upvote: isUpvote
+      }, {
+        headers: {
+          'Authorization' : 'Bearer ' + token
+        }})
+      .then((response) => {
+        console.log(response);
+        const res = response.status;
+        if(res === 400)
+        {
+          console.log(res);
+        }
+        else if(res === 201)
+        {
+          console.log(res);
+        }
+      })
+      .catch(function(error){
+        console.log(error.response);
+				if(error.response.status === 500)
+				{
+				alert('You can only interact if you are logged in!')
+				}
+		  })
+
+  }
+
   render() {
     
     return (
@@ -59,18 +99,19 @@ onMouseLeave = {(e) => {
   this.setState({isUpvoteHovering:false})
 }} 
 onClick = { (e) => {
+  const vc = this.state.voteCount;
   if(!this.state.isUpvoted)
     {
+      this.voteQuestion("True");
       this.setState({
-        voteCount: 1,
+        voteCount: vc + 1,
         isDownvoted:false,                    
         isUpvoted:true,                  
       })                  
     }
   else
   {
-    this.setState({   
-      voteCount: 0,                 
+    this.setState({                    
       isUpvoted:false,                
     })                
   } 
@@ -92,18 +133,19 @@ onMouseLeave = {(e) => {
   this.setState({isDownvoteHovering:false})               
 }} 
 onClick = { (e) => {
+  this.voteQuestion("False");
+  const vc = this.state.voteCount;
   if(!this.state.isDownvoted)
     {
       this.setState({ 
-        voteCount: -1,
+        voteCount: vc-1,
         isUpvoted:false,                      
         isDownvoted:true,                  
       })                  
     }
   else
   {
-    this.setState({     
-      voteCount: 0,               
+    this.setState({                  
       isDownvoted:false,                
     })
   } 

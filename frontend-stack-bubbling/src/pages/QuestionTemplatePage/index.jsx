@@ -9,6 +9,7 @@ var questiontitle;
 var questiontext;
 var qUsername;
 var qID;
+var voteCount;
 var newAnswer;
 
 export default class QuestionTemplatePage extends Component {
@@ -20,6 +21,7 @@ export default class QuestionTemplatePage extends Component {
 		  qUsername:"",
 		  qID: "",
 		  newAnswer: "",
+		  voteCount: props.voteCount,
 		  AnswersLoaded: false,
 		  AList: [],
 		};
@@ -31,6 +33,8 @@ export default class QuestionTemplatePage extends Component {
 	  componentDidMount()
 	  {
 		console.log('template page just mounted')
+		const { state } = this.props.location;
+		console.log('OTP - ' + state.voteCount);
 		this.fetchAnswers();
 	  }
 
@@ -152,6 +156,7 @@ export default class QuestionTemplatePage extends Component {
 				questiontext= {state.text}
 				creationTD={state.creationDateAndTime}
 				voteCount={state.voteCount}
+				questionID = {state.qID}
 				/>
 
 				{this.state.AnswersLoaded
