@@ -20,7 +20,7 @@ let questionID;;
 export default class QuestionBox extends Component {
 
   constructor(props) {
-		super();
+		super(props);
 		this.state = {
 		  questiontitle: props.questiontitle,
 		  questiontext: props.questiontext,

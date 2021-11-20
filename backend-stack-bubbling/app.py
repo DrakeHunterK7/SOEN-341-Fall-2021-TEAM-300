@@ -228,11 +228,14 @@ class ListAnswers(Resource):
         # Get the current Question's ID
         questionID = uuid.UUID(request.args.get("question_id"))
         # List all the answers associated with that Question using the ID
+        answerlist = list(QuestionCollection.find_one({"_id": questionID})["answers"])
+        vc = QuestionCollection.find_one({"_id": questionID})
+        result = {
+                "listanswers": answerlist,
+                "qVoteCount": vc["vote_count"]
+            }
         return make_response(
-            jsonify(
-                list(
-                    QuestionCollection.find_one(
-                        {"_id": questionID})["answers"])), 201)
+            jsonify(result), 201)
 
 class ListMyAnswers(Resource):   
     @staticmethod
@@ -571,12 +574,10 @@ class DeclareBestAnswer(Resource):
             answer = QuestionCollection.find_one(
                 {
                     "_id": questionID,
-                    
-                }
-            )
-            print('here be answer')
-            print(answer)
-            QuestionCollection.update(
+                    "answers.is_best_answer": True
+                })
+            if answer is None:
+                QuestionCollection.update(
                 {
                     "_id" : questionID,
                     "answers._id": answerID
@@ -587,8 +588,11 @@ class DeclareBestAnswer(Resource):
                         "answers.$.is_best_answer": True
                     }
                 })
-            responseMessage = "Best Answer Declared!"
-            return make_response(jsonify(responseMessage), 201)
+                responseMessage = "Best Answer Declared!"
+                return make_response(jsonify(responseMessage), 201)
+            else:
+                responseMessage = "Best Answer is already declared!"
+                return make_response(jsonify(responseMessage), 204)
         else:
             responseMessage = "You have to be logged in to interact with answers!"
             return make_response(jsonify(responseMessage), 203)
@@ -605,7 +609,7 @@ api.add_resource(ListMyAnswers, '/listmyanswers')
 api.add_resource(ListMyQuestions, "/listmyquestions")
 api.add_resource(VoteQuestion, '/votequestion')
 api.add_resource(VoteAnswer, '/voteanswer')
-api.add_resource(DeclareBestAnswer, '/bestanswer')
+api.add_resource(DeclareBestAnswer, '/declarebestanswer')
 
 if __name__ == "__main__":
     app.debug = True

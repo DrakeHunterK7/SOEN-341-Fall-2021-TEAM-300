@@ -78,7 +78,7 @@ export default class AnswerBox extends Component {
     e.preventDefault();
     const { uAnswerID, uQuestionID} = this.state;
     axios
-      .post("http://localhost:5000/bestanswer", {
+      .post("http://localhost:5000/declarebestanswer", {
         question_id: uid,
         answer_id: aid,
       }, {
@@ -95,6 +95,10 @@ export default class AnswerBox extends Component {
         else if(res === 201)
         {
           window.location.reload(true);
+        }
+        else if(res == 204)
+        {
+          alert('Another answer is already declared best answer!')
         }
       })
       .catch(function(error){

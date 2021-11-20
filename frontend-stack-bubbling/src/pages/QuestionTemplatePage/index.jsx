@@ -21,8 +21,9 @@ export default class QuestionTemplatePage extends Component {
 		  qUsername:"",
 		  qID: "",
 		  newAnswer: "",
-		  voteCount: props.voteCount,
+		  voteCount: 0,
 		  AnswersLoaded: false,
+		  QuestionLoaded: false,
 		  AList: [],
 		};
 
@@ -34,7 +35,7 @@ export default class QuestionTemplatePage extends Component {
 	  {
 		console.log('template page just mounted')
 		const { state } = this.props.location;
-		console.log('OTP - ' + state.voteCount);
+		console.log('OTP - ' + this.state.voteCount);
 		this.fetchAnswers();
 	  }
 
@@ -42,6 +43,10 @@ export default class QuestionTemplatePage extends Component {
 		this.setState({
 		  [e.target.name]: e.target.value,
 		});
+	  }
+
+	  changeValue(value){
+		  this.setState({value});
 	  }
 	
 	  handleSubmit(e) {
@@ -51,8 +56,6 @@ export default class QuestionTemplatePage extends Component {
 		qID = state.qID;
 
 		const token = localStorage.getItem("access_token");
-
-		console.log(token);
 		
 		axios
 		  .post("http://localhost:5000/postanswer", {
@@ -114,16 +117,17 @@ export default class QuestionTemplatePage extends Component {
 		  console.log(response.data)
 		  if(stat === 201)
 		  {
+			
+			console.log(response.data.qVoteCount);
 			this.setState({
-			  AList: response.data,
-			  
+			  AList: response.data.listanswers,
+			  voteCount: response.data.qVoteCount
 			})
 			if(this.state.AList.length > 0)
 			{
-				this.setState({
-					AnswersLoaded: true,					
-				  })
+				this.setState({AnswersLoaded: true})
 			}
+			this.setState({QuestionLoaded: true})
 		  }
 		  
 		  	  
@@ -149,15 +153,22 @@ export default class QuestionTemplatePage extends Component {
 		
 		return (
 			<div>
+				
 				<Header />
-				<QuestionBox 
-				username={state.username} 
-				questiontitle = {state.title}
-				questiontext= {state.text}
-				creationTD={state.creationDateAndTime}
-				voteCount={state.voteCount}
-				questionID = {state.qID}
-				/>
+				{this.state.QuestionLoaded
+      			? (
+					<QuestionBox onChange={this.handleChange}
+					username={state.username} 
+					questiontitle = {state.title}
+					questiontext= {state.text}
+					creationTD={state.creationDateAndTime}
+					voteCount={this.state.voteCount}
+					questionID = {state.qID}
+					/>
+            	
+      )
+      : <p style={noAnswerStyle}>Loading Question.....</p>}
+				
 
 				{this.state.AnswersLoaded
       			? (
