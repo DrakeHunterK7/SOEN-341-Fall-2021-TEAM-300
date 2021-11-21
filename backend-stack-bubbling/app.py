@@ -228,14 +228,36 @@ class ListAnswers(Resource):
         # Get the current Question's ID
         questionID = uuid.UUID(request.args.get("question_id"))
         # List all the answers associated with that Question using the ID
-        answerlist = list(QuestionCollection.find_one({"_id": questionID})["answers"])
-        vc = QuestionCollection.find_one({"_id": questionID})
-        result = {
-                "listanswers": answerlist,
-                "qVoteCount": vc["vote_count"]
-            }
+        res = QuestionCollection.aggregate([
+		
+     { "$match" : {"_id": questionID} },
+	 {'$unwind':'$answers'},
+	 {'$lookup': {
+            'from': 'Users', 
+            'localField': "answers.user_id", 
+            'foreignField': '_id', 
+            'as': 'name'}},
+	{'$project': {
+	'Username': {
+			"$cond": {
+				"if": {
+					"$anyElementTrue": ["$name.username"]},
+					"then": "$name.username",
+					"else": ["deleted user"]}},
+		'body':'$answers.body',
+		'createdAt': '$answers.createdAt',
+		'vote_count': '$answers.vote_count',
+		'_id': '$answers._id',
+		'user_id': '$answers.user_id',
+		'is_best_answer': '$answers.is_best_answer'}}
+	 
+	 ])
+
+		
         return make_response(
-            jsonify(result), 201)
+            jsonify(
+                list(
+                    res)), 201)
 
 class ListMyAnswers(Resource):   
     @staticmethod
