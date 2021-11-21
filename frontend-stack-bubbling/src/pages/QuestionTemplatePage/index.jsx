@@ -66,7 +66,7 @@ export default class QuestionTemplatePage extends Component {
 			  'Authorization' : 'Bearer ' + token
 			}})
 		  .then((response) => {
-			console.log(response)
+			
 			const res = response.status;
 			if (res === 200) {
 			  
@@ -103,9 +103,6 @@ export default class QuestionTemplatePage extends Component {
 
 		const { state } = this.props.location;
 		qID = state.qID;
-		console.log('qID is V');
-		console.log(qID);
-
 		axios
 		.get("http://localhost:5000/listanswers", {
 			params: {
@@ -114,24 +111,19 @@ export default class QuestionTemplatePage extends Component {
 		})
 		.then((response) => {
 		  const stat = response.status
-		  console.log(response.data)
-		  if(stat === 201)
-		  {
-			
-			console.log(response.data.qVoteCount);
-			this.setState({
-			  AList: response.data.listanswers,
-			  voteCount: response.data.qVoteCount
-			})
-			if(this.state.AList.length > 0)
-			{
+		  	if(stat === 201)
+		  	{
+				this.setState({
+			  	AList: response.data.AList,
+			  	voteCount: response.data.qVoteCount
+				})
+				if(this.state.AList.length > 0)
+				{
 				this.setState({AnswersLoaded: true})
-			}
-			this.setState({QuestionLoaded: true})
-		  }
-		  
-		  	  
-		  }
+				}
+				this.setState({QuestionLoaded: true})
+		  	}	  
+		}
 		)
 		.catch(error => console.log(error))
 	  }
@@ -173,7 +165,7 @@ export default class QuestionTemplatePage extends Component {
 				{this.state.AnswersLoaded
       			? (
           			this.state.AList.map((answer) => <AnswerBox onChange={this.handleChange}
-              			username={answer.username}
+              			username={answer.Username}
               			answertext={answer.body}
 						creationDateAndTime={answer.createdAt}
 						voteCount={answer.vote_count}
