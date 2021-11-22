@@ -164,7 +164,6 @@ class PostAnswer(Resource):
                     {
                         "type": "Answer",
                         "questionID": question_id,
-                        "answerID": answer_id,
                         "performed_by_user_id": currentUser["_id"],
                         "performed_by_username": currentUser["username"]
                     }
