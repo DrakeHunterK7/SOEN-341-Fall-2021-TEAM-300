@@ -70,13 +70,11 @@ export default class AnswerBox extends Component {
   }
 
   setBestAnswer(e){
-    console.log('Best Answer Declared!');
     const token = localStorage.getItem("access_token");
     const uid = this.state.uQuestionID;
     const aid = this.state.uAnswerID;
     
     e.preventDefault();
-    const { uAnswerID, uQuestionID} = this.state;
     axios
       .post("http://localhost:5000/declarebestanswer", {
         question_id: uid,
@@ -86,7 +84,6 @@ export default class AnswerBox extends Component {
           'Authorization' : 'Bearer ' + token
         }})
       .then((response) => {
-        console.log(response);
         const res = response.status;
         if(res === 400)
         {
@@ -96,16 +93,16 @@ export default class AnswerBox extends Component {
         {
           window.location.reload(true);
         }
-        else if(res == 204)
+        else if(res == 200)
         {
-          alert('Another answer is already declared best answer!')
+          alert(response.data.message)
         }
       })
       .catch(function(error){
         console.log(error.response);
 				if(error.response.status === 500)
 				{
-				alert('You can only interact if you are logged in!')
+				alert(error.response.data.message)
 				}
 		  })
   }

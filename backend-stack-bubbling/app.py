@@ -254,8 +254,8 @@ class ListAnswers(Resource):
 	 
         ])
         result = {
-            "AList": list(res),
-            "qVoteCount": question["vote_count"]
+            "answerList": list(res),
+            "questionVoteCount": question["vote_count"]
         }
 		
         return make_response(jsonify(result), 201)
@@ -612,13 +612,22 @@ class DeclareBestAnswer(Resource):
                     }
                 })
                 responseMessage = "Best Answer Declared!"
-                return make_response(jsonify(responseMessage), 201)
+                result = {
+                    "message": responseMessage
+                }
+                return make_response(jsonify(result), 201)
             else:
-                responseMessage = "Best Answer is already declared!"
-                return make_response(jsonify(responseMessage), 204)
+                responseMessage = "There's already another best answer for this question"
+                result = {
+                    "message": responseMessage
+                }
+                return make_response(jsonify(result), 200)
         else:
-            responseMessage = "You have to be logged in to interact with answers!"
-            return make_response(jsonify(responseMessage), 203)
+            responseMessage = "You have to be logged in to do this"
+            result = {
+                "message": responseMessage
+            }
+            return make_response(jsonify(result), 203)
 
 
 

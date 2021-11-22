@@ -21,10 +21,10 @@ export default class QuestionTemplatePage extends Component {
 		  qUsername:"",
 		  qID: "",
 		  newAnswer: "",
-		  voteCount: 0,
+		  questionVoteCount: 0,
 		  AnswersLoaded: false,
 		  QuestionLoaded: false,
-		  AList: [],
+		  answerList: [],
 		};
 
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -72,17 +72,11 @@ export default class QuestionTemplatePage extends Component {
 			  
 			}
 			else if(res === 201){
-			  this.setState({
-				
-			  })
 			  window.location.reload(true);
 			}
 			else if(res === 204){
 			  
 			}
-			this.setState({
-			  
-			});
 		  })
 		  .catch(function(error){
 			
@@ -114,10 +108,10 @@ export default class QuestionTemplatePage extends Component {
 		  	if(stat === 201)
 		  	{
 				this.setState({
-			  	AList: response.data.AList,
-			  	voteCount: response.data.qVoteCount
+			  	answerList: response.data.answerList,
+			  	questionVoteCount: response.data.questionVoteCount
 				})
-				if(this.state.AList.length > 0)
+				if(this.state.answerList.length > 0)
 				{
 				this.setState({AnswersLoaded: true})
 				}
@@ -154,7 +148,7 @@ export default class QuestionTemplatePage extends Component {
 					questiontitle = {state.title}
 					questiontext= {state.text}
 					creationTD={state.creationDateAndTime}
-					voteCount={this.state.voteCount}
+					voteCount={this.state.questionVoteCount}
 					questionID = {state.qID}
 					/>
             	
@@ -164,7 +158,7 @@ export default class QuestionTemplatePage extends Component {
 
 				{this.state.AnswersLoaded
       			? (
-          			this.state.AList.map((answer) => <AnswerBox onChange={this.handleChange}
+          			this.state.answerList.map((answer) => <AnswerBox onChange={this.handleChange}
               			username={answer.Username}
               			answertext={answer.body}
 						creationDateAndTime={answer.createdAt}
