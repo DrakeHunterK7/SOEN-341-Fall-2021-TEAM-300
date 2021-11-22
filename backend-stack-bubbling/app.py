@@ -559,6 +559,28 @@ class VoteQuestion(Resource):
                     "vote_count": voteChange
                 }
             })
+        # Add Notification to question owner
+        questionOwnerId = QuestionCollection.find_one({"_id":questionID})["user_id"]
+
+        UserCollection.update(
+            {
+                "_id": questionOwnerId
+            },
+            {
+                "$push": 
+                {
+                    "notifications": 
+                    {
+                        "type": "Vote",
+                        "questionID": questionID,
+                        "performed_by_user_id": currentUser["_id"],
+                        "performed_by_username": currentUser["username"],
+                        "vote_change": voteChange
+                    }
+                }
+            }
+        )
+
         if actionTaken == "NewVote":
             responseMessage = "Upvoted" if info["is_upvote"] else "Downvoted"
         elif actionTaken == "ChangeVote":
@@ -572,6 +594,92 @@ class VoteQuestion(Resource):
                 "is_upvote": info["is_upvote"]
             }), 200)
 
+class Notifications(Resource):
+    @staticmethod
+    @jwt_required()
+    def get():
+        identity = get_jwt_identity()
+        currentUser = UserCollection.find_one({"email": identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify(
+                {
+                    "message": "access_token not valid, User not found"
+                }))
+        else:
+            # Get Notifications
+            res = UserCollection.aggregate([
+            {
+                "$match": 
+                {
+                    "_id": currentUser["_id"]
+                }
+            },
+            {
+                "$unwind": "$notifications"
+            },
+            {
+                "$group": 
+                {
+                    "_id": 
+                    {
+                        "questionID": "$notifications.questionID",
+                        "answerID": "$notifications.answerID",
+                        "type": "$notifications.type"
+                    },
+                    "count": 
+                    {
+                        "$sum": 
+                        {
+                            "$cond": 
+                            {
+                                "if": 
+                                {
+                                    "$eq": 
+                                    [
+                                        "$notifications.type",
+                                        "Vote"
+                                    ]
+                                },
+                                "then": "$notifications.vote_count",
+                                "else": 1
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "$project": 
+                {
+                    "_id": "$_id",
+                    "count": "$count"
+                }
+            }])
+            return make_response(jsonify(list(res)), 200)
+
+    @staticmethod
+    @jwt_required()
+    def delete():
+        identity = get_jwt_identity()
+        currentUser = UserCollection.find_one({"email": identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify(
+                {
+                    "message": "access_token not valid, User not found"
+                }))
+        else:
+            # Delete Notifications
+            UserCollection.update(
+            {
+                "_id": currentUser["_id"]
+            },
+            {
+                "$set": 
+                {
+                    "notifications": []
+                }
+            })
+            return make_response(jsonify({"message": "Notifications Cleared"}), 200)
+
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
@@ -583,6 +691,7 @@ api.add_resource(ListMyAnswers, '/listmyanswers')
 api.add_resource(ListMyQuestions, "/listmyquestions")
 api.add_resource(VoteQuestion, '/votequestion')
 api.add_resource(VoteAnswer, '/voteanswer')
+api.add_resource(Notifications, '/notifications')
 
 if __name__ == "__main__":
     app.debug = True
