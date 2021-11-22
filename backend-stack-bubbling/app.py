@@ -131,8 +131,9 @@ class PostAnswer(Resource):
         currentQuestion = QuestionCollection.find_one({"_id": question_id})
         if currentQuestion is None:
             return make_response(jsonify({"message": "The Question identity is invalid"}), 401)
+        answer_id = uuid.uuid1()
         newAnswer = {
-            "_id": uuid.uuid1(),
+            "_id": answer_id,
             #
             #
             # Here it should not be a "username here"
@@ -148,6 +149,28 @@ class PostAnswer(Resource):
         QuestionCollection.update(
             {"_id": question_id},
             {"$push": {"answers": newAnswer}})
+
+        # Add Notification to question owner
+        questionOwnerId = QuestionCollection.find_one({"_id":question_id})["user_id"]
+
+        UserCollection.update(
+            {
+                "_id": questionOwnerId
+            },
+            {
+                "$push": 
+                {
+                    "notifications": 
+                    {
+                        "type": "Answer",
+                        "questionID": question_id,
+                        "answerID": answer_id,
+                        "performed_by_user_id": currentUser["_id"],
+                        "performed_by_username": currentUser["username"]
+                    }
+                }
+            }
+        )
         return make_response(jsonify({"message": "The Answer posted successfully"}), 201)
 
 class QuestionList(Resource):	
