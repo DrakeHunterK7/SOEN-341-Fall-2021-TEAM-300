@@ -9,6 +9,7 @@ var questiontitle;
 var questiontext;
 var qUsername;
 var qID;
+var voteCount;
 var newAnswer;
 
 export default class QuestionTemplatePage extends Component {
@@ -20,8 +21,10 @@ export default class QuestionTemplatePage extends Component {
 		  qUsername:"",
 		  qID: "",
 		  newAnswer: "",
+		  questionVoteCount: 0,
 		  AnswersLoaded: false,
-		  AList: [],
+		  QuestionLoaded: false,
+		  answerList: [],
 		};
 
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,13 +34,19 @@ export default class QuestionTemplatePage extends Component {
 	  componentDidMount()
 	  {
 		console.log('template page just mounted')
+		const { state } = this.props.location;
+		console.log('OTP - ' + this.state.voteCount);
 		this.fetchAnswers();
 	  }
 
 	  handleChange(e) {
 		this.setState({
-		  [e.target.name]: '1111',
+		  [e.target.name]: e.target.value,
 		});
+	  }
+
+	  changeValue(value){
+		  this.setState({value});
 	  }
 	
 	  handleSubmit(e) {
@@ -47,8 +56,6 @@ export default class QuestionTemplatePage extends Component {
 		qID = state.qID;
 
 		const token = localStorage.getItem("access_token");
-
-		console.log(token);
 		
 		axios
 		  .post("http://localhost:5000/postanswer", {
@@ -59,23 +66,17 @@ export default class QuestionTemplatePage extends Component {
 			  'Authorization' : 'Bearer ' + token
 			}})
 		  .then((response) => {
-			console.log(response)
+			
 			const res = response.status;
 			if (res === 200) {
 			  
 			}
 			else if(res === 201){
-			  this.setState({
-				
-			  })
 			  window.location.reload(true);
 			}
 			else if(res === 204){
 			  
 			}
-			this.setState({
-			  
-			});
 		  })
 		  .catch(function(error){
 			
@@ -96,9 +97,6 @@ export default class QuestionTemplatePage extends Component {
 
 		const { state } = this.props.location;
 		qID = state.qID;
-		console.log('qID is V');
-		console.log(qID);
-
 		axios
 		.get("http://localhost:5000/listanswers", {
 			params: {
@@ -107,23 +105,19 @@ export default class QuestionTemplatePage extends Component {
 		})
 		.then((response) => {
 		  const stat = response.status
-		  console.log(response.data)
-		  if(stat === 201)
-		  {
-			this.setState({
-			  AList: response.data,
-			  
-			})
-			if(this.state.AList.length > 0)
-			{
+		  	if(stat === 201)
+		  	{
 				this.setState({
-					AnswersLoaded: true,					
-				  })
-			}
-		  }
-		  
-		  	  
-		  }
+			  	answerList: response.data.answerList,
+			  	questionVoteCount: response.data.questionVoteCount
+				})
+				if(this.state.answerList.length > 0)
+				{
+				this.setState({AnswersLoaded: true})
+				}
+				this.setState({QuestionLoaded: true})
+		  	}	  
+		}
 		)
 		.catch(error => console.log(error))
 	  }
@@ -132,6 +126,7 @@ export default class QuestionTemplatePage extends Component {
 	  
 	render() {
 		const { state } = this.props.location
+		const isQOwner = (localStorage.getItem("username") == state.username)
 
 		const noAnswerStyle = {
 			backgroundColor: 'white',
@@ -144,22 +139,35 @@ export default class QuestionTemplatePage extends Component {
 		
 		return (
 			<div>
+				
 				<Header />
-				<QuestionBox 
-				username={state.username} 
-				questiontitle = {state.title}
-				questiontext= {state.text}
-				creationTD={state.creationDateAndTime}
-				voteCount={state.voteCount}
-				/>
+				{this.state.QuestionLoaded
+      			? (
+					<QuestionBox onChange={this.handleChange}
+					username={state.username} 
+					questiontitle = {state.title}
+					questiontext= {state.text}
+					creationTD={state.creationDateAndTime}
+					voteCount={this.state.questionVoteCount}
+					questionID = {state.qID}
+					/>
+            	
+      )
+      : <p style={noAnswerStyle}>Loading Question.....</p>}
+				
 
 				{this.state.AnswersLoaded
       			? (
-          			this.state.AList.map((answer) => <AnswerBox onChange={this.handleChange}
-              			username={answer.username}
+          			this.state.answerList.map((answer) => <AnswerBox onChange={this.handleChange}
+              			username={answer.Username}
               			answertext={answer.body}
 						creationDateAndTime={answer.createdAt}
 						voteCount={answer.vote_count}
+						isBestAnswer={answer.is_best_answer}
+						answerID = {answer._id}
+						questionID = {state.qID}
+						userID = {state.user_id}
+						isQuestionOwner={isQOwner}
             	/>)
       )
       : <p style={noAnswerStyle}>No answers posted yet. Be the first to answer!</p>}

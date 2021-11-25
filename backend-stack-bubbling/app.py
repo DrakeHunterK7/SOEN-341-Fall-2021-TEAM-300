@@ -51,10 +51,17 @@ VoteQuestionInfo = reqparse.RequestParser()
 VoteQuestionInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
 VoteQuestionInfo.add_argument('is_upvote', help='is_upvote cannot be empty', required=True, type=inputs.boolean)
 
+#Vote Answer Info
 VoteAnswerInfo = reqparse.RequestParser()
 VoteAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
 VoteAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
 VoteAnswerInfo.add_argument('is_upvote', help='is_upvote cannot be empty', required=True, type=inputs.boolean)
+
+# Best Answer Info
+BestAnswerInfo = reqparse.RequestParser()
+BestAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
+BestAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
+#BestAnswerInfo.add_argument('user_id', help='is_upvote cannot be empty', required=True, type=str)
 
 DB = client["Stack-Bubbling"]
 UserCollection = DB["Users"]
@@ -220,18 +227,19 @@ class ListAnswers(Resource):
     def get():
         # Get the current Question's ID
         questionID = uuid.UUID(request.args.get("question_id"))
+        question = QuestionCollection.find_one({"_id": questionID})
         # List all the answers associated with that Question using the ID
         res = QuestionCollection.aggregate([
 		
-     { "$match" : {"_id": questionID} },
-	 {'$unwind':'$answers'},
-	 {'$lookup': {
+        { "$match" : {"_id": questionID} },
+	    {'$unwind':'$answers'},
+	    {'$lookup': {
             'from': 'Users', 
             'localField': "answers.user_id", 
             'foreignField': '_id', 
             'as': 'name'}},
-	{'$project': {
-	'Username': {
+	    {'$project': {
+	    'Username': {
 			"$cond": {
 				"if": {
 					"$anyElementTrue": ["$name.username"]},
@@ -244,13 +252,13 @@ class ListAnswers(Resource):
 		'user_id': '$answers.user_id',
 		'is_best_answer': '$answers.is_best_answer'}}
 	 
-	 ])
-
+        ])
+        result = {
+            "answerList": list(res),
+            "questionVoteCount": question["vote_count"]
+        }
 		
-        return make_response(
-            jsonify(
-                list(
-                    res)), 201)
+        return make_response(jsonify(result), 201)
 
 class ListMyAnswers(Resource):   
     @staticmethod
@@ -572,6 +580,56 @@ class VoteQuestion(Resource):
                 "is_upvote": info["is_upvote"]
             }), 200)
 
+class DeclareBestAnswer(Resource):
+    @staticmethod
+    @jwt_required()
+    def post():
+        info = BestAnswerInfo.parse_args()
+        identity = get_jwt_identity()
+        responseMessage = ""
+        currentUser = UserCollection.find_one(
+            {
+                "email": identity["email"]
+            })
+        questionID = uuid.UUID(info["question_id"])
+        answerID = uuid.UUID(info["answer_id"])
+        if currentUser is not None:
+            answer = QuestionCollection.find_one(
+                {
+                    "_id": questionID,
+                    "answers.is_best_answer": True
+                })
+            if answer is None:
+                QuestionCollection.update(
+                {
+                    "_id" : questionID,
+                    "answers._id": answerID
+                },
+                {
+                    "$set":  
+                    {
+                        "answers.$.is_best_answer": True
+                    }
+                })
+                responseMessage = "Best Answer Declared!"
+                result = {
+                    "message": responseMessage
+                }
+                return make_response(jsonify(result), 201)
+            else:
+                responseMessage = "There's already another best answer for this question"
+                result = {
+                    "message": responseMessage
+                }
+                return make_response(jsonify(result), 200)
+        else:
+            responseMessage = "You have to be logged in to do this"
+            result = {
+                "message": responseMessage
+            }
+            return make_response(jsonify(result), 203)
+
+
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
@@ -583,6 +641,7 @@ api.add_resource(ListMyAnswers, '/listmyanswers')
 api.add_resource(ListMyQuestions, "/listmyquestions")
 api.add_resource(VoteQuestion, '/votequestion')
 api.add_resource(VoteAnswer, '/voteanswer')
+api.add_resource(DeclareBestAnswer, '/declarebestanswer')
 
 if __name__ == "__main__":
     app.debug = True
