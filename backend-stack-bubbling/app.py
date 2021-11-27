@@ -863,7 +863,6 @@ class DeclareBestAnswer(Resource):
         }
         return make_response(jsonify(result), returnCode)
 
-
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(PostAnswer, "/postanswer")
