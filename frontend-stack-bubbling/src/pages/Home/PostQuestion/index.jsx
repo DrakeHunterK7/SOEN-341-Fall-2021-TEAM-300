@@ -46,6 +46,7 @@ export default class PostQuestion extends Component {
           'Authorization' : 'Bearer ' + token
         }})
       .then((response) => {
+        console.log(response)
         const res = response.status;
         if(res === 401)
         {
