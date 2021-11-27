@@ -63,6 +63,12 @@ BestAnswerInfo.add_argument('question_id', help='question_id cannot be empty', r
 BestAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
 #BestAnswerInfo.add_argument('user_id', help='is_upvote cannot be empty', required=True, type=str)
 
+#For Testing Purposes
+# Test Reset Answer Info
+TestResetAnswerInfo = reqparse.RequestParser()
+TestResetAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
+TestResetAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
+
 DB = client["Stack-Bubbling"]
 UserCollection = DB["Users"]
 QuestionCollection = DB["Questions"]
@@ -593,6 +599,8 @@ class DeclareBestAnswer(Resource):
             })
         questionID = uuid.UUID(info["question_id"])
         answerID = uuid.UUID(info["answer_id"])
+        print(questionID)
+        print(answerID)
         if currentUser is not None:
             answer = QuestionCollection.find_one(
                 {
@@ -629,6 +637,43 @@ class DeclareBestAnswer(Resource):
             }
             return make_response(jsonify(result), 203)
 
+class TEST_ResetBestAnswer(Resource):
+    @staticmethod
+    @jwt_required()
+    def post():
+        info = TestResetAnswerInfo.parse_args()
+        identity = get_jwt_identity()
+        responseMessage = ""
+        currentUser = UserCollection.find_one(
+            {
+                "email": identity["email"]
+            })
+        questionID = uuid.UUID(info["question_id"])
+        answerID = uuid.UUID(info["answer_id"])
+        if currentUser is not None:
+                QuestionCollection.update(
+                {
+                    "_id" : questionID,
+                    "answers._id": answerID
+                },
+                {
+                    "$set":  
+                    {
+                        "answers.$.is_best_answer": False
+                    }
+                })
+                responseMessage = "Best Answer Removed!"
+                result = {
+                    "message": responseMessage
+                }
+                return make_response(jsonify(result), 201)
+        else:
+            responseMessage = "You have to be logged in to do this"
+            result = {
+                "message": responseMessage
+            }
+            return make_response(jsonify(result), 203)
+
 
 
 api.add_resource(Login, '/login')
@@ -642,6 +687,7 @@ api.add_resource(ListMyQuestions, "/listmyquestions")
 api.add_resource(VoteQuestion, '/votequestion')
 api.add_resource(VoteAnswer, '/voteanswer')
 api.add_resource(DeclareBestAnswer, '/declarebestanswer')
+api.add_resource(TEST_ResetBestAnswer, '/test_resetbestanswer')
 
 if __name__ == "__main__":
     app.debug = True

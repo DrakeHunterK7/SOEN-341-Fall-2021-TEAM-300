@@ -33,9 +33,7 @@ export default class QuestionTemplatePage extends Component {
 
 	  componentDidMount()
 	  {
-		console.log('template page just mounted')
 		const { state } = this.props.location;
-		console.log('OTP - ' + this.state.voteCount);
 		this.fetchAnswers();
 	  }
 
@@ -54,6 +52,7 @@ export default class QuestionTemplatePage extends Component {
 		const { newAnswer} = this.state;
 		const { state } = this.props.location;
 		qID = state.qID;
+		
 
 		const token = localStorage.getItem("access_token");
 		
