@@ -169,7 +169,7 @@ class PostAnswer(Resource):
                 {
                     "notifications": 
                     {
-                        "type": "Answer",
+                        "type": "AnswerPosted",
                         "questionID": question_id,
                         "viewed": False
                     }
@@ -543,7 +543,7 @@ class VoteAnswer(Resource):
                 {
                     "notifications": 
                     {
-                        "type": "Vote",
+                        "type": "VoteAnswer",
                         "questionID": questionID,
                         "answerID": answerID,
                         "viewed": False,
@@ -687,7 +687,7 @@ class VoteQuestion(Resource):
                 {
                     "notifications": 
                     {
-                        "type": "Vote",
+                        "type": "VoteQuestion",
                         "questionID": questionID,
                         "vote_change": voteChange,
                         "viewed": False
@@ -929,7 +929,7 @@ class DeclareBestAnswer(Resource):
                         {
                             "notifications": 
                             {
-                                "type": "Best Answer",
+                                "type": "BestAnswer",
                                 "questionID": questionID,
                                 "viewed": False,
                                 "answerID": answerID
