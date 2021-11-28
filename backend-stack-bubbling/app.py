@@ -756,11 +756,20 @@ class Notifications(Resource):
                             {
                                 "if": 
                                 {
-                                    "$eq": 
-                                    [
-                                        "$notifications.type",
-                                        "Vote"
-                                    ]
+                                    "$or":
+                                    [{
+                                        "$eq": 
+                                        [
+                                            "$notifications.type",
+                                            "VoteQuestion"
+                                        ]
+                                    },{
+                                        "$eq":
+                                        [
+                                            "$notifications.type",
+                                            "VoteAnswer"
+                                        ]
+                                    }]
                                 },
                                 "then": "$notifications.vote_change",
                                 "else": 1
