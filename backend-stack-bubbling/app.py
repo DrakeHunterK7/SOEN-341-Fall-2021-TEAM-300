@@ -769,8 +769,7 @@ class Notifications(Resource):
                                             "$notifications.type",
                                             "VoteAnswer"
                                         ]
-                                    }
-                                    ]
+                                    }]
                                 },
                                 "then": "$notifications.vote_change",
                                 "else": 1
