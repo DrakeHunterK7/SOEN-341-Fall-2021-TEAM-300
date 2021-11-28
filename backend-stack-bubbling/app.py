@@ -507,6 +507,50 @@ class VoteAnswer(Resource):
                     "answers.$.vote_count": voteChange
                 }
             })
+        agg = QuestionCollection.aggregate([
+            {
+                "$match":
+                {
+                    "_id": questionID
+                },
+            },
+            {
+                "$unwind": "$answers"
+            },
+            {
+                "$match": 
+                {
+                    "answers._id": answerID
+                }
+            },
+            {
+                "$project":
+                {
+                    "answerOwnerUserID": "$answers.user_id",
+                    "_id": 0 
+                }
+            }])
+        aggList = list(agg)
+        answerOwnerUserID = aggList[0]["answerOwnerUserID"]
+
+        # Now push Notification
+        UserCollection.update(
+            {
+                "_id": answerOwnerUserID
+            },
+            {
+                "$push":
+                {
+                    "notifications": 
+                    {
+                        "type": "Vote",
+                        "questionID": questionID,
+                        "answerID": answerID,
+                        "viewed": False,
+                        "vote_change": voteChange
+                    }
+                }
+            })
         if actionTaken == "NewVote":
             responseMessage = "Upvoted" if info["is_upvote"] else "Downvoted"
         elif actionTaken == "ChangeVote":
@@ -832,12 +876,12 @@ class DeclareBestAnswer(Resource):
         questionID = uuid.UUID(info["question_id"])
         answerID = uuid.UUID(info["answer_id"])
         if currentUser is not None:
-            answer = QuestionCollection.find_one(
+            bestAnswer = QuestionCollection.find_one(
                 {
                     "_id": questionID,
                     "answers.is_best_answer": True
                 })
-            if answer is None:
+            if bestAnswer is None:
                 QuestionCollection.update(
                 {
                     "_id" : questionID,
@@ -851,6 +895,48 @@ class DeclareBestAnswer(Resource):
                 })
                 responseMessage = "Best Answer Declared!"
                 returnCode = 201
+                agg = QuestionCollection.aggregate([
+                    {
+                        "$match":
+                        {
+                            "_id": questionID
+                        }
+                    },
+                    {
+                        "$unwind": "$answers"
+                    },
+                    {
+                        "$match":
+                        {
+                            "answers._id": answerID
+                        }
+                    },
+                    {
+                        "$project":
+                        {
+                            "answerOwnerUserID": "$answers.user_id",
+                            "_id": 0
+                        }
+                    }])
+                aggList = list(agg)
+                answerOwnerUserID = aggList[0]["answerOwnerUserID"]
+                UserCollection.update(
+                    {
+                        "_id": answerOwnerUserID
+                    },
+                    {
+                        "$push": 
+                        {
+                            "notifications": 
+                            {
+                                "type": "Best Answer",
+                                "questionID": questionID,
+                                "viewed": False,
+                                "answerID": answerID
+                            }
+                        }
+                    }
+                )
             else:
                 responseMessage = "There's already another best answer for this question"
                 returnCode = 200
