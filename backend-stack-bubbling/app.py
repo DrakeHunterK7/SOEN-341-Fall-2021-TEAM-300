@@ -51,7 +51,7 @@ VoteQuestionInfo = reqparse.RequestParser()
 VoteQuestionInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
 VoteQuestionInfo.add_argument('is_upvote', help='is_upvote cannot be empty', required=True, type=inputs.boolean)
 
-#Vote Answer Info
+# Vote Answer Info
 VoteAnswerInfo = reqparse.RequestParser()
 VoteAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
 VoteAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
@@ -61,7 +61,12 @@ VoteAnswerInfo.add_argument('is_upvote', help='is_upvote cannot be empty', requi
 BestAnswerInfo = reqparse.RequestParser()
 BestAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
 BestAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
-#BestAnswerInfo.add_argument('user_id', help='is_upvote cannot be empty', required=True, type=str)
+
+# Update Notification Info
+UpdateNotificationInfo = reqparse.RequestParser()
+UpdateNotificationInfo.add_argument("type", help="the type of notification", required=True, type=str)
+UpdateNotificationInfo.add_argument("question_id", help="the type of notification", required=True, type=str)
+UpdateNotificationInfo.add_argument("answer_id", help="the type of notification", required=False, type=str)
 
 DB = client["Stack-Bubbling"]
 UserCollection = DB["Users"]
@@ -138,13 +143,9 @@ class PostAnswer(Resource):
         currentQuestion = QuestionCollection.find_one({"_id": question_id})
         if currentQuestion is None:
             return make_response(jsonify({"message": "The Question identity is invalid"}), 401)
+        answer_id = uuid.uuid1()
         newAnswer = {
-            "_id": uuid.uuid1(),
-            #
-            #
-            # Here it should not be a "username here"
-            #
-            "username":currentUser["username"],
+            "_id": answer_id,
             "user_id": currentUser["_id"],
             "body": info["body"],
             "createdAt": datetime.datetime.today(),
@@ -155,36 +156,80 @@ class PostAnswer(Resource):
         QuestionCollection.update(
             {"_id": question_id},
             {"$push": {"answers": newAnswer}})
-        return make_response(jsonify({"message": "The Answer posted successfully"}), 201)
+
+        # Add Notification to question owner
+        questionOwnerId = QuestionCollection.find_one({"_id":question_id})["user_id"]
+
+        UserCollection.update(
+            {
+                "_id": questionOwnerId
+            },
+            {
+                "$push": 
+                {
+                    "notifications": 
+                    {
+                        "type": "AnswerPosted",
+                        "questionID": question_id,
+                        "viewed": False
+                    }
+                }
+            }
+        )
+        return make_response(jsonify(
+            {
+                "message": "The Answer posted successfully",
+                "newAnswer": newAnswer,
+                "question_id": info["question_id"]
+            }), 201)
 
 class QuestionList(Resource):	
     @staticmethod
     def get():
 	# get 100 questions
         res = QuestionCollection.aggregate([
-    {'$lookup': {
-            'from': 'Users', 
-            'localField': 'user_id', 
-            'foreignField': '_id', 
-            'as': 'name'}},
-    #{'$unwind':'$name'},
-    {'$sort': {'createdAt':-1}},
-	{'$limit' : 100},
-	#{"$project": {'Username': { "$ifNull": ["$name.username", "deleted user"]}, 'title':'$title', 'body':'$body'}}
-	{"$project": {
-		'Username': {
-			"$cond": {
-				"if": {
-					"$anyElementTrue": ["$name.username"]},
-					"then": "$name.username",
-					"else": ["deleted user"]}},
-		'title':'$title',
-		'body':'$body',
-		'createdAt': '$createdAt',
-		'vote_count': '$vote_count',
-		'_id': '$_id'}}])
-        return make_response(
-            jsonify(list(res)), 201)
+            {
+                '$lookup': 
+                {
+                    'from': 'Users', 
+                    'localField': 'user_id', 
+                    'foreignField': '_id', 
+                    'as': 'name'
+                }
+            },
+            {
+                '$sort': 
+                {
+                    'createdAt':-1
+                }
+            },
+            {
+                '$limit' : 100
+            },
+            {
+                "$project": 
+                {
+                    'Username': 
+                    {
+                        "$cond": 
+                        {
+    				        "if": 
+                            {
+                                "$anyElementTrue": ["$name.username"]
+                            },
+                            "then": "$name.username",
+                            "else": ["deleted user"]
+                        }
+                    },
+                    'title':'$title',
+            		'body':'$body',
+            		'createdAt': '$createdAt',
+            		'vote_count': '$vote_count',
+            		'_id': '$_id'
+                }
+            }
+        ])
+        return make_response(jsonify(list(res)), 201)
 
 class PostQuestion(Resource):
     # This decorator is needed when we need to check the identity of the user
@@ -203,11 +248,6 @@ class PostQuestion(Resource):
             return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
         newQuestion = {
             "_id": uuid.uuid1(),
-            #
-            #
-            # Here it should not be a "username here"
-            #
-            "username": currentUser["username"],
             "user_id": currentUser["_id"],
             "title": info["title"],
             "body": info["body"],
@@ -216,7 +256,11 @@ class PostQuestion(Resource):
             "answers": []
         }
         QuestionCollection.insert_one(newQuestion)
-        return make_response(jsonify({"message": "Question was posted successfully"}), 201)
+        return make_response(jsonify(
+            {
+                "message": "Question was posted successfully",
+                "newQuestion": newQuestion
+            }), 201)
     # Things to do
     # Handle the response info in the front end
     # Design & Implement a refresh token
@@ -229,30 +273,50 @@ class ListAnswers(Resource):
         questionID = uuid.UUID(request.args.get("question_id"))
         question = QuestionCollection.find_one({"_id": questionID})
         # List all the answers associated with that Question using the ID
-        res = QuestionCollection.aggregate([
-		
-        { "$match" : {"_id": questionID} },
-	    {'$unwind':'$answers'},
-	    {'$lookup': {
-            'from': 'Users', 
-            'localField': "answers.user_id", 
-            'foreignField': '_id', 
-            'as': 'name'}},
-	    {'$project': {
-	    'Username': {
-			"$cond": {
-				"if": {
-					"$anyElementTrue": ["$name.username"]},
-					"then": "$name.username",
-					"else": ["deleted user"]}},
-		'body':'$answers.body',
-		'createdAt': '$answers.createdAt',
-		'vote_count': '$answers.vote_count',
-		'_id': '$answers._id',
-		'user_id': '$answers.user_id',
-		'is_best_answer': '$answers.is_best_answer'}}
-	 
+        res = QuestionCollection.aggregate([		
+            {
+                "$match" : 
+                {
+                    "_id": questionID
+                } 
+            },
+            {
+                '$unwind':'$answers'
+            },
+            {
+                '$lookup':
+                {
+                    'from': 'Users', 
+                    'localField': "answers.user_id", 
+                    'foreignField': '_id', 
+                    'as': 'name'
+                }
+            },
+            {
+                '$project': 
+                {
+                    'Username':
+                    {
+                        "$cond": 
+                        {
+                            "if": 
+                            {
+    					       "$anyElementTrue": ["$name.username"]
+                            },
+                            "then": "$name.username",
+                            "else": ["deleted user"]
+                        }
+                    },
+                    'body':'$answers.body',
+                    'createdAt': '$answers.createdAt',
+                    'vote_count': '$answers.vote_count',
+                    '_id': '$answers._id',
+                    'user_id': '$answers.user_id',
+                    'is_best_answer': '$answers.is_best_answer'
+                }
+            }	 
         ])
+
         result = {
             "answerList": list(res),
             "questionVoteCount": question["vote_count"]
@@ -443,6 +507,50 @@ class VoteAnswer(Resource):
                     "answers.$.vote_count": voteChange
                 }
             })
+        agg = QuestionCollection.aggregate([
+            {
+                "$match":
+                {
+                    "_id": questionID
+                },
+            },
+            {
+                "$unwind": "$answers"
+            },
+            {
+                "$match": 
+                {
+                    "answers._id": answerID
+                }
+            },
+            {
+                "$project":
+                {
+                    "answerOwnerUserID": "$answers.user_id",
+                    "_id": 0 
+                }
+            }])
+        aggList = list(agg)
+        answerOwnerUserID = aggList[0]["answerOwnerUserID"]
+
+        # Now push Notification
+        UserCollection.update(
+            {
+                "_id": answerOwnerUserID
+            },
+            {
+                "$push":
+                {
+                    "notifications": 
+                    {
+                        "type": "VoteAnswer",
+                        "questionID": questionID,
+                        "answerID": answerID,
+                        "viewed": False,
+                        "vote_change": voteChange
+                    }
+                }
+            })
         if actionTaken == "NewVote":
             responseMessage = "Upvoted" if info["is_upvote"] else "Downvoted"
         elif actionTaken == "ChangeVote":
@@ -567,6 +675,27 @@ class VoteQuestion(Resource):
                     "vote_count": voteChange
                 }
             })
+        # Add Notification to question owner
+        questionOwnerId = QuestionCollection.find_one({"_id":questionID})["user_id"]
+
+        UserCollection.update(
+            {
+                "_id": questionOwnerId
+            },
+            {
+                "$push": 
+                {
+                    "notifications": 
+                    {
+                        "type": "VoteQuestion",
+                        "questionID": questionID,
+                        "vote_change": voteChange,
+                        "viewed": False
+                    }
+                }
+            }
+        )
+
         if actionTaken == "NewVote":
             responseMessage = "Upvoted" if info["is_upvote"] else "Downvoted"
         elif actionTaken == "ChangeVote":
@@ -579,6 +708,159 @@ class VoteQuestion(Resource):
                 "actionTaken": actionTaken,
                 "is_upvote": info["is_upvote"]
             }), 200)
+
+
+class Notifications(Resource):
+    @staticmethod
+    @jwt_required()
+    def get():
+        identity = get_jwt_identity()
+        currentUser = UserCollection.find_one({"email": identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify(
+                {
+                    "message": "access_token not valid, User not found"
+                }))
+        else:
+            # Get Notifications
+            res = UserCollection.aggregate([
+            {
+                "$match": 
+                {
+                    "_id": currentUser["_id"],
+                }
+            },
+            {
+                "$unwind": "$notifications"
+            },
+            {
+                "$match": 
+                {
+                    "notifications.viewed": False
+                }
+            },            
+            {
+                "$group": 
+                {
+                    "_id": 
+                    {
+                        "questionID": "$notifications.questionID",
+                        "answerID": "$notifications.answerID",
+                        "type": "$notifications.type"
+                    },
+                    "count": 
+                    {
+                        "$sum": 
+                        {
+                            "$cond": 
+                            {
+                                "if": 
+                                {
+                                    "$eq": 
+                                    [
+                                        "$notifications.type",
+                                        "Vote"
+                                    ]
+                                },
+                                "then": "$notifications.vote_change",
+                                "else": 1
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "$project": 
+                {
+                    "_id": "$_id",
+                    "count": "$count"
+                }
+            }])
+            return make_response(jsonify(list(res)), 200)
+
+    @staticmethod
+    @jwt_required()
+    def put():
+        identity = get_jwt_identity()
+        currentUser = UserCollection.find_one({"email": identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify(
+                {
+                    "message": "access_token not valid, User not found"
+                }))
+        else:
+            info = UpdateNotificationInfo.parse_args()
+            question_id = uuid.UUID(info["question_id"])
+            answer_id = None
+            answer_id_to_string = None
+            try:
+                answer_id = uuid.UUID(info["answer_id"])
+            except Exception as e:
+                pass
+            if answer_id == None:
+                UserCollection.update_many(
+                {
+                    "_id": currentUser["_id"],
+                    "notifications.type": info["type"],
+                    "notifications.questionID": question_id
+                },{
+                    "$set":{
+                        "notifications.$[elem].viewed": True
+                    }
+                }, 
+                array_filters=[{
+                        "elem.type": info["type"],
+                        "elem.questionID": question_id
+                    }])
+            else:
+                UserCollection.update(
+                {
+                    "_id": currentUser["_id"],
+                    "notifications.type": info["type"],
+                    "notifications.questionID": question_id,
+                    "notifications.answerID": answer_id
+                },{
+                    "$set":{
+                        "notifications.$[elem].viewed": True
+                    }
+                },
+                array_filters = [{
+                    "elem.type": info["type"],
+                    "elem.questionID": question_id,
+                    "elem.answerID": answer_id
+                }])
+                answer_id_to_string = info["answer_id"]
+                
+                # PUT does not return message
+                return make_response(jsonify({
+                    "message": "Selected Notifications are viewed",
+                    "question_id": info["question_id"],
+                    "answer_id": answer_id_to_string
+                    }),200)  
+
+    @staticmethod
+    @jwt_required()
+    def delete():
+        identity = get_jwt_identity()
+        currentUser = UserCollection.find_one({"email": identity["email"]})
+        if currentUser is None:
+            return make_response(jsonify(
+                {
+                    "message": "access_token not valid, User not found"
+                }))
+        else:
+            # Delete Notifications
+            UserCollection.update(
+            {
+                "_id": currentUser["_id"]
+            },
+            {
+                "$set": 
+                {
+                    "notifications": []
+                }
+            })
+            return make_response(jsonify({"message": "Notifications Cleared"}), 200)
 
 class DeclareBestAnswer(Resource):
     @staticmethod
@@ -594,12 +876,12 @@ class DeclareBestAnswer(Resource):
         questionID = uuid.UUID(info["question_id"])
         answerID = uuid.UUID(info["answer_id"])
         if currentUser is not None:
-            answer = QuestionCollection.find_one(
+            bestAnswer = QuestionCollection.find_one(
                 {
                     "_id": questionID,
                     "answers.is_best_answer": True
                 })
-            if answer is None:
+            if bestAnswer is None:
                 QuestionCollection.update(
                 {
                     "_id" : questionID,
@@ -612,24 +894,60 @@ class DeclareBestAnswer(Resource):
                     }
                 })
                 responseMessage = "Best Answer Declared!"
-                result = {
-                    "message": responseMessage
-                }
-                return make_response(jsonify(result), 201)
+                returnCode = 201
+                agg = QuestionCollection.aggregate([
+                    {
+                        "$match":
+                        {
+                            "_id": questionID
+                        }
+                    },
+                    {
+                        "$unwind": "$answers"
+                    },
+                    {
+                        "$match":
+                        {
+                            "answers._id": answerID
+                        }
+                    },
+                    {
+                        "$project":
+                        {
+                            "answerOwnerUserID": "$answers.user_id",
+                            "_id": 0
+                        }
+                    }])
+                aggList = list(agg)
+                answerOwnerUserID = aggList[0]["answerOwnerUserID"]
+                UserCollection.update(
+                    {
+                        "_id": answerOwnerUserID
+                    },
+                    {
+                        "$push": 
+                        {
+                            "notifications": 
+                            {
+                                "type": "BestAnswer",
+                                "questionID": questionID,
+                                "viewed": False,
+                                "answerID": answerID
+                            }
+                        }
+                    }
+                )
             else:
                 responseMessage = "There's already another best answer for this question"
-                result = {
-                    "message": responseMessage
-                }
-                return make_response(jsonify(result), 200)
+                returnCode = 200
         else:
             responseMessage = "You have to be logged in to do this"
-            result = {
-                "message": responseMessage
-            }
-            return make_response(jsonify(result), 203)
+            returnCode = 203
 
-
+        result = {
+            "message": responseMessage
+        }
+        return make_response(jsonify(result), returnCode)
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
@@ -641,6 +959,7 @@ api.add_resource(ListMyAnswers, '/listmyanswers')
 api.add_resource(ListMyQuestions, "/listmyquestions")
 api.add_resource(VoteQuestion, '/votequestion')
 api.add_resource(VoteAnswer, '/voteanswer')
+api.add_resource(Notifications, '/notifications')
 api.add_resource(DeclareBestAnswer, '/declarebestanswer')
 
 if __name__ == "__main__":
