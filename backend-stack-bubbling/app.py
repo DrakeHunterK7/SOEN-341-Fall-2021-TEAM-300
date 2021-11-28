@@ -225,7 +225,9 @@ class QuestionList(Resource):
             		'body':'$body',
             		'createdAt': '$createdAt',
             		'vote_count': '$vote_count',
-            		'_id': '$_id'
+            		'_id': '$_id',
+                    'answerCount': {'$size': '$answers'}
+                    
                 }
             }
         ])

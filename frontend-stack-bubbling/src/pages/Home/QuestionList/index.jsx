@@ -11,14 +11,9 @@ export default class QuestionList extends Component {
       "QuestionsLoaded": false
     }
 
-    this.handleChange = this.handleChange.bind(this);
+   
   }
 
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  }
 
   componentDidMount(){
     console.log('component just mounted')
@@ -52,22 +47,32 @@ export default class QuestionList extends Component {
 
   render() {
 
+    const noAnswerStyle = {
+			backgroundColor: 'white',
+			borderRadius: "5px",
+			textDecoration: "none",
+			padding:"5px",
+			display: "inline-block",
+			border: "solid 2px black",
+		}
+
     return (
       <div className="list-page-container">
         <div className="pagetitle">ALL QUESTIONS</div>
 
       {this.state.QuestionsLoaded
       ? (
-          this.state.QList.map((question) => <QuestionPreviewTemplate 
+          this.state.QList.map((question) => 
+          <QuestionPreviewTemplate 
               username={question.Username}
               title={question.title}
               text={question.body}
               qID={question._id}
               creationDateAndTime={question.createdAt}
-              voteCount={question.vote_count}
-            />)
+              voteCount={question.answerCount}
+          />)
       )
-      : 'No Questions Posted yet'}
+      : <p style={noAnswerStyle}>Loading Question List.....</p>}
 
       
 

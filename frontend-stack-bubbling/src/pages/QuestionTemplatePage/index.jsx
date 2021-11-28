@@ -139,8 +139,8 @@ export default class QuestionTemplatePage extends Component {
 		
 		return (
 			<div>
-				
 				<Header />
+
 				{this.state.QuestionLoaded
       			? (
 					<QuestionBox onChange={this.handleChange}
@@ -151,9 +151,8 @@ export default class QuestionTemplatePage extends Component {
 					voteCount={this.state.questionVoteCount}
 					questionID = {state.qID}
 					/>
-            	
-      )
-      : <p style={noAnswerStyle}>Loading Question.....</p>}
+				)
+      			: <p style={noAnswerStyle}>Loading Question.....</p>}
 				
 
 				{this.state.AnswersLoaded
@@ -169,11 +168,9 @@ export default class QuestionTemplatePage extends Component {
 						userID = {state.user_id}
 						isQuestionOwner={isQOwner}
             	/>)
-      )
-      : <p style={noAnswerStyle}>No answers posted yet. Be the first to answer!</p>}
+      			)
+      			: <p style={noAnswerStyle}>No answers posted yet. Be the first to answer!</p>}
 
-				
-					
 				<div className="post-answer-container">
 					<form onSubmit={this.handleSubmit}>
           				<div>
@@ -205,9 +202,7 @@ export default class QuestionTemplatePage extends Component {
           				</div>
 					</form>
 				</div>
-				
-				
-				
+
 			</div>
 			
 		)

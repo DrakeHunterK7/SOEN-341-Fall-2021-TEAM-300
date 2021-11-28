@@ -62,7 +62,7 @@ export default class QuestionPreviewTemplate extends Component {
                 </div>
 
                 <div className="date-time">
-                  <h5>{"Votes: " + this.state.q_voteCount}</h5>
+                  <h5>{"Answers: " + this.state.q_voteCount}</h5>
                 </div>
           </div>
         </Link>

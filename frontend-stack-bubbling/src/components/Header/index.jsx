@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import MyNavLink from "../MyNavLink";
 import './index.css'
 import MainLogo from '../Header/SBLogo.png';
+import IMG_NoNotification from "../../NotificationNone.png"
+import IMG_Notifications from "../../NotificationMultiple.png"
+
+
 export default class Header extends Component {
   constructor(props) {
     super();
@@ -51,21 +55,23 @@ export default class Header extends Component {
                     <img className="HeaderLogo" src={MainLogo} width="200"/>
                   </li>
                   <li className="tab">
-                  <MyNavLink replace to="/home" className="link" re>
-                    Home
-                  </MyNavLink>
+                    <MyNavLink replace to="/home" className="link">
+                      Home
+                    </MyNavLink>
                   </li>
                   <li className="tab">
-                  <MyNavLink  replace to="" className="link">
-                    User Profile
-                  </MyNavLink>
+                    <MyNavLink  replace to="" onClick={this.handleLogout} className="link">
+                      Log Out
+                    </MyNavLink>
                   </li>
                   <li className="tab">
-                  <MyNavLink  replace to="" onClick={this.handleLogout} className="link">
-                    Log Out
-                  </MyNavLink>
+                    <MyNavLink  replace to="/notifications" className="linkWithImage">
+                      <img className="notifImg" src={IMG_NoNotification} width="30"/>
+                    </MyNavLink>
                   </li>
+                  
                 </ul>
+                
               </span>
             ) : (
               <span>
@@ -89,6 +95,7 @@ export default class Header extends Component {
                     </MyNavLink>
                   </li>
                 </ul>
+                
               </span>
               
             )}

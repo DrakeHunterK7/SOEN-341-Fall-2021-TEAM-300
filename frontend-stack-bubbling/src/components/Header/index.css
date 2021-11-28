@@ -29,7 +29,31 @@
     text-decoration: none;
     padding:10px;
     margin-right: 10px;
-    display: inline-block;
+   
+}
+
+.linkWithImage {
+    background-color: #00b3ff;
+    border-radius: 10px;
+    text-decoration: none;
+    padding:10px;
+    margin-right: 10px;
+}
+
+.notifImg {
+    position:relative;
+    bottom:2px;
+}
+
+a.linkWithImage{
+    color:black;
+    border: solid 2px black;
+}
+
+a.linkWithImage:hover {
+    padding-top:15px;
+    padding-bottom: 15px;
+    
 }
 
 a.link{
@@ -71,7 +95,15 @@ a.link:hover {
         text-align: center;
     }
 
-    .Header img{
-        margin:auto;
+    .link{
+        display:inline-block;
+    }
+
+    .linkWithImage{
+        display:inline-block
+    }
+    
+    .HeaderLogo {
+        margin-bottom: 10px;
     }
 }
