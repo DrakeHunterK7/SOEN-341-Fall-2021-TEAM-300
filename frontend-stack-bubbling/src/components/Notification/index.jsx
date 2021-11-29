@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import {Link} from "react-router-dom";
 import "./index.css";
-import IMG_NoNotification from "../../NotificationNone.png"
+import IMG_Notification from "../../NotificationMultiple.png"
 
-let text;
-let username;
-let nID;
-let notificationTime;
+var text = null;
+var username = null;
+var nID = null;
+var notificationTime = null;
+var notificationType = null; 
 
 export default class Notification extends Component {
   constructor(props)
@@ -16,133 +17,45 @@ export default class Notification extends Component {
     text = props.text;
     nID = props.nID;
     notificationTime = props.notificationTime;
+    notificationType = props.NotificationType;
    
 
     this.state = {
-      n_username:username,
-      n_text:text,
-      n_nID:nID,
-      n_notificationTime:notificationTime,
+      n_username:props.username,
+      n_text:props.text,
+      n_nID:props.nID,
+      n_notificationTime:props.notificationTime,
+      n_type:props.notificationType
     }
-    
-  }
 
-  
+    //console.log(this.state.n_text);
+  }
 
   render() {    
     return (
-        <nav className="navbar navbar-expand-lg navbar-light" preview-question-container>        
-        <Link className="container-fluid preview-notification-container"
+        <nav className={"navbar navbar-expand-lg navbar-light " + this.state.n_type} >        
+        <Link className={"link-properties"}
         to = {{
           pathname:"/Notifications",
           state: this.props
         }}
         >
-        {this.state.n_text == "Answer is given to your question"
-      	  ? ( 
-          <div className = "notification-box">
-          <img className="notifImg" src={IMG_NoNotification} width="30"/>
-            <div className="preview-username-holder"> 
-              <h6>{"By " + this.state.n_username}</h6>
-            </div>
-            <div className="preview-notification-text">
-              <h5>{this.state.n_text}</h5>
-            </div>
-            <div className="date-time">
-              <h5>{"Posted on: " + this.state.n_notificationTime}</h5>
-            </div>
-            </div>
-            ): <br></br>
-          }
+        <div className="notifIMG">
+          <img src={IMG_Notification} width="50px"/>
+        </div>
 
-{this.state.n_text == "One of your answer has been upvoted"
-      	  ? ( 
-          <div className = "notification-box">
-          <img className="notifImg" src={IMG_NoNotification} width="30"/>
-            <div className="preview-username-holder"> 
-              <h6>{"By " + this.state.n_username}</h6>
-            </div>
-            <div className="preview-notification-text-2">
-              <h5>{this.state.n_text}</h5>
-            </div>
-            <div className="date-time">
-              <h5>{"Posted on: " + this.state.n_notificationTime}</h5>
-            </div>
-            </div>
-            ): <br></br>
-          }
+        <div className="infoContainer">
+          <div className="preview-username-holder">
+            <h6>NOTIFICATION</h6>
+          </div>
+              
+          <div className="preview-question-title">
+            <h3>{this.state.n_text}</h3>
+          </div>
+        </div>
+        </Link>
 
-{this.state.n_text == "One of your answer has been downvoted"
-      	  ? ( 
-          <div className = "notification-box">
-          <img className="notifImg" src={IMG_NoNotification} width="30"/>
-            <div className="preview-username-holder"> 
-              <h6>{"By " + this.state.n_username}</h6>
-            </div>
-            <div className="preview-notification-text-2">
-              <h5>{this.state.n_text}</h5>
-            </div>
-            <div className="date-time">
-              <h5>{"Posted on: " + this.state.n_notificationTime}</h5>
-            </div>
-            </div>
-            ): <br></br>
-          }
-
-{this.state.n_text == "One of your question has been upvoted"
-      	  ? ( 
-          <div className = "notification-box">
-          <img className="notifImg" src={IMG_NoNotification} width="30"/>
-            <div className="preview-username-holder"> 
-              <h6>{"By " + this.state.n_username}</h6>
-            </div>
-            <div className="preview-notification-text-4">
-              <h5>{this.state.n_text}</h5>
-            </div>
-            <div className="date-time">
-              <h5>{"Posted on: " + this.state.n_notificationTime}</h5>
-            </div>
-            </div>
-            ): <br></br>
-          }
-
-{this.state.n_text == "One of your question has been downvoted"
-      	  ? ( 
-          <div className = "notification-box">
-          <img className="notifImg" src={IMG_NoNotification} width="30"/>
-            <div className="preview-username-holder"> 
-              <h6>{"By " + this.state.n_username}</h6>
-            </div>
-            <div className="preview-notification-text-3">
-              <h5>{this.state.n_text}</h5>
-            </div>
-            <div className="date-time">
-              <h5>{"Posted on: " + this.state.n_notificationTime}</h5>
-            </div>
-            </div>
-            ): <br></br>
-          }
-
-{this.state.n_text == "One of your answer has been selected as best answer"
-      	  ? ( 
-          <div className = "notification-box">
-          <img className="notifImg" src={IMG_NoNotification} width="30"/>
-            <div className="preview-username-holder"> 
-              <h6>{"By " + this.state.n_username}</h6>
-            </div>
-            <div className="preview-notification-text">
-              <h5>{this.state.n_text}</h5>
-            </div>
-            <div className="date-time">
-              <h5>{"Posted on: " + this.state.n_notificationTime}</h5>
-            </div>
-            </div>
-            ): <br></br>
-          }
-          </Link>
       </nav>
-      
-      
-    );
+  );
   }
 }

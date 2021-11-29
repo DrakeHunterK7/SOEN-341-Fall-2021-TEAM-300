@@ -3,16 +3,11 @@ import React, { Component} from 'react';
 import Header from "../../components/Header/";
 import Notification from '../../components/Notification';
 
-var text;
-var username;
-var nID;
-var notificationTime;
-var isBestAnswer;
-var isQuestion;
-var isAnswer;
-var isPosted;
-var isUpVoted;
-var isDownVoted;
+var text = "APAPAPAPAP";
+var username = "APAPAPAPAP";
+var nID = "APAPAPAPAP";
+var notificationTime = "APAPAPAPAP";
+
 
 export default class Notifications extends Component {
   constructor(props) {
@@ -20,37 +15,44 @@ export default class Notifications extends Component {
     username = props.username;
     text = props.text;
     nID = props.nID;
-    notificationTime = props.notificationTime;
-    isBestAnswer = props.isBestAnswer;
-    isQuestion = props.isQuestion;
-    isAnswer = props.isAnswer;
-    isPosted = props.isPosted;
-    isUpVoted = props.isUpVoted;
-    isDownVoted = props.isDownVoted;
+    notificationTime = props.notificationType;
 
     this.state = {
-      n_username:username,
-      n_text:text,
-      n_nID:nID,
-      n_notificationTime:notificationTime,
-      n_isBestAnswer: false,
-      n_isQuestion: false,
-      n_isAnswer: false,
-      n_isPosted: true,
-      n_isUpVoted: false,
-      n_isDownVoted: false,
-      
+      n_username:props.username,
+      n_text:props.text,
+      n_nID:props.nID,
+      n_notificationTime:props.notificationTime,
     }
 
-   
+   this.selectNotificationStyle = this.selectNotificationStyle.bind(this);
+
+   console.log(props.text);
   }
 
 
   componentDidMount(){
     console.log('component just mounted')
-    
   }
 
+  selectNotificationStyle(Type)
+    {
+    switch(Type){
+      case 'BestAnswer':
+        return 'BestAnswer';
+      case 'VoteAnswer':
+        return 'VoteAnswer';
+      case 'VoteQuestion':
+        return 'VoteQuestion';
+      case 'AnswerPosted':
+        return 'AnswerPosted';
+
+      default:
+        return 'noStyle';
+    }
+  }
+
+
+  
   
 
 
@@ -65,87 +67,49 @@ export default class Notifications extends Component {
 			border: "solid 2px black",
 		}
 
+    
+
     return (
       <div className="list-page-container">
 
         <Header />
         
-        <div className="pagetitle">Your Notifications</div>
+        <div className="pagetitle">
+          Your Notifications
+        </div>
 
-        {this.state.n_isPosted
-      	? (
-          <Notification onChange={this.handleChange}
-          text = "Answer is given to your question"
-          username = "me"
-          nID = "1"
-          notificationTime = "2020"
-          />
-        )
-        : <br></br>
-        }
+        <Notification 
+          text = "Example Text"
+          username = {this.state.n_username}
+          nID = {this.state.n_nID}
+          notificationTime = {this.state.n_notificationTime}
+          notificationType = {this.selectNotificationStyle("BestAnswer")}
+        />
 
-        {this.state.n_isAnswer && this.state.n_isUpVoted
-          ? (
-            <Notification onChange={this.handleChange}
-            text = "One of your answer has been upvoted"
-            username = "me"
-            nID = "1"
-            notificationTime = "2020"
-            />
-          )
-          : <br></br>
-        }
+        <Notification 
+          text = "Example Text"
+          username = {this.state.n_username}
+          nID = {this.state.n_nID}
+          notificationTime = {this.state.n_notificationTime}
+          notificationType = {this.selectNotificationStyle("VoteAnswer")}
+        />
+
+        <Notification 
+          text = "Example Text"
+          username = {this.state.n_username}
+          nID = {this.state.n_nID}
+          notificationTime = {this.state.n_notificationTime}
+          notificationType = {this.selectNotificationStyle("VoteQuestion")}
+        />
+
+        <Notification 
+          text = "Example Text"
+          username = {this.state.n_username}
+          nID = {this.state.n_nID}
+          notificationTime = {this.state.n_notificationTime}
+          notificationType = {this.selectNotificationStyle("AnswerPosted")}
+        />
         
-        {this.state.n_isAnswer && this.state.n_isDownVoted
-          ? (
-            <Notification onChange={this.handleChange}
-            text = "One of your answer has been downvoted"
-            username = "Anas"
-            nID = "1"
-            notificationTime = "2020"
-            />
-          )
-          : <br></br>
-        }
-
-        {this.state.n_isQuestion && this.state.n_isUpVoted
-          ? (
-            <Notification onChange={this.handleChange}
-            text = "One of your question has been upvoted"
-            username = "Vraj"
-            nID = "1"
-            notificationTime = "2020"
-            />
-          )
-          : <br></br>
-        }
-
-        
-        {this.state.n_isQuestion && this.state.n_isDownVoted
-          ? (
-            <Notification onChange={this.handleChange}
-            text = "One of your question has been downvoted"
-            username = "Vraj"
-            nID = "1"
-            notificationTime = "2020"
-            />
-          )
-          : <br></br>
-        }
-
-        {this.state.n_isBestAnswer
-          ? (
-            <Notification onChange={this.handleChange}
-            text = "One of your answer has been selected as best answer"
-            username = "Vraj"
-            nID = "1"
-            notificationTime = "2020"
-            />
-          )
-          : <br></br>
-        }
-      
-
       </div>
     );
   }
