@@ -132,6 +132,18 @@ export default class Notifications extends Component {
           )
           : <br></br>
         }
+
+        {this.state.n_isBestAnswer
+          ? (
+            <Notification onChange={this.handleChange}
+            text = "One of your answer has been selected as best answer"
+            username = "Vraj"
+            nID = "1"
+            notificationTime = "2020"
+            />
+          )
+          : <br></br>
+        }
       
 
       </div>
