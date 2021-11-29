@@ -1,0 +1,22 @@
+.notification-link {
+    background-color: #00b3ff;
+    border-radius: 10px;
+    text-decoration: none;
+    padding:10px;
+}
+
+.go-back-link-holder {
+    margin-bottom: 25px;
+}
+
+a.notification-link{
+    color:black;
+    border: solid 2px black;
+    
+}
+
+a.notification-link:hover {
+    padding-top:15px;
+    padding-bottom: 15px;
+    
+}

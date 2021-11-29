@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { Component} from 'react';
 import Header from "../../components/Header/";
 import Notification from '../../components/Notification';
+import MyNavLink from "../../components/MyNavLink";
+import "./index.css"
 
 var text = "APAPAPAPAP";
 var username = "APAPAPAPAP";
@@ -78,8 +80,14 @@ export default class Notifications extends Component {
           Your Notifications
         </div>
 
+        <div className="go-back-link-holder">
+        <MyNavLink replace to="/home" className="notification-link">
+          Back to Home
+        </MyNavLink>
+        </div>
+
         <Notification 
-          text = "Example Text"
+          text = "Congrats! Sven has declared your answer to their question as Best Answer!"
           username = {this.state.n_username}
           nID = {this.state.n_nID}
           notificationTime = {this.state.n_notificationTime}
@@ -87,7 +95,7 @@ export default class Notifications extends Component {
         />
 
         <Notification 
-          text = "Example Text"
+          text = "You've got a vote on your answer!"
           username = {this.state.n_username}
           nID = {this.state.n_nID}
           notificationTime = {this.state.n_notificationTime}
@@ -95,7 +103,7 @@ export default class Notifications extends Component {
         />
 
         <Notification 
-          text = "Example Text"
+          text = "You've got a vote on your answer!"
           username = {this.state.n_username}
           nID = {this.state.n_nID}
           notificationTime = {this.state.n_notificationTime}
@@ -103,7 +111,7 @@ export default class Notifications extends Component {
         />
 
         <Notification 
-          text = "Example Text"
+          text = "Sven has answered your question!"
           username = {this.state.n_username}
           nID = {this.state.n_nID}
           notificationTime = {this.state.n_notificationTime}

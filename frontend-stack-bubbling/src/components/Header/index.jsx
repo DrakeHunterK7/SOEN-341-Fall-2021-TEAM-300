@@ -66,7 +66,7 @@ export default class Header extends Component {
                   </li>
                   <li className="tab">
                     <MyNavLink  replace to="/notifications" className="linkWithImage">
-                      <img className="notifImg" src={IMG_NoNotification} width="30"/>
+                      <img className="notifImg" src={IMG_NoNotification} width="25"/>
                     </MyNavLink>
                   </li>
                   

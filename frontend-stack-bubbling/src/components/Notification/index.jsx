@@ -27,8 +27,6 @@ export default class Notification extends Component {
       n_notificationTime:props.notificationTime,
       n_type:props.notificationType
     }
-
-    //console.log(this.state.n_text);
   }
 
   render() {    
@@ -49,7 +47,7 @@ export default class Notification extends Component {
             <h6>NOTIFICATION</h6>
           </div>
               
-          <div className="preview-question-title">
+          <div className="preview-notification-text">
             <h3>{this.state.n_text}</h3>
           </div>
         </div>
