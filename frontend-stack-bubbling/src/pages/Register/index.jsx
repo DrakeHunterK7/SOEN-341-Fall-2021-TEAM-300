@@ -15,19 +15,19 @@ export default class Resigter extends Component {
       email: "",
       password: "",
       confirmPassword: "",
-      registaionMsg: "",
-      tigger: false,
+      registrationMsg: "",
+      trigger: false,
       isSuccess:true
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.setTiggerAlertBox = this.setTiggerAlertBox.bind(this);
+    this.setTriggerAlertBox = this.setTriggerAlertBox.bind(this);
   }
 
-  setTiggerAlertBox(value) {
+  setTriggerAlertBox(value) {
     this.setState({
-      tigger: value,
+      trigger: value,
     });
   }
   handleChange(e) {
@@ -53,20 +53,19 @@ export default class Resigter extends Component {
         // console.log(typeof(response.data.message))
         const res = response.status;
         if (res === 201 || res === 203) {
-          console.log(true);
           this.setState({
-            registaionMsg: response.data.message,
+            registrationMsg: response.data.message,
             isSuccess:false
           });
         } else if (res === 200) {
           this.setState({
-            registaionMsg: response.data.message,
+            registrationMsg: response.data.message,
           });
           this.props.history.push("/login")
         }
-        console.log("------", this.state.registaionMsg);
+        console.log("------", this.state.registrationMsg);
         this.setState({
-          tigger: true,
+          trigger: true,
         });
       })
       .then((error) => {
@@ -88,11 +87,11 @@ export default class Resigter extends Component {
         <Header/>
         <div className="pagetitle">REGISTER</div>
         <Popup
-          tigger={this.state.tigger}
-          setTiggerAlertBox={this.setTiggerAlertBox}
+          tigger={this.state.trigger}
+          setTiggerAlertBox={this.setTriggerAlertBox}
           isSuccess={this.state.isSuccess}
         >
-          {this.state.registaionMsg}
+          {this.state.registrationMsg}
         </Popup>
         <form onSubmit={this.handleSubmit}>
           <div className="mb-3">
