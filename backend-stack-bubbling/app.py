@@ -80,11 +80,15 @@ class Register(Resource):
         res = UserCollection.find_one({
             "email": data.email
         })
+        sameUsername = UserCollection.find_one({
+            "username": data.username
+        })
         if data.confirmPassword != data.password:
-            return make_response(jsonify({"message": "please check your password is same as the confirm password"}),
-                                 201)
+            return make_response(jsonify({"message": "please check your password is same as the confirm password"}),201)
         if res is not None:
             return make_response(jsonify({"message": "you have to use valid email and password to register"}), 401)
+        if sameUsername is not None:
+            return make_response(jsonify({"message": "please choose a username that is not taken"}), 401)
         else:
             UserCollection.insert_one({
                 "_id": uuid.uuid1(),
