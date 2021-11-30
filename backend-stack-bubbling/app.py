@@ -84,11 +84,11 @@ class Register(Resource):
             "username": data.username
         })
         if data.confirmPassword != data.password:
-            return make_response(jsonify({"message": "please check your password is same as the confirm password"}),201)
+            return make_response(jsonify({"message": "Please check that your password and confirm password match."}),201)
         if res is not None:
-            return make_response(jsonify({"message": "you have to use valid email and password to register"}), 401)
+            return make_response(jsonify({"message": "The email you entered has already been used. Please enter a new one."}), 201)
         if sameUsername is not None:
-            return make_response(jsonify({"message": "please choose a username that is not taken"}), 401)
+            return make_response(jsonify({"message": "The username you chose has been taken. Please choose a different one."}), 201)
         else:
             UserCollection.insert_one({
                 "_id": uuid.uuid1(),
