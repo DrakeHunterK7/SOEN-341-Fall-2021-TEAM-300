@@ -9,6 +9,7 @@ import UserProfile from "./pages/UserProfile";
 import QuestionTemplatePage from "./pages/QuestionTemplatePage";
 import PostQuestion from "./pages/Home/PostQuestion";
 import QuestionList from "./pages/Home/QuestionList";
+import Notifications from "./pages/Notifications"
 
 
 
@@ -38,6 +39,7 @@ export default class App extends Component {
                   <Route path="/questiontemplatepage" component={QuestionTemplatePage} />
                   <Route path="/postquestion" component={PostQuestion} />
                   <Route path="/questionlist" component={QuestionList} />
+                  <Route path="/notifications" component={Notifications} />
 
                   <Redirect to="/home" />
                 </Switch>

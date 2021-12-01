@@ -1,0 +1,157 @@
+
+.preview-notification-container:link {
+    text-decoration: none;
+    color: black;
+}
+
+.link-properties {
+    text-decoration: none;
+}
+
+.infoContainer {
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+.notifIMG {
+    float:left;
+}
+
+.BestAnswer {
+    background-color: #008031;
+    opacity: 1;
+    vertical-align: center;
+    border-radius: 10px;
+    border: solid 3px rgb(0, 0, 0);
+    cursor: pointer;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.BestAnswer:hover {
+    border: solid 3px rgb(111, 0, 255)
+}
+
+.VoteQuestion {
+    background-color: #bea200;
+    opacity: 1;
+    vertical-align: center;
+    border-radius: 10px;
+    border: solid 3px rgb(0, 0, 0);
+    cursor: pointer;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.VoteQuestion:hover {
+    border: solid 3px rgb(111, 0, 255)
+}
+
+.VoteAnswer {
+    background-color: #bea200;
+    opacity: 1;
+    vertical-align: center;
+    border-radius: 10px;
+    border: solid 3px rgb(0, 0, 0);
+    cursor: pointer;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.VoteAnswer:hover {
+    border: solid 3px rgb(111, 0, 255)
+}
+
+.AnswerPosted {
+    background-color: #006680;
+    opacity: 1;
+    vertical-align: center;
+    border-radius: 10px;
+    border: solid 3px rgb(0, 0, 0);
+    cursor: pointer;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.AnswerPosted:hover {
+    border: solid 3px rgb(111, 0, 255)
+}
+
+.linkWithImage {
+    background-color: #00b3ff;
+    border-radius: 10px;
+    text-decoration: none;
+    padding:10px;
+    margin-right: 10px;
+}
+.preview-username-holder {
+    
+    width: auto;
+    background: #0056a7;
+    border-radius: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 4px;
+    border: solid 2px black;
+}
+
+.preview-username-holder h6 {
+    color: white;
+}
+
+
+
+.preview-notification-text {
+    background-color: #0056a7;
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: solid 2px black;
+    margin-top: 10px;
+}
+
+preview-notification-text, h3 {
+   color: white;
+}
+
+.posted-notification-text-2{
+    background-color: rgb(56, 155, 31);
+    border-radius: 10px;
+    padding: 5px;
+    border: solid 2px black;
+    margin-top: 10px;
+}
+
+.posted-notification-text{
+    background-color: rgb(246, 255, 127);
+    border-radius: 10px;
+    padding: 5px;
+    border: solid 2px black;
+    margin-top: 10px;
+}
+
+.posted-notification-text-4{
+    background-color: rgb(251, 127, 255);
+    border-radius: 10px;
+    padding: 5px;
+    border: solid 2px black;
+    margin-top: 10px;
+}
+.date-time {
+    
+    color: rgb(170, 170, 170);
+    float: left;
+    width: auto;
+    background: #00396e;
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 4px;
+    border: solid 2px black;
+    margin-top: 10px;
+}
+
+.notification-box{
+    
+}

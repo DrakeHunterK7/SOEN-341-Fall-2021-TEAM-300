@@ -62,6 +62,11 @@ BestAnswerInfo = reqparse.RequestParser()
 BestAnswerInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
 BestAnswerInfo.add_argument('answer_id', help='answer_id cannot be empty', required=True, type=str)
 
+# Get Question Info
+GetQuestionInfo = reqparse.RequestParser()
+GetQuestionInfo.add_argument('question_id', help='question_id cannot be empty', required=True, type=str)
+
+
 # Update Notification Info
 UpdateNotificationInfo = reqparse.RequestParser()
 UpdateNotificationInfo.add_argument("type", help="the type of notification", required=True, type=str)
@@ -146,6 +151,7 @@ class PostAnswer(Resource):
         answer_id = uuid.uuid1()
         newAnswer = {
             "_id": answer_id,
+            "username": currentUser["username"],
             "user_id": currentUser["_id"],
             "body": info["body"],
             "createdAt": datetime.datetime.today(),
@@ -225,7 +231,9 @@ class QuestionList(Resource):
             		'body':'$body',
             		'createdAt': '$createdAt',
             		'vote_count': '$vote_count',
-            		'_id': '$_id'
+            		'_id': '$_id',
+                    'answerCount': {'$size': '$answers'}
+                    
                 }
             }
         ])
@@ -248,6 +256,7 @@ class PostQuestion(Resource):
             return make_response(jsonify({"message": "Unable to perform operation, User identity invalid"}), 401)
         newQuestion = {
             "_id": uuid.uuid1(),
+            "username": currentUser["username"],
             "user_id": currentUser["_id"],
             "title": info["title"],
             "body": info["body"],
@@ -800,6 +809,8 @@ class Notifications(Resource):
         else:
             info = UpdateNotificationInfo.parse_args()
             question_id = uuid.UUID(info["question_id"])
+            print("question_id")
+            print(question_id)
             answer_id = None
             answer_id_to_string = None
             try:
@@ -807,7 +818,11 @@ class Notifications(Resource):
             except Exception as e:
                 pass
             if answer_id == None:
-                UserCollection.update_many(
+                print("1) answer_id")
+                print(answer_id)
+                print("type")
+                print(info["type"])
+                UserCollection.update_one(
                 {
                     "_id": currentUser["_id"],
                     "notifications.type": info["type"],
@@ -822,7 +837,11 @@ class Notifications(Resource):
                         "elem.questionID": question_id
                     }])
             else:
-                UserCollection.update(
+                print("2) answer_id")
+                print(answer_id)
+                print("type")
+                print(info["type"])
+                UserCollection.update_one(
                 {
                     "_id": currentUser["_id"],
                     "notifications.type": info["type"],
@@ -958,6 +977,20 @@ class DeclareBestAnswer(Resource):
         }
         return make_response(jsonify(result), returnCode)
 
+class GetQuestion(Resource):
+    @staticmethod
+    def get():
+        info = GetQuestionInfo.parse_args()
+        question_id = uuid.UUID(info["question_id"])
+        targetQuestion = QuestionCollection.find_one({"_id": question_id})
+        if targetQuestion is not None:
+            return make_response(jsonify(targetQuestion), 200)
+        else:
+            result = {
+            "message": "No such question found!"
+            }
+            return make_response(jsonify(result), 200)
+
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(PostAnswer, "/postanswer")
@@ -970,6 +1003,7 @@ api.add_resource(VoteQuestion, '/votequestion')
 api.add_resource(VoteAnswer, '/voteanswer')
 api.add_resource(Notifications, '/notifications')
 api.add_resource(DeclareBestAnswer, '/declarebestanswer')
+api.add_resource(GetQuestion, '/getquestion')
 
 if __name__ == "__main__":
     app.debug = True
