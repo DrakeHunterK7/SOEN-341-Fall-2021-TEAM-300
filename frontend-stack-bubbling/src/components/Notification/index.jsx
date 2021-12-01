@@ -36,11 +36,6 @@ export default class Notification extends Component {
 		const notifType = this.state.type;
     const aID = this.state.answerID;
 
-    console.log(qID);
-    console.log(aID);
-    console.log(notifType);
-    console.log("headersaff");
-
 		const token = localStorage.getItem("access_token");
 		
 		axios
@@ -104,12 +99,12 @@ export default class Notification extends Component {
     this.state.notificationText = this.selectNotificationText(this.state.type)    
     return (
                
-        <Link className={"link-properties"} 
+        <Link className={"link-properties"}  
         to = {{
           pathname:`/questiontemplatepage/qID=${this.state.questionID}`,
         }}
         >
-        <nav className={"navbar navbar-expand-lg navbar-light " + this.state.type} onClick={this.removeNotification()}> 
+        <nav className={"navbar navbar-expand-lg navbar-light " + this.state.type} onClick={() => {this.removeNotification()}} > 
         <div className="notifIMG">
           <img src={IMG_Notification} width="50px"/>
         </div>

@@ -4,6 +4,7 @@ import './index.css'
 import MainLogo from '../Header/SBLogo.png';
 import IMG_NoNotification from "../../assets/NotificationNone.png"
 import IMG_Notifications from "../../assets/NotificationMultiple.png"
+import axios from "axios";
 
 
 export default class Header extends Component {
@@ -11,11 +12,13 @@ export default class Header extends Component {
     super();
     this.state = {
       isLoginUser: false,
-      username: localStorage.getItem("username")
+      username: localStorage.getItem("username"),
+      newNotifications: false
     };
     this.handleLogout = this.handleLogout.bind(this);
   }
   componentDidMount() {
+    this.fetchNotifications();
     console.log(localStorage.getItem("access_token"));
     if (localStorage.getItem("access_token")) {
       console.log("true user logined");
@@ -32,6 +35,30 @@ export default class Header extends Component {
     }
     window.location.reload(true)
     
+  }
+
+  fetchNotifications(){
+
+    const token = localStorage.getItem("access_token");
+
+    axios
+    .get("http://localhost:5000/notifications",
+          {
+            headers: {
+              'Authorization' : 'Bearer ' + token
+            }
+          }
+        )
+    .then((response) => {
+      const stat = response.status
+      if(stat === 200)
+      {
+        if(response.data.length != 0)
+          this.setState({newNotifications:true})
+      }
+      }
+    )
+    .catch(error => console.log(error))
   }
 
   render() {
@@ -66,7 +93,12 @@ export default class Header extends Component {
                   </li>
                   <li className="tab">
                     <MyNavLink  replace to="/notifications" className="linkWithImage">
-                      <img className="notifImg" src={IMG_NoNotification} width="25"/>
+                      {this.state.newNotifications 
+                      ? 
+                      (<img className="notifImg" src={IMG_Notifications} width="25"/>) 
+                      : 
+                      (<img className="notifImg" src={IMG_NoNotification} width="25"/>)
+                      }
                     </MyNavLink>
                   </li>
                   

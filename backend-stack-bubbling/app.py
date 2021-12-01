@@ -809,6 +809,8 @@ class Notifications(Resource):
         else:
             info = UpdateNotificationInfo.parse_args()
             question_id = uuid.UUID(info["question_id"])
+            print("question_id")
+            print(question_id)
             answer_id = None
             answer_id_to_string = None
             try:
@@ -816,7 +818,11 @@ class Notifications(Resource):
             except Exception as e:
                 pass
             if answer_id == None:
-                UserCollection.update_many(
+                print("1) answer_id")
+                print(answer_id)
+                print("type")
+                print(info["type"])
+                UserCollection.update_one(
                 {
                     "_id": currentUser["_id"],
                     "notifications.type": info["type"],
@@ -831,7 +837,11 @@ class Notifications(Resource):
                         "elem.questionID": question_id
                     }])
             else:
-                UserCollection.update(
+                print("2) answer_id")
+                print(answer_id)
+                print("type")
+                print(info["type"])
+                UserCollection.update_one(
                 {
                     "_id": currentUser["_id"],
                     "notifications.type": info["type"],
