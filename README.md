@@ -14,6 +14,7 @@ To develop a question and answer platform. The goal is to create a simple versio
 - Asking and answering questions
 - Voting on the answers given
 - Accepting the best answer given
+- notification for voting and answering
 
 <br/>
 
