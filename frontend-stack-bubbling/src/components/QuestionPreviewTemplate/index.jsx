@@ -40,8 +40,8 @@ export default class QuestionPreviewTemplate extends Component {
         <nav className="navbar navbar-expand-lg navbar-light" preview-question-container>        
         <Link className="container-fluid preview-question-container"
         to = {{
-          pathname:"/questiontemplatepage",
-          state: this.props
+          pathname:`/questiontemplatepage/qID=${this.state.q_qID}`,
+          
         }}
         >
           <div className="">
@@ -58,12 +58,14 @@ export default class QuestionPreviewTemplate extends Component {
                 </div>
 
                 <div className="date-time">
-                  <h5>{"Posted on: " + this.state.q_creationDateAndTime}</h5>
+                  <h5>{"Answers: " + this.state.q_voteCount}</h5>
                 </div>
 
                 <div className="date-time">
-                  <h5>{"Answers: " + this.state.q_voteCount}</h5>
+                  <h5>{"Posted on: " + this.state.q_creationDateAndTime}</h5>
                 </div>
+
+                
           </div>
         </Link>
       </nav>

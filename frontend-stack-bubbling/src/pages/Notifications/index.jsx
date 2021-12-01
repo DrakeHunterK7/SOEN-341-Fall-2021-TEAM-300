@@ -5,58 +5,53 @@ import Notification from '../../components/Notification';
 import MyNavLink from "../../components/MyNavLink";
 import "./index.css"
 
-var text = "APAPAPAPAP";
-var username = "APAPAPAPAP";
-var nID = "APAPAPAPAP";
-var notificationTime = "APAPAPAPAP";
-
 
 export default class Notifications extends Component {
   constructor(props) {
     super(props);
-    username = props.username;
-    text = props.text;
-    nID = props.nID;
-    notificationTime = props.notificationType;
+    
 
     this.state = {
-      n_username:props.username,
-      n_text:props.text,
-      n_nID:props.nID,
-      n_notificationTime:props.notificationTime,
+      "NList": [],
+      "NotificationsLoaded": false
     }
 
-   this.selectNotificationStyle = this.selectNotificationStyle.bind(this);
-
-   console.log(props.text);
+    
   }
-
 
   componentDidMount(){
-    console.log('component just mounted')
+    this.fetchNotifications();
+    console.log("yes the function was called then what is the problem")
   }
 
-  selectNotificationStyle(Type)
-    {
-    switch(Type){
-      case 'BestAnswer':
-        return 'BestAnswer';
-      case 'VoteAnswer':
-        return 'VoteAnswer';
-      case 'VoteQuestion':
-        return 'VoteQuestion';
-      case 'AnswerPosted':
-        return 'AnswerPosted';
+  fetchNotifications(){
 
-      default:
-        return 'noStyle';
-    }
+    const token = localStorage.getItem("access_token");
+
+    axios
+    .get("http://localhost:5000/notifications",
+          {
+            headers: {
+              'Authorization' : 'Bearer ' + token
+            }
+          }
+        )
+    .then((response) => {
+      const stat = response.status
+      if(stat === 200)
+      {
+        this.setState({
+          NList: response.data.reverse(),
+          NotificationsLoaded: true
+        })
+        console.log(this.state.NList);
+      }
+      }
+    )
+    .catch(error => console.log(error))
   }
 
-
   
-  
-
 
   render() {
 
@@ -80,44 +75,22 @@ export default class Notifications extends Component {
           Your Notifications
         </div>
 
-        <div className="go-back-link-holder">
-        <MyNavLink replace to="/home" className="notification-link">
-          Back to Home
-        </MyNavLink>
-        </div>
-
-        <Notification 
-          text = "Congrats! Sven has declared your answer to their question as Best Answer!"
-          username = {this.state.n_username}
-          nID = {this.state.n_nID}
-          notificationTime = {this.state.n_notificationTime}
-          notificationType = {this.selectNotificationStyle("BestAnswer")}
-        />
-
-        <Notification 
-          text = "You've got a vote on your answer!"
-          username = {this.state.n_username}
-          nID = {this.state.n_nID}
-          notificationTime = {this.state.n_notificationTime}
-          notificationType = {this.selectNotificationStyle("VoteAnswer")}
-        />
-
-        <Notification 
-          text = "You've got a vote on your answer!"
-          username = {this.state.n_username}
-          nID = {this.state.n_nID}
-          notificationTime = {this.state.n_notificationTime}
-          notificationType = {this.selectNotificationStyle("VoteQuestion")}
-        />
-
-        <Notification 
-          text = "Sven has answered your question!"
-          username = {this.state.n_username}
-          nID = {this.state.n_nID}
-          notificationTime = {this.state.n_notificationTime}
-          notificationType = {this.selectNotificationStyle("AnswerPosted")}
-        />
-        
+        {this.state.NotificationsLoaded
+      ? (
+          (
+            this.state.NList.length==0 ? (
+              <p style={noAnswerStyle}>No New Notifications</p>
+            ) : (
+              this.state.NList.map((notification) => 
+                  <Notification 
+                    qID={notification._id.questionID}
+                    aID={notification._id.answerID}
+                    notificationType={notification._id.type}
+                  />)
+                )
+          )
+        )
+      : <p style={noAnswerStyle}>Loading Notifications.....</p>}
       </div>
     );
   }

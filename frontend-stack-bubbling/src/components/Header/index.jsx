@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import MyNavLink from "../MyNavLink";
 import './index.css'
 import MainLogo from '../Header/SBLogo.png';
-import IMG_NoNotification from "../../NotificationNone.png"
-import IMG_Notifications from "../../NotificationMultiple.png"
+import IMG_NoNotification from "../../assets/NotificationNone.png"
+import IMG_Notifications from "../../assets/NotificationMultiple.png"
 
 
 export default class Header extends Component {
