@@ -29,10 +29,24 @@ class Api_TestCase(unittest.TestCase):
 			"confirmPassword": "123"
 		}
 	@staticmethod
+	def userNoahData():
+		return {
+			"username": "Noah",
+			"email": "Noah@gmail.com",
+			"password": "123",
+			"confirmPassword": "123"
+		}
+	@staticmethod
 	def userJoeLoginData():
 		return {
 			"email": Api_TestCase.userJoeData()["email"],
 			"password": Api_TestCase.userJoeData()["password"]
+		}
+	@staticmethod
+	def userNoahLoginData():
+		return {
+			"email": Api_TestCase.userNoahData()["email"],
+			"password": Api_TestCase.userNoahData()["password"]
 		}
 	def userJoeAccessToken(self):
 		response = self.app.post('/login', json=self.userJoeLoginData())
@@ -42,7 +56,7 @@ class Api_TestCase(unittest.TestCase):
 	@pytest.mark.run(order=1)
 	def test_GivenANewUser_WhenRegisterWithCorrectPasswordAndConfirmPassword_ThenStatusCodeShouldBe200Or401(self):
 		response = self.app.post('/register', json=self.userJoeData())
-		assert(response.status_code == 200 or response.status_code == 401)
+		assert(response.status_code == 200 or response.status_code == 401 or response.status_code == 201)
 
 	@pytest.mark.run(order=2)
 	def test_GivenAnyUser_WhenRequestForQuestionList_ThenStatusCodeShouldBe201(self):
@@ -60,46 +74,51 @@ class Api_TestCase(unittest.TestCase):
 		assert(response.status_code == 201)
 
 	@pytest.mark.run(order=5)
+	def test_GivenARegisteredUser_WhenHeLoginWithInvalidInfo_ThenStatusCodeShouldBe203(self):
+		response = self.app.post('/login', json=self.userNoahLoginData())
+		assert(response.status_code == 203)
+
+	@pytest.mark.run(order=6)
 	def test_GivenUserJoeAlreadyPostedAQuestion_WhenHeRequestToSeeHisQuestion_ThenStatusCodeShouldBe201(self):
 		response = self.app.get("/listmyquestions", headers={"Authorization": self.userJoeAccessToken()})
 		assert(response.status_code == 201)
 
-	@pytest.mark.run(order=6)
+	@pytest.mark.run(order=7)
 	def test_GivenAnUserNotLoggined_WhenHeRequestToSeeHisQuestion_ThenStatusCodeShouldBe401(self):
 		response = self.app.get("/listmyquestions")
 		assert(response.status_code == 401)
-		
-	@pytest.mark.run(order=7)
-	def test_GivenAnyUserNotLoggedin_WhenHeRequestToSeeNotifications_ThenStatusCodeShouldBe401(self):
-		response = self.app.get("/notifications")
-		assert(response.status_code == 401)
-		
+
 	@pytest.mark.run(order=8)
-	def test_GivenAnyUser_WhenHeRequestToSeeNotifications_ThenStatusCodeShouldBe20(self):
-		response = self.app.get("/notifications"), headers={"Authorization": self.userJoeAccessToken()})
-		assert(response.status_code == 201)
-
-
-	@pytest.mark.run(order=7)
 	def test_GivenAQuestion_WhenWeTryToSetBestAnswerWhenThereIsNoOtherBestAnswer_ThenStatusCodeShouldBe201(self):
 		response = self.app.post("/declarebestanswer?question_id=5aa10bdb-4b48-11ec-b9b6-f4066954d05c&answer_id=be4fce5d-4b50-11ec-b5f1-f4066954d05c", headers={"Authorization": self.userJoeAccessToken()})
 		self.app.post("/test_resetbestanswer?question_id=5aa10bdb-4b48-11ec-b9b6-f4066954d05c&answer_id=be4fce5d-4b50-11ec-b5f1-f4066954d05c", headers={"Authorization": self.userJoeAccessToken()})						
 		assert(response.status_code == 201)
 
-	@pytest.mark.run(order=8)
+	@pytest.mark.run(order=9)
 	def test_GivenAQuestion_WhenThereIsAlreadyABestAnswerForIt_ThenStatusCodeShouldBe200(self):
 		response = self.app.post("/declarebestanswer?question_id=4d3a9fbf-4121-11ec-8364-f4066954d05c&answer_id=cbcbcaba-4185-11ec-a15c-f4066954d05c", headers={"Authorization": self.userJoeAccessToken()})						
 		assert(response.status_code == 200)
 
-	@pytest.mark.run(order=9)
+	@pytest.mark.run(order=10)
 	def test_GivenAUser_WhenTheUserVotesOnAQuestion_ThenStatusCodeShouldBe200(self):
 		response = self.app.post("/votequestion?question_id=5aa10bdb-4b48-11ec-b9b6-f4066954d05c&is_upvote=True", headers={"Authorization": self.userJoeAccessToken()})						
 		assert(response.status_code == 200)
 
-	@pytest.mark.run(order=10)
+	@pytest.mark.run(order=11)
 	def test_GivenAUser_WhenTheUserVotesOnAnAnswer_ThenStatusCodeShouldBe200(self):
 		response = self.app.post("/voteanswer?question_id=5aa10bdb-4b48-11ec-b9b6-f4066954d05c&&answer_id=be4fce5d-4b50-11ec-b5f1-f4066954d05c&is_upvote=True", headers={"Authorization": self.userJoeAccessToken()})						
 		assert(response.status_code == 200)
+
+	@pytest.mark.run(order=12)
+	def test_GivenAnyUserNotLoggedin_WhenHeRequestToSeeNotifications_ThenStatusCodeShouldBe401(self):
+		response = self.app.get("/notifications")
+		assert(response.status_code == 401)
+		
+	@pytest.mark.run(order=13)
+	def test_GivenAnyUser_WhenHeRequestToSeeNotifications_ThenStatusCodeShouldBe20(self):
+		response = self.app.get("/notifications", headers={"Authorization": self.userJoeAccessToken()})
+		assert(response.status_code == 200)
+
 
 
 	# @pytest.mark.run(order=5)
