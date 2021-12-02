@@ -20,6 +20,7 @@ export default class QuestionTemplatePage extends Component {
 		  questiontext: "",
 		  qUsername:"",
 		  qID: "",
+		  creationDT: "",
 		  newAnswer: "",
 		  questionVoteCount: 0,
 		  AnswersLoaded: false,
@@ -33,8 +34,10 @@ export default class QuestionTemplatePage extends Component {
 
 	  componentDidMount()
 	  {
-		const { state } = this.props.location;
-		this.fetchAnswers();
+		const windowURL = window.location.href;
+		const qID = windowURL.slice(windowURL.lastIndexOf('=') + 1);
+		this.fetchQuestionData(qID);
+		this.fetchAnswers(qID);
 	  }
 
 	  handleChange(e) {
@@ -50,9 +53,7 @@ export default class QuestionTemplatePage extends Component {
 	  handleSubmit(e) {
 		e.preventDefault();
 		const { newAnswer} = this.state;
-		const { state } = this.props.location;
-		qID = state.qID;
-		
+		qID = this.state.qID;
 
 		const token = localStorage.getItem("access_token");
 		
@@ -92,10 +93,34 @@ export default class QuestionTemplatePage extends Component {
 		  
 	  }
 
-	  fetchAnswers(){
+	  fetchQuestionData(qID){
+		axios
+		.get("http://localhost:5000/getquestion", {
+			params: {
+				question_id: qID
+			}
+		})
+		.then((response) => {
+		  const stat = response.status
+		  	if(stat === 200)
+		  	{
+				this.setState({
+					questiontitle: response.data.title,
+				 	questiontext: response.data.body,
+					qUsername:response.data.username,
+					qID: qID,
+		  			questionVoteCount: response.data.vote_count,
+					creationDT: response.data.createdAt,
+				})
+				
+				this.setState({QuestionLoaded: true})
+		  	}	  
+		}
+		)
+		.catch(error => console.log(error))
+	  }
 
-		const { state } = this.props.location;
-		qID = state.qID;
+	  fetchAnswers(qID){
 		axios
 		.get("http://localhost:5000/listanswers", {
 			params: {
@@ -114,18 +139,17 @@ export default class QuestionTemplatePage extends Component {
 				{
 				this.setState({AnswersLoaded: true})
 				}
-				this.setState({QuestionLoaded: true})
-		  	}	  
+				
+		  	}  
 		}
 		)
-		.catch(error => console.log(error))
+		.catch(error => {alert("No such question found! Question was probably deleted")})
 	  }
 	
 	
 	  
 	render() {
-		const { state } = this.props.location
-		const isQOwner = (localStorage.getItem("username") == state.username)
+		const isQOwner = (localStorage.getItem("username") == this.state.qUsername)
 
 		const noAnswerStyle = {
 			backgroundColor: 'white',
@@ -138,24 +162,23 @@ export default class QuestionTemplatePage extends Component {
 		
 		return (
 			<div>
-				
 				<Header />
+
 				{this.state.QuestionLoaded
       			? (
 					<QuestionBox onChange={this.handleChange}
-					username={state.username} 
-					questiontitle = {state.title}
-					questiontext= {state.text}
-					creationTD={state.creationDateAndTime}
+					username={this.state.qUsername} 
+					questiontitle = {this.state.questiontitle}
+					questiontext= {this.state.questiontext}
+					creationTD={this.state.creationDT}
 					voteCount={this.state.questionVoteCount}
-					questionID = {state.qID}
+					questionID = {this.state.qID}
 					/>
-            	
-      )
-      : <p style={noAnswerStyle}>Loading Question.....</p>}
+				)
+      			: <p style={noAnswerStyle}>Loading Question.....</p>}
 				
 
-				{this.state.AnswersLoaded
+				{(this.state.AnswersLoaded && this.state.QuestionLoaded)
       			? (
           			this.state.answerList.map((answer) => <AnswerBox onChange={this.handleChange}
               			username={answer.Username}
@@ -164,15 +187,13 @@ export default class QuestionTemplatePage extends Component {
 						voteCount={answer.vote_count}
 						isBestAnswer={answer.is_best_answer}
 						answerID = {answer._id}
-						questionID = {state.qID}
-						userID = {state.user_id}
+						questionID = {this.state.qID}
+						userID = {answer._id}
 						isQuestionOwner={isQOwner}
             	/>)
-      )
-      : <p style={noAnswerStyle}>No answers posted yet. Be the first to answer!</p>}
+      			)
+      			: <p style={noAnswerStyle}>No answers posted yet. Be the first to answer!</p>}
 
-				
-					
 				<div className="post-answer-container">
 					<form onSubmit={this.handleSubmit}>
           				<div>
@@ -204,9 +225,7 @@ export default class QuestionTemplatePage extends Component {
           				</div>
 					</form>
 				</div>
-				
-				
-				
+
 			</div>
 			
 		)

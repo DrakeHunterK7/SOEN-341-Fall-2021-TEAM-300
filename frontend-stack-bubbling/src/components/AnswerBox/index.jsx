@@ -1,12 +1,12 @@
 import React, { Component, useState, useRef } from "react";
 import "./index.css";
-import UpvoteImg from "../../NormalUpvote.png"
-import UpvoteHoverImg from "../../UpvoteHover.png"
-import UpvotedImg from "../../Upvoted.png"
-import DownvoteImg from "../../NormalDownvote.png"
-import DownvoteHoverImg from "../../DownvoteHover.png"
-import DownvotedImg from "../../Downvoted.png"
-import BestAnswerImg from "../../BestAnswerNormal.png"
+import UpvoteImg from "../../assets/NormalUpvote.png"
+import UpvoteHoverImg from "../../assets/UpvoteHover.png"
+import UpvotedImg from "../../assets/Upvoted.png"
+import DownvoteImg from "../../assets/NormalDownvote.png"
+import DownvoteHoverImg from "../../assets/DownvoteHover.png"
+import DownvotedImg from "../../assets/Downvoted.png"
+import BestAnswerImg from "../../assets/BestAnswerNormal.png"
 import axios from "axios";
 
 let username = null;
