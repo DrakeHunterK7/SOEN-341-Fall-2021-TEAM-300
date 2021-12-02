@@ -69,6 +69,27 @@ class Api_TestCase(unittest.TestCase):
 		response = self.app.get("/listmyquestions")
 		assert(response.status_code == 401)
 
+	@pytest.mark.run(order=7)
+	def test_GivenAQuestion_WhenWeTryToSetBestAnswerWhenThereIsNoOtherBestAnswer_ThenStatusCodeShouldBe201(self):
+		response = self.app.post("/declarebestanswer?question_id=5aa10bdb-4b48-11ec-b9b6-f4066954d05c&answer_id=be4fce5d-4b50-11ec-b5f1-f4066954d05c", headers={"Authorization": self.userJoeAccessToken()})
+		self.app.post("/test_resetbestanswer?question_id=5aa10bdb-4b48-11ec-b9b6-f4066954d05c&answer_id=be4fce5d-4b50-11ec-b5f1-f4066954d05c", headers={"Authorization": self.userJoeAccessToken()})						
+		assert(response.status_code == 201)
+
+	@pytest.mark.run(order=8)
+	def test_GivenAQuestion_WhenThereIsAlreadyABestAnswerForIt_ThenStatusCodeShouldBe200(self):
+		response = self.app.post("/declarebestanswer?question_id=4d3a9fbf-4121-11ec-8364-f4066954d05c&answer_id=cbcbcaba-4185-11ec-a15c-f4066954d05c", headers={"Authorization": self.userJoeAccessToken()})						
+		assert(response.status_code == 200)
+
+	@pytest.mark.run(order=9)
+	def test_GivenAUser_WhenTheUserVotesOnAQuestion_ThenStatusCodeShouldBe200(self):
+		response = self.app.post("/votequestion?question_id=5aa10bdb-4b48-11ec-b9b6-f4066954d05c&is_upvote=True", headers={"Authorization": self.userJoeAccessToken()})						
+		assert(response.status_code == 200)
+
+	@pytest.mark.run(order=10)
+	def test_GivenAUser_WhenTheUserVotesOnAnAnswer_ThenStatusCodeShouldBe200(self):
+		response = self.app.post("/voteanswer?question_id=5aa10bdb-4b48-11ec-b9b6-f4066954d05c&&answer_id=be4fce5d-4b50-11ec-b5f1-f4066954d05c&is_upvote=True", headers={"Authorization": self.userJoeAccessToken()})						
+		assert(response.status_code == 200)
+
 
 	# @pytest.mark.run(order=5)
 	# def test_getQuestions(self):

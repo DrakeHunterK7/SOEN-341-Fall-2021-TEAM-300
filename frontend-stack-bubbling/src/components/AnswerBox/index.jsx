@@ -73,6 +73,9 @@ export default class AnswerBox extends Component {
     const token = localStorage.getItem("access_token");
     const uid = this.state.uQuestionID;
     const aid = this.state.uAnswerID;
+    console.log("bonggggg");
+    console.log(uid);
+    console.log(aid);
     
     e.preventDefault();
     axios
